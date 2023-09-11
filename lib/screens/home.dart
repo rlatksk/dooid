@@ -4,9 +4,8 @@ class Home extends StatelessWidget{
   @override
   Widget build(BuildContext context){
     return Scaffold(
-      appBar: AppBar(),
       body: Center(
-        child: Text('HOME')
+        child: Text('HOME',style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),),
       ),
     );
   }
