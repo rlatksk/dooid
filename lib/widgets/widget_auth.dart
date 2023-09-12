@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 Widget wAuthTitle({required String title, required String subtitle}) {
   return Container(
@@ -8,11 +9,11 @@ Widget wAuthTitle({required String title, required String subtitle}) {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Login',
+          title,
           style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
         ),
         SizedBox(height: 3),
-        Text('Enter your email & password'),
+        Text(subtitle),
       ],
     ),
   );
@@ -50,8 +51,13 @@ Widget wGoogleSignIn({required VoidCallback onPressed}) {
         fixedSize: const Size(400, 50),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
       ),
-      icon: Icon(Icons.adb),
-      label: Text('Google'),
+      icon: Icon(
+        MdiIcons.google,
+        size: 20,
+      ),
+      label: Text(
+        'Google',
+      ),
       onPressed: onPressed,
     ),
   );

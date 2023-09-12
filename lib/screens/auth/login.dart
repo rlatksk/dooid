@@ -1,7 +1,9 @@
+import 'package:dooid/screens/auth/forgot_password.dart';
 import 'package:dooid/screens/home.dart';
 import 'package:dooid/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:dooid/widgets/widget_auth.dart';
+import 'package:dooid/screens/auth/register.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -53,7 +55,7 @@ class _LoginState extends State<Login> {
     );
   }
 
-  Widget _forgotPassword() {
+  Widget _inputForgot() {
     return GestureDetector(
       child: Align(
         alignment: Alignment.centerLeft,
@@ -62,9 +64,7 @@ class _LoginState extends State<Login> {
           child: Text('Forgot Password?'),
         ),
       ),
-      onTap: () {
-        print('Forgot Password?');
-      },
+      onTap: () => wPushTo(context, ForgotPassword())
     );
   }
 
@@ -81,11 +81,9 @@ class _LoginState extends State<Login> {
 
   Widget _textRegister() {
     return wTextLink(
-      text: 'Dont have an account yet?', 
-      title: 'Register', 
-      onTap: () {
-      }
-    );
+        text: 'Dont have an account yet?', 
+        title: 'Register', 
+        onTap: () => wPushReplaceTo(context, Register()));
   }
 
   @override
@@ -106,7 +104,7 @@ class _LoginState extends State<Login> {
                         subtitle: 'Enter your email & password'),
                     _inputEmail(),
                     _inputPassword(),
-                    _forgotPassword(),
+                    _inputForgot(),
                     _inputSubmit(),
                     wTextDivider(),
                     _googleSignIn(),
@@ -119,16 +117,12 @@ class _LoginState extends State<Login> {
   }
 
   void _loginSementara() async {
-
     if (_email.text == 'demo@gmail.com' && _password.text == '123123') {
       setState(() {
-      _isLoading = true;
-    });
+        _isLoading = true;
+      });
       await Future.delayed(Duration(seconds: 2));
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => Home()),
-      );
+      wPushReplaceTo(context, Home());
     } else {
       print('GAGAL');
     }

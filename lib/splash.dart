@@ -17,15 +17,11 @@ class _SplashState extends State<Splash> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: wAppLoading(context)
-    );
+    return Scaffold(body: wAppLoading(context));
   }
 
   void _checkUserSementara(bool user) async {
     await Future.delayed(Duration(seconds: 2));
-
-    Navigator.pushReplacement(context,
-        MaterialPageRoute(builder: (context) => user ? Home() : Login()));
+    wPushReplaceTo(context, user ? Home() : Login());
   }
 }
