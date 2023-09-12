@@ -1,6 +1,7 @@
 import 'package:dooid/screens/home.dart';
 import 'package:dooid/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:dooid/widgets/widget_auth.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -79,26 +80,11 @@ class _LoginState extends State<Login> {
   }
 
   Widget _textRegister() {
-    return Container(
-      margin: EdgeInsets.only(top: 40),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text('Dont have an account yet?'),
-          GestureDetector(
-            child: Container(
-              padding: EdgeInsets.all(10),
-              child: Text(
-                'Register',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
-            onTap: () {
-              print('Register');
-            },
-          )
-        ],
-      ),
+    return wTextLink(
+      text: 'Dont have an account yet?', 
+      title: 'Register', 
+      onTap: () {
+      }
     );
   }
 
@@ -133,11 +119,11 @@ class _LoginState extends State<Login> {
   }
 
   void _loginSementara() async {
-    setState(() {
-      _isLoading = true;
-    });
 
     if (_email.text == 'demo@gmail.com' && _password.text == '123123') {
+      setState(() {
+      _isLoading = true;
+    });
       await Future.delayed(Duration(seconds: 2));
       Navigator.pushReplacement(
         context,
