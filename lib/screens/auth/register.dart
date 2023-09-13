@@ -1,3 +1,4 @@
+import 'package:dooid/screens/auth/verify_phone_number.dart';
 import 'package:dooid/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:dooid/widgets/widget_auth.dart';
@@ -132,18 +133,21 @@ class _RegisterState extends State<Register> {
 
   void _registerSementara() async {
     print('Full Name: ${_email.text}');
-    print('Phone Number: ${_email.text}');
-    print('Full Name: ${_email.text}');
-    print('Full Name: ${_email.text}');
+    print('Phone Number: ${_phoneNumber.text}');
+    print('Password: ${_password.text}');
+    print('Password Confirmation: ${_passwordConf.text}');
 
-    // if (_email.text == 'demo@gmail.com' && _password.text == '123123') {
-    //   setState(() {
-    //     _isLoading = true;
-    //   });
-    //   await Future.delayed(Duration(seconds: 2));
-    //   wPushReplaceTo(context, Home());
-    // } else {
-    //   print('GAGAL');
-    // }
+    setState(() => _isLoading = true);
+
+    await Future.delayed(Duration(seconds: 2));
+    wPushReplaceTo(context, Login());
+
+    showModalBottomSheet(
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        context: context,
+        builder: (context) {
+          return VerifyEmail();
+        });
   }
 }
