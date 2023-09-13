@@ -1,8 +1,8 @@
-import 'package:dooid/screens/home.dart';
 import 'package:dooid/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:dooid/widgets/widget_auth.dart';
 import 'package:dooid/screens/auth/login.dart';
+import 'package:flutter/services.dart';
 
 class Register extends StatefulWidget {
   @override
@@ -11,6 +11,7 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   TextEditingController _name = TextEditingController();
+  TextEditingController _phoneNumber = TextEditingController();
   TextEditingController _email = TextEditingController();
   TextEditingController _password = TextEditingController();
   TextEditingController _passwordConf = TextEditingController();
@@ -24,6 +25,19 @@ class _RegisterState extends State<Register> {
         decoration: InputDecoration(
             hintText: 'Name', helperText: 'Enter your fullname'),
       ),
+    );
+  }
+
+  Widget _inputPhoneNumber() {
+    return Container(
+      child: TextField(
+          controller: _phoneNumber,
+          decoration: InputDecoration(
+              hintText: 'Phone Number', helperText: 'Enter your phone number'),
+          keyboardType: TextInputType.number,
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.digitsOnly
+          ]),
     );
   }
 
@@ -74,7 +88,9 @@ class _RegisterState extends State<Register> {
 
   Widget _textRegister() {
     return wTextLink(
-        text: 'Already have an account?', title: 'Login', onTap: () => wPushReplaceTo(context, Login()));
+        text: 'Already have an account?',
+        title: 'Login',
+        onTap: () => wPushReplaceTo(context, Login()));
   }
 
   @override
@@ -90,10 +106,13 @@ class _RegisterState extends State<Register> {
                   margin: EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
                     children: <Widget>[
-                      SizedBox(height: 30,),
+                      SizedBox(
+                        height: 30,
+                      ),
                       wAuthTitle(
                           title: 'Register', subtitle: 'Fill in the form'),
                       _inputName(),
+                      _inputPhoneNumber(),
                       _inputEmail(),
                       _inputPassword(),
                       SizedBox(
@@ -112,14 +131,19 @@ class _RegisterState extends State<Register> {
   }
 
   void _registerSementara() async {
-    if (_email.text == 'demo@gmail.com' && _password.text == '123123') {
-      setState(() {
-        _isLoading = true;
-      });
-      await Future.delayed(Duration(seconds: 2));
-      wPushReplaceTo(context, Home());
-    } else {
-      print('GAGAL');
-    }
+    print('Full Name: ${_email.text}');
+    print('Phone Number: ${_email.text}');
+    print('Full Name: ${_email.text}');
+    print('Full Name: ${_email.text}');
+
+    // if (_email.text == 'demo@gmail.com' && _password.text == '123123') {
+    //   setState(() {
+    //     _isLoading = true;
+    //   });
+    //   await Future.delayed(Duration(seconds: 2));
+    //   wPushReplaceTo(context, Home());
+    // } else {
+    //   print('GAGAL');
+    // }
   }
 }

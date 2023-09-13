@@ -4,6 +4,7 @@ import 'package:dooid/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:dooid/widgets/widget_auth.dart';
 import 'package:dooid/screens/auth/register.dart';
+import 'package:flutter/services.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -11,19 +12,21 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  TextEditingController _email = TextEditingController();
+  TextEditingController _phoneNumber = TextEditingController();
   TextEditingController _password = TextEditingController();
   bool _obscureText = true;
   bool _isLoading = false;
 
-  Widget _inputEmail() {
+  Widget _inputPhoneNumber() {
     return Container(
       child: TextField(
-        controller: _email,
-        decoration: InputDecoration(
-          hintText: 'Email',
-        ),
-      ),
+          controller: _phoneNumber,
+          decoration: InputDecoration(
+              hintText: 'Phone Number', helperText: 'Enter your phone number'),
+          keyboardType: TextInputType.number,
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.digitsOnly
+          ]),
     );
   }
 
@@ -101,8 +104,8 @@ class _LoginState extends State<Login> {
                   children: <Widget>[
                     wAuthTitle(
                         title: 'Login',
-                        subtitle: 'Enter your email & password'),
-                    _inputEmail(),
+                        subtitle: 'Enter your phone number & password'),
+                    _inputPhoneNumber(),
                     _inputPassword(),
                     _inputForgot(),
                     _inputSubmit(),
@@ -117,7 +120,7 @@ class _LoginState extends State<Login> {
   }
 
   void _loginSementara() async {
-    if (_email.text == 'demo@gmail.com' && _password.text == '123123') {
+    if (_phoneNumber.text == 'demo@gmail.com' && _password.text == '123123') {
       setState(() {
         _isLoading = true;
       });
