@@ -1,7 +1,9 @@
+import 'package:dooid/provider/auth_provider.dart';
 import 'package:dooid/utils/utils.dart';
 import 'package:dooid/widgets/widget_auth.dart';
 import 'package:dooid/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ForgotPassword extends StatefulWidget {
   @override
@@ -28,7 +30,18 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
   Widget _inputSubmit() {
     return wInputSubmit(
-        context: context, title: 'Send', onPressed: _forgotPasswordSementara);
+      context: context,
+      title: 'Send',
+      onPressed: () {
+        if (!_formKey.currentState!.validate()) return;
+        final auth = Provider.of<AuthProvider>(context, listen: false);
+        setState(() => _isLoading = true);
+        auth.resetPassword(
+          context: context,
+          email: _email.text,
+        );
+      },
+    );
   }
 
   @override
@@ -70,21 +83,5 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               ),
             ),
     );
-  }
-
-  void _forgotPasswordSementara() async {
-    if (!_formKey.currentState!.validate()) return;
-    if (_email.text.isNotEmpty) {
-      setState(() {
-        _isLoading = true;
-      });
-      print('BERHASIL');
-      await Future.delayed(Duration(seconds: 2));
-      wShowToast(
-          msg: 'Email sent! Please check your email to reset your password.');
-      Navigator.pop(context);
-    } else {
-      print('GAGAL');
-    }
   }
 }

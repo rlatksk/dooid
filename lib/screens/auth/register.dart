@@ -1,3 +1,4 @@
+import 'package:dooid/provider/auth_provider.dart';
 import 'package:dooid/screens/auth/verify_phone_number.dart';
 import 'package:dooid/utils/utils.dart';
 import 'package:dooid/widgets/widgets.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:dooid/widgets/widget_auth.dart';
 import 'package:dooid/screens/auth/login.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 class Register extends StatefulWidget {
   @override
@@ -28,7 +30,8 @@ class _RegisterState extends State<Register> {
         controller: _name,
         decoration: InputDecoration(
             hintText: 'Name', helperText: 'Enter your fullname'),
-        validator: (val) => uValidator(value: val!, isRequired: true, minLength: 4),
+        validator: (val) =>
+            uValidator(value: val!, isRequired: true, minLength: 4),
       ),
     );
   }
@@ -54,7 +57,8 @@ class _RegisterState extends State<Register> {
         controller: _email,
         decoration:
             InputDecoration(hintText: 'Email', helperText: 'Enter your email'),
-      validator: (val) => uValidator(value: val!, isEmail: true, isRequired: true),
+        validator: (val) =>
+            uValidator(value: val!, isEmail: true, isRequired: true),
       ),
     );
   }
@@ -78,7 +82,8 @@ class _RegisterState extends State<Register> {
             controller: _passwordConf,
             decoration: InputDecoration(
                 hintText: '*****', helperText: 'Confirm your password'),
-            validator: (val) => uValidator(value: val!, isRequired: true, match: _password.text),
+            validator: (val) => uValidator(
+                value: val!, isRequired: true, match: _password.text),
           ),
         ),
       ],
@@ -87,7 +92,20 @@ class _RegisterState extends State<Register> {
 
   Widget _inputSubmit() {
     return wInputSubmit(
-        context: context, title: 'Register', onPressed: _registerSementara);
+      context: context,
+      title: 'Register',
+      onPressed: () {
+        if (!_formKey.currentState!.validate()) return;
+        setState(() => _isLoading = true);
+        final auth = Provider.of<AuthProvider>(context, listen: false);
+        auth.registerWithEmail(
+          context: context, 
+          name: _name.text, 
+          phoneNumber: _phoneNumber.text, 
+          email: _email.text, 
+          password: _password.text);
+      },
+    );
   }
 
   Widget _googleSignIn() {

@@ -1,11 +1,12 @@
+import 'package:dooid/provider/auth_provider.dart';
 import 'package:dooid/screens/auth/forgot_password.dart';
-import 'package:dooid/screens/home.dart';
 import 'package:dooid/utils/utils.dart';
 import 'package:dooid/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:dooid/widgets/widget_auth.dart';
 import 'package:dooid/screens/auth/register.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -25,8 +26,7 @@ class _LoginState extends State<Login> {
         controller: _phoneNumber,
         decoration: InputDecoration(
             hintText: 'Phone Number', helperText: 'Enter your phone number'),
-        validator: (val) =>
-            uValidator(value: val!, isRequired: true),
+        validator: (val) => uValidator(value: val!, isRequired: true),
         keyboardType: TextInputType.number,
         inputFormatters: <TextInputFormatter>[
           FilteringTextInputFormatter.digitsOnly
@@ -46,7 +46,7 @@ class _LoginState extends State<Login> {
               hintText: 'Password',
             ),
             validator: (val) =>
-                uValidator(value: val!, isRequired: true, minLength: 10),
+                uValidator(value: val!, isRequired: true, minLength: 6),
           ),
         ),
         Align(
@@ -79,7 +79,19 @@ class _LoginState extends State<Login> {
 
   Widget _inputSubmit() {
     return wInputSubmit(
-        context: context, title: 'Login', onPressed: _loginSementara);
+      context: context,
+      title: 'Login',
+      onPressed: () {
+        if (!_formKey.currentState!.validate()) return;
+        final auth = Provider.of<AuthProvider>(context, listen: false);
+        setState(() => _isLoading = true);
+        auth.loginWithEmail(
+          context: context,
+          phoneNumber: _phoneNumber.text,
+          password: _password.text,
+        );
+      },
+    );
   }
 
   Widget _googleSignIn() {
@@ -126,18 +138,5 @@ class _LoginState extends State<Login> {
               ),
             ),
     );
-  }
-
-  void _loginSementara() async {
-    if (!_formKey.currentState!.validate()) return;
-    if (_phoneNumber.text == 'demo@gmail.com' && _password.text == '123123') {
-      setState(() {
-        _isLoading = true;
-      });
-      await Future.delayed(Duration(seconds: 2));
-      wPushReplaceTo(context, Home());
-    } else {
-      print('GAGAL');
-    }
   }
 }
