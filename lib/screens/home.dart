@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    double fem = 2.0; // Anda perlu mengganti ini dengan faktor skalanya
+    double fem = 1.0;
 
     return MaterialApp(
       home: Scaffold(
         body: Stack(
           children: [
-            // Lapisan pertama: Latar belakang
             Container(
               width: double.infinity,
               decoration: BoxDecoration(
@@ -37,20 +36,36 @@ class Home extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset("img/log.jpg"),
-                  Center(
-                    child: Text(
-                      'Home',
-                      style: TextStyle(
-                        fontSize: 24, // Sesuaikan dengan ukuran yang Anda inginkan
-                        color: Colors.white, // Sesuaikan dengan warna yang Anda inginkan
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),
           ],
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          backgroundColor:
+              Colors.white, // Ubah sesuai latar belakang yang Anda inginkan
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_sharp),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.payments_outlined),
+              label: 'Pay',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.account_circle_outlined),
+              label: 'Account',
+            ),
+          ],
+          selectedItemColor: Color(0xffc63c8f), // Warna teks item yang dipilih
+          unselectedItemColor:
+              Colors.grey, // Warna teks item yang tidak dipilih
+          selectedLabelStyle: TextStyle(
+              fontWeight: FontWeight.bold), // Gaya teks item yang dipilih
+          unselectedLabelStyle: TextStyle(
+              fontWeight:
+                  FontWeight.normal), // Gaya teks item yang tidak dipilih
         ),
       ),
     );
