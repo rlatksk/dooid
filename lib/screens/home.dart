@@ -137,18 +137,18 @@ class _HomeState extends State<Home> {
               label: 'Account',
             ),
           ],
-          selectedItemColor: Color(0xffc63c8f), // Warna teks item yang dipilih
+          selectedItemColor: Color(0xffc63c8f), 
           unselectedItemColor:
-              Colors.grey, // Warna teks item yang tidak dipilih
+              Colors.grey, 
           selectedLabelStyle: TextStyle(
-              fontWeight: FontWeight.bold), // Gaya teks item yang dipilih
+              fontWeight: FontWeight.bold), 
           unselectedLabelStyle: TextStyle(
               fontWeight:
-                  FontWeight.normal), // Gaya teks item yang tidak dipilih
-          currentIndex: _selectedIndex, // Mengikuti indeks yang dipilih
+                  FontWeight.normal), 
+          currentIndex: _selectedIndex, 
           onTap: (int index) {
             setState(() {
-              _selectedIndex = index; // Mengubah indeks yang dipilih
+              _selectedIndex = index; 
             });
           },
         ),
