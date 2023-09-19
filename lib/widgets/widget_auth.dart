@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
+
+//Widget to display an authentication title and subtitle.
 Widget wAuthTitle({required String title, required String subtitle}) {
   return Container(
     alignment: Alignment.centerLeft,
@@ -19,6 +21,7 @@ Widget wAuthTitle({required String title, required String subtitle}) {
   );
 }
 
+// Widget to display a horizontal divider with text in between.
 Widget wTextDivider() {
   return Container(
     margin: EdgeInsets.symmetric(vertical: 10),
@@ -41,6 +44,7 @@ Widget wTextDivider() {
   );
 }
 
+// Widget to display a Google sign-in button.
 Widget wGoogleSignIn({required VoidCallback onPressed}) {
   return Container(
     width: double.infinity,
@@ -63,6 +67,7 @@ Widget wGoogleSignIn({required VoidCallback onPressed}) {
   );
 }
 
+// Widget to display a text link with a clickable title.
 Widget wTextLink(
     {required String text,
     required String title,
