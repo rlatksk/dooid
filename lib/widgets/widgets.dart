@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+
 import 'dart:io' show Platform;
 
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:slide_to_act_reborn/slide_to_act_reborn.dart';
+
 
 // Returns a widget representing a loading indicator.
 Widget wAppLoading(BuildContext context) {
@@ -61,5 +61,3 @@ Future wShowToast({required String msg}) {
     toastLength: Toast.LENGTH_LONG,
   );
 }
-
-
