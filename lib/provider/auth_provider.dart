@@ -13,7 +13,7 @@ class AuthProvider with ChangeNotifier {
       required String password}) async {
     if (phoneNumber == '0812' && password == '123123') {
       await Future.delayed(Duration(seconds: 2));
-      wPushReplaceTo(context, Transfer());
+      wPushReplaceTo(context, Transfer()); //Tested this, was Home() originally
     } else {
       print('GAGAL');
     }
