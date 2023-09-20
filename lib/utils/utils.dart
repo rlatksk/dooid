@@ -1,3 +1,4 @@
+// Function to validate a string based on provided criteria.
 String? uValidator({
       required String value, 
       bool isRequired = false, 

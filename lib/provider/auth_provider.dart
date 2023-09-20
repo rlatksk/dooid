@@ -6,6 +6,7 @@ import 'package:dooid/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 class AuthProvider with ChangeNotifier {
+  // Logs in a user with email and password.
   void loginWithEmail(
       {required BuildContext context,
       required String phoneNumber,
@@ -18,6 +19,7 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
+  // Sends a password reset email.
   void resetPassword(
       {required BuildContext context, required String email}) async {
     if (email.isNotEmpty) {
@@ -30,9 +32,14 @@ class AuthProvider with ChangeNotifier {
       print('GAGAL');
     }
   }
-
-  void registerWithEmail({required BuildContext context, required String name, required String phoneNumber, required String email, required String password}) async{
-
+  
+  // Registers a user with provided details.
+  void registerWithEmail(
+      {required BuildContext context,
+      required String name,
+      required String phoneNumber,
+      required String email,
+      required String password}) async {
     print(name);
     print(phoneNumber);
     print(email);
@@ -42,12 +49,11 @@ class AuthProvider with ChangeNotifier {
     wPushReplaceTo(context, Login());
 
     showModalBottomSheet(
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      context: context, 
-      builder: (context){
-        return VerifyEmail();
-      }
-    );
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        context: context,
+        builder: (context) {
+          return VerifyEmail();
+        });
   }
 }
