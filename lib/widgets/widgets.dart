@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:io' show Platform;
 
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:slide_to_act_reborn/slide_to_act_reborn.dart';
 
+// Returns a widget representing a loading indicator.
 Widget wAppLoading(BuildContext context) {
   return Container(
     color: Theme.of(context).scaffoldBackgroundColor,
@@ -15,6 +18,7 @@ Widget wAppLoading(BuildContext context) {
   );
 }
 
+// Navigates to a new screen using a MaterialPageRoute.
 Future wPushTo(BuildContext context, Widget widget) {
   return Navigator.push(
     context,
@@ -22,6 +26,7 @@ Future wPushTo(BuildContext context, Widget widget) {
   );
 }
 
+// Replaces the current screen with a new screen using a MaterialPageRoute.
 Future wPushReplaceTo(BuildContext context, Widget widget) {
   return Navigator.pushReplacement(
     context,
@@ -29,6 +34,7 @@ Future wPushReplaceTo(BuildContext context, Widget widget) {
   );
 }
 
+// Returns a widget representing a submit button.
 Widget wInputSubmit(
     {required BuildContext context,
     required String title,
@@ -46,6 +52,7 @@ Widget wInputSubmit(
   );
 }
 
+// Displays a toast message using Fluttertoast.
 Future wShowToast({required String msg}) {
   return Fluttertoast.showToast(
     msg: msg,
@@ -54,3 +61,5 @@ Future wShowToast({required String msg}) {
     toastLength: Toast.LENGTH_LONG,
   );
 }
+
+
