@@ -1,9 +1,12 @@
+import 'package:dooid/provider/auth_provider.dart';
 import 'package:dooid/screens/auth/forgot_password.dart';
-import 'package:dooid/screens/home.dart';
+import 'package:dooid/utils/utils.dart';
 import 'package:dooid/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:dooid/widgets/widget_auth.dart';
 import 'package:dooid/screens/auth/register.dart';
+import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -11,18 +14,23 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  TextEditingController _email = TextEditingController();
+  TextEditingController _phoneNumber = TextEditingController();
   TextEditingController _password = TextEditingController();
   bool _obscureText = true;
   bool _isLoading = false;
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  Widget _inputEmail() {
+  Widget _inputPhoneNumber() {
     return Container(
-      child: TextField(
-        controller: _email,
+      child: TextFormField(
+        controller: _phoneNumber,
         decoration: InputDecoration(
-          hintText: 'Email',
-        ),
+            hintText: 'Phone Number', helperText: 'Enter your phone number'),
+        validator: (val) => uValidator(value: val!, isRequired: true),
+        keyboardType: TextInputType.number,
+        inputFormatters: <TextInputFormatter>[
+          FilteringTextInputFormatter.digitsOnly
+        ],
       ),
     );
   }
@@ -31,12 +39,14 @@ class _LoginState extends State<Login> {
     return Stack(
       children: <Widget>[
         Container(
-          child: TextField(
+          child: TextFormField(
             controller: _password,
             obscureText: _obscureText,
             decoration: InputDecoration(
               hintText: 'Password',
             ),
+            validator: (val) =>
+                uValidator(value: val!, isRequired: true, minLength: 6),
           ),
         ),
         Align(
@@ -57,20 +67,31 @@ class _LoginState extends State<Login> {
 
   Widget _inputForgot() {
     return GestureDetector(
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Container(
-          padding: EdgeInsets.fromLTRB(0, 20, 20, 20),
-          child: Text('Forgot Password?'),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: Container(
+            padding: EdgeInsets.fromLTRB(0, 20, 20, 20),
+            child: Text('Forgot Password?'),
+          ),
         ),
-      ),
-      onTap: () => wPushTo(context, ForgotPassword())
-    );
+        onTap: () => wPushTo(context, ForgotPassword()));
   }
 
   Widget _inputSubmit() {
     return wInputSubmit(
-        context: context, title: 'Login', onPressed: _loginSementara);
+      context: context,
+      title: 'Login',
+      onPressed: () {
+        if (!_formKey.currentState!.validate()) return;
+        final auth = Provider.of<AuthProvider>(context, listen: false);
+        setState(() => _isLoading = true);
+        auth.loginWithEmail(
+          context: context,
+          phoneNumber: _phoneNumber.text,
+          password: _password.text,
+        );
+      },
+    );
   }
 
   Widget _googleSignIn() {
@@ -81,8 +102,8 @@ class _LoginState extends State<Login> {
 
   Widget _textRegister() {
     return wTextLink(
-        text: 'Dont have an account yet?', 
-        title: 'Register', 
+        text: 'Dont have an account yet?',
+        title: 'Register',
         onTap: () => wPushReplaceTo(context, Register()));
   }
 
@@ -96,35 +117,26 @@ class _LoginState extends State<Login> {
               resizeToAvoidBottomInset: false,
               body: Container(
                 margin: EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    wAuthTitle(
-                        title: 'Login',
-                        subtitle: 'Enter your email & password'),
-                    _inputEmail(),
-                    _inputPassword(),
-                    _inputForgot(),
-                    _inputSubmit(),
-                    wTextDivider(),
-                    _googleSignIn(),
-                    _textRegister(),
-                  ],
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      wAuthTitle(
+                          title: 'Login',
+                          subtitle: 'Enter your phone number & password'),
+                      _inputPhoneNumber(),
+                      _inputPassword(),
+                      _inputForgot(),
+                      _inputSubmit(),
+                      wTextDivider(),
+                      _googleSignIn(),
+                      _textRegister(),
+                    ],
+                  ),
                 ),
               ),
             ),
     );
-  }
-
-  void _loginSementara() async {
-    if (_email.text == 'demo@gmail.com' && _password.text == '123123') {
-      setState(() {
-        _isLoading = true;
-      });
-      await Future.delayed(Duration(seconds: 2));
-      wPushReplaceTo(context, Home());
-    } else {
-      print('GAGAL');
-    }
   }
 }

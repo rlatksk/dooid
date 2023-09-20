@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "990994227500",
+    "project_id": "dooid-24e03",
+    "storage_bucket": "dooid-24e03.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:990994227500:android:b27edcae1941262307cc89",
+        "android_client_info": {
+          "package_name": "com.example.dooid"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDueBZMXisnXjV3Bs85pJ53k5nLP0y2jnw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,6 +1,9 @@
+import 'package:dooid/provider/auth_provider.dart';
+import 'package:dooid/utils/utils.dart';
 import 'package:dooid/widgets/widget_auth.dart';
 import 'package:dooid/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ForgotPassword extends StatefulWidget {
   @override
@@ -9,22 +12,36 @@ class ForgotPassword extends StatefulWidget {
 
 class _ForgotPasswordState extends State<ForgotPassword> {
   TextEditingController _email = TextEditingController();
-
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
 
   Widget _inputEmail() {
     return Container(
-      child: TextField(
+      child: TextFormField(
         controller: _email,
+        keyboardType: TextInputType.emailAddress,
         decoration:
             InputDecoration(hintText: 'Email', helperText: 'Enter your email'),
+        validator: (val) =>
+            uValidator(value: val!, isEmail: true, isRequired: true),
       ),
     );
   }
 
   Widget _inputSubmit() {
     return wInputSubmit(
-        context: context, title: 'Send', onPressed: _loginSementara);
+      context: context,
+      title: 'Send',
+      onPressed: () {
+        if (!_formKey.currentState!.validate()) return;
+        final auth = Provider.of<AuthProvider>(context, listen: false);
+        setState(() => _isLoading = true);
+        auth.resetPassword(
+          context: context,
+          email: _email.text,
+        );
+      },
+    );
   }
 
   @override
@@ -42,40 +59,29 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               resizeToAvoidBottomInset: false,
               body: Container(
                 margin: EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    SizedBox(
-                      height: 30,
-                    ),
-                    wAuthTitle(
-                      title: 'Forgot Password ?',
-                      subtitle:
-                          'Enter your email and we will send you a link \nto reset your password',
-                    ),
-                    _inputEmail(),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    _inputSubmit(),
-                  ],
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      SizedBox(
+                        height: 30,
+                      ),
+                      wAuthTitle(
+                        title: 'Forgot Password ?',
+                        subtitle:
+                            'Enter your email and we will send you a link \nto reset your password',
+                      ),
+                      _inputEmail(),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      _inputSubmit(),
+                    ],
+                  ),
                 ),
               ),
             ),
     );
-  }
-
-  void _loginSementara() async {
-    if (_email.text.isNotEmpty) {
-      setState(() {
-        _isLoading = true;
-      });
-      print('BERHASIL');
-      await Future.delayed(Duration(seconds: 2));
-      wShowToast(msg: 'Email sent! Please check your email to reset your password.');
-      Navigator.pop(context);
-    } else {
-      print('GAGAL');
-    }
   }
 }
