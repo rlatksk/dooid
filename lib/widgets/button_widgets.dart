@@ -30,3 +30,26 @@ class wSlider extends StatelessWidget {
     );
   }
 }
+
+class BackButton extends StatelessWidget {
+  const BackButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(width: 3, color: Color(0xFFEDEDED)),
+        shape: BoxShape.circle,
+      ),
+      child: IconButton(
+        iconSize: 46,
+        icon: SvgPicture.asset('assets/icons/back.svg'),
+        onPressed: () {
+          //go back
+        },
+      ),
+    );
+  }
+}
