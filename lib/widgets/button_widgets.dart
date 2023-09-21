@@ -31,8 +31,8 @@ class wSlider extends StatelessWidget {
   }
 }
 
-class BackButton extends StatelessWidget {
-  const BackButton({
+class wBackButton extends StatelessWidget {
+  const wBackButton({
     super.key,
   });
 
