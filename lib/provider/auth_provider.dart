@@ -1,7 +1,6 @@
 import 'package:dooid/screens/auth/login.dart';
 import 'package:dooid/screens/auth/verify_phone_number.dart';
 import 'package:dooid/screens/home.dart';
-import 'package:dooid/screens/transfer.dart';
 import 'package:dooid/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +12,7 @@ class AuthProvider with ChangeNotifier {
       required String password}) async {
     if (phoneNumber == '0812' && password == '123123') {
       await Future.delayed(Duration(seconds: 2));
-      wPushReplaceTo(context, Transfer()); //Tested this, was Home() originally
+      wPushReplaceTo(context, Home());
     } else {
       print('GAGAL');
     }
