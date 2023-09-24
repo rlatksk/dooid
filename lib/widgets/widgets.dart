@@ -33,14 +33,26 @@ Future wPushReplaceTo(BuildContext context, Widget widget) {
 }
 
 // Returns a widget representing a submit button.
-Widget wInputSubmit(
-    {required BuildContext context,
-    required String title,
-    required VoidCallback onPressed}) {
+Widget wInputSubmit({
+  required BuildContext context,
+  required String title,
+  required VoidCallback onPressed,
+}) {
   return Container(
+    width: 320,
+    decoration: BoxDecoration(
+      gradient: LinearGradient(
+        colors: [Color(0xFF131313), Color(0xFF505050)],
+        begin: Alignment.bottomLeft,
+        end: Alignment.topRight,
+      ),
+      borderRadius: BorderRadius.circular(50),
+    ),
     child: ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.blue,
+        primary: Colors.transparent,
+        shadowColor: Colors.transparent, 
+        onPrimary: Colors.white,
         fixedSize: const Size(400, 50),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
       ),

@@ -1,5 +1,4 @@
-import 'package:dooid/screens/auth/login.dart';
-import 'package:dooid/screens/auth/verify_phone_number.dart';
+import 'package:dooid/screens/auth/otp.dart';
 import 'package:dooid/screens/home.dart';
 import 'package:dooid/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -30,29 +29,5 @@ class AuthProvider with ChangeNotifier {
     } else {
       print('GAGAL');
     }
-  }
-  
-  // Registers a user with provided details.
-  void registerWithEmail(
-      {required BuildContext context,
-      required String name,
-      required String phoneNumber,
-      required String email,
-      required String password}) async {
-    print(name);
-    print(phoneNumber);
-    print(email);
-    print(password);
-
-    await Future.delayed(Duration(seconds: 2));
-    wPushReplaceTo(context, Login());
-
-    showModalBottomSheet(
-        isScrollControlled: true,
-        backgroundColor: Colors.transparent,
-        context: context,
-        builder: (context) {
-          return VerifyEmail();
-        });
-  }
+  } // Registers a user with provided details.
 }
