@@ -1,7 +1,7 @@
 import 'package:dooid/provider/auth_provider.dart';
-import 'package:dooid/utils/utils.dart';
-import 'package:dooid/widgets/widget_auth.dart';
-import 'package:dooid/widgets/widgets.dart';
+import 'package:dooid/screens/utils.dart';
+import 'package:dooid/screens/widgets/register/register_widgets.dart';
+import 'package:dooid/screens/widgets/register/register_widgets_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -36,10 +36,11 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         if (!_formKey.currentState!.validate()) return;
         final auth = Provider.of<AuthProvider>(context, listen: false);
         setState(() => _isLoading = true);
-        auth.resetPassword(
-          context: context,
-          email: _email.text,
-        );
+        // Temporary Comment
+        // auth.resetPassword(
+        //   context: context,
+        //   email: _email.text,
+        // );
       },
     );
   }

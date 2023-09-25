@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 //Widget to display an authentication title and subtitle.
 Widget wAuthTitle({required String title, required String subtitle}) {
@@ -47,27 +46,7 @@ Widget wTextDivider() {
 }
 
 // Widget to display a Google sign-in button.
-Widget wGoogleSignIn({required VoidCallback onPressed}) {
-  return Container(
-    width: double.infinity,
-    child: ElevatedButton.icon(
-      style: ElevatedButton.styleFrom(
-        foregroundColor: Colors.black,
-        backgroundColor: Colors.grey,
-        fixedSize: const Size(400, 50),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-      ),
-      icon: Icon(
-        MdiIcons.google,
-        size: 20,
-      ),
-      label: Text(
-        'Google',
-      ),
-      onPressed: onPressed,
-    ),
-  );
-}
+
 
 // Widget to display a text link with a clickable title.
 Widget wTextLink(

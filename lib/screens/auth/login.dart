@@ -1,9 +1,9 @@
 import 'package:dooid/provider/auth_provider.dart';
 import 'package:dooid/screens/auth/forgot_password.dart';
-import 'package:dooid/utils/utils.dart';
-import 'package:dooid/widgets/widgets.dart';
+import 'package:dooid/screens/utils.dart';
+import 'package:dooid/screens/widgets/register/register_widgets.dart';
+import 'package:dooid/screens/widgets/register/register_widgets_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:dooid/widgets/widget_auth.dart';
 import 'package:dooid/screens/auth/register.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -94,11 +94,12 @@ class _LoginState extends State<Login> {
     );
   }
 
-  Widget _googleSignIn() {
-    return wGoogleSignIn(
-      onPressed: () {},
-    );
-  }
+  // Temporary Comment
+  // Widget _googleSignIn() {
+  //   return wGoogleSignIn(
+  //     onPressed: () {},
+  //   );
+  // }
 
   Widget _textRegister() {
     return wTextLink(
@@ -130,7 +131,8 @@ class _LoginState extends State<Login> {
                       _inputForgot(),
                       _inputSubmit(),
                       wTextDivider(),
-                      _googleSignIn(),
+                      // Temporary Comment
+                      // _googleSignIn(),
                       _textRegister(),
                     ],
                   ),

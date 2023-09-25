@@ -1,8 +1,8 @@
 import 'package:dooid/screens/auth/login.dart';
-import 'package:dooid/screens/auth/otp.dart';
-import 'package:dooid/utils/utils.dart';
-import 'package:dooid/widgets/widget_auth.dart';
-import 'package:dooid/widgets/widgets.dart';
+import 'package:dooid/screens/onboarding.dart';
+import 'package:dooid/screens/utils.dart';
+import 'package:dooid/screens/widgets/register/register_widgets.dart';
+import 'package:dooid/screens/widgets/register/register_widgets_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -230,7 +230,7 @@ class _RegisterState extends State<Register> {
     print(phoneNumber);
     
     await Future.delayed(Duration(seconds: 2));
-    wPushReplaceTo(context, Otp());
+    wPushReplaceTo(context, OnboardingScreen());
   }
 
 

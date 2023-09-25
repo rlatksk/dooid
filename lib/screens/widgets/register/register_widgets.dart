@@ -2,8 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:io' show Platform;
 
-import 'package:fluttertoast/fluttertoast.dart';
-
 // Returns a widget representing a loading indicator.
 Widget wAppLoading(BuildContext context) {
   return Container(
@@ -62,12 +60,3 @@ Widget wInputSubmit({
   );
 }
 
-// Displays a toast message using Fluttertoast.
-Future wShowToast({required String msg}) {
-  return Fluttertoast.showToast(
-    msg: msg,
-    backgroundColor: Colors.black54,
-    textColor: Colors.white,
-    toastLength: Toast.LENGTH_LONG,
-  );
-}
