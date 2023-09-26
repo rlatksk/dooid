@@ -21,7 +21,7 @@ class profile {
 profile kevinProfile = profile(
   first_name: 'Kevin',
   last_name: 'Leonardo',
-  profile_picture: 'h',
+  profile_picture: 'assets/images/home/nair_guy.jpeg',
   balance: '24,365,322.46',
   email: 'kevin@example.com',
   phone_number: '1234567890',

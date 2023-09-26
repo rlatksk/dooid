@@ -23,9 +23,17 @@ class _HomeState extends State<Home> {
             HomeMainButtons(),
             SizedBox(height: 30),
             HomeQuickTransfer(),
+            SizedBox(height: 30),
+            HomeRecentTransactions(),
           ],
         ),
       ),
+      floatingActionButton: HomeQRScanButton(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BottomAppBar(
+        shape: CircularNotchedRectangle(),
+        child: HomeBottomNavBar(),
+      )
     );
   }
 }
@@ -46,7 +54,7 @@ class HomeTop extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 30,
-                backgroundImage: AssetImage('assets/images/home/nair_guy.jpeg'),
+                backgroundImage: AssetImage(kevinProfile.profile_picture!),
               ),
               SizedBox(width: 10),
               Column(
@@ -577,6 +585,302 @@ class HomeQuickTransfer extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class HomeRecentTransactions extends StatelessWidget {
+  const HomeRecentTransactions({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 25),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Recent Transactions',
+              style: GoogleFonts.montserrat(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF131313),
+              ),
+            ),
+            SizedBox(height: 10),
+            Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        HomeCircleButtonIconText(
+                          width: 65,
+                          height: 65,
+                          circleColor: Colors.white,
+                          strokeColor: Colors.grey.shade200,
+                          strokeSize: 2,
+                          insideWidget: Text(
+                            'JS',
+                            style: GoogleFonts.montserrat(
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF131313),
+                              ),
+                            ),
+                        ),
+                        SizedBox(width: 10),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'JUSTIN SALIM',
+                              style: GoogleFonts.montserrat(
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF131313),
+                              ),
+                            ),
+                            Text(
+                              'bayar open bo',
+                              style: GoogleFonts.montserrat(
+                                fontSize: 10,
+                                color: Colors.grey.shade400,
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.add_circle,
+                              size: 15,
+                              color: Color(0xFF131313)
+                            ),
+                            SizedBox(width: 5),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Text(
+                                  'RP',
+                                  style: GoogleFonts.montserrat(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xFF131313),
+                                  ),
+                                ),
+                                Text(
+                                  '750,000.01',
+                                  style: GoogleFonts.montserrat(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xFF131313),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        Text(
+                          '21 September 2023', 
+                          style: GoogleFonts.montserrat(
+                            fontSize: 10,
+                            color: Colors.grey.shade400,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            SizedBox(height: 10),
+            Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        HomeCircleButtonIconText(
+                          width: 65,
+                          height: 65,
+                          circleColor: Colors.white,
+                          strokeColor: Colors.grey.shade200,
+                          strokeSize: 2,
+                          insideWidget: Image.asset('assets/images/home/steam.png', width: 25),
+                        ),
+                        SizedBox(width: 10),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'STEAM',
+                              style: GoogleFonts.montserrat(
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF131313),
+                              ),
+                            ),
+                            Text(
+                              'Entertainment - #25544',
+                              style: GoogleFonts.montserrat(
+                                fontSize: 10,
+                                color: Colors.grey.shade400,
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.remove_circle,
+                              size: 15,
+                              color: Color(0xFFFF5151)
+                            ),
+                            SizedBox(width: 5),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Text(
+                                  'RP',
+                                  style: GoogleFonts.montserrat(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xFFFF5151),
+                                  ),
+                                ),
+                                Text(
+                                  '5,223,447.01',
+                                  style: GoogleFonts.montserrat(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xFFFF5151),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        Text(
+                          '21 September 2023', 
+                          style: GoogleFonts.montserrat(
+                            fontSize: 10,
+                            color: Colors.grey.shade400,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class HomeQRScanButton extends StatelessWidget {
+  const HomeQRScanButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 75,
+      height: 75,
+      child: FloatingActionButton(
+        onPressed: () {
+          print('QR Scan');
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF545454), Color(0xFF363636), Color(0xFF131313)],
+              begin: Alignment.bottomCenter,
+              end: Alignment.topCenter,
+              ),
+            shape: BoxShape.circle,
+            ),
+            child: Center(
+              child: Image.asset('assets/images/home/scan.png', width: 35),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+class HomeBottomNavBar extends StatelessWidget {
+  const HomeBottomNavBar({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(top: 20, bottom: 20, left: 25, right: 25),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          GestureDetector(
+            onTap: () {
+              print('Home Screen');
+            },
+            child: Icon(
+              Icons.home_filled,
+              color: Color(0xFFFF5151),
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              print('Transactions Screen');
+            },
+            child: Icon(
+              Icons.swap_vert,
+              color: Color(0xFF131313),
+            ),
+          ),
+          SizedBox(width: 50),
+          GestureDetector(
+            onTap: () {
+              print('Offer Screen');
+            },
+            child: Icon(
+              Icons.local_offer,
+              color: Color(0xFF131313),
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              print('Profile Screen');
+            },
+            child: Icon(
+              Icons.person,
+              color: Color(0xFF131313),
+            ),
+          ),
+        ],
       ),
     );
   }
