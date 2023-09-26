@@ -1,28 +1,23 @@
 
-import 'package:dooid/widgets/widgets.dart';
+import 'package:dooid/widgets/TopUpTransfer/contacts.dart';
+import 'package:dooid/widgets/TopUpTransfer/wBackButton.dart';
+import 'package:dooid/widgets/TopUpTransfer/wSlider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class Contact {
-    final String name;
-    final String phoneNumber;
-    final String avatarUrl;
 
-    Contact({required this.name, required this.phoneNumber, required this.avatarUrl});
-  }
+class Transfer extends StatefulWidget {
 
-class Transfer extends StatelessWidget {
-  final List<Contact> contacts = [
-      Contact(name: 'Jason Chainara Putra', phoneNumber: '+62 895 3286 75755', avatarUrl: ''),
-      Contact(name: 'Ivander', phoneNumber: '+1 (987) 654-3210', avatarUrl: ''),
-      Contact(name: 'Justin Salim', phoneNumber: '+1 (555) 123-4567', avatarUrl: ''),
-      Contact(name: 'Richard Souwiko', phoneNumber: '69', avatarUrl: ''),
-      Contact(name: 'Tigo Ilhami Fasyah', phoneNumber: '420', avatarUrl: ''),
-      Contact(name: 'Ruben Tobia Chaiyadi', phoneNumber: '123', avatarUrl: ''),
-    ];
-  final TextEditingController _MsgController = TextEditingController();
-  final TextEditingController _amountController = TextEditingController();
   Transfer({super.key});
+
+  @override
+  State<Transfer> createState() => _TransferState();
+}
+
+class _TransferState extends State<Transfer> {
+  final TextEditingController _msgController = TextEditingController();
+  final TextEditingController _amountController = TextEditingController();
+  Contact? _selectedContact;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +34,7 @@ class Transfer extends StatelessWidget {
             fontWeight: FontWeight.bold),
             ),
           centerTitle: true,
-          leading: wBackButtonHome('Home'),
+          leading: const wBackButton(),
           backgroundColor: Colors.white,
           shape:  const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
@@ -62,7 +57,13 @@ class Transfer extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),),
                   SizedBox(height: 20,),
-                  ContactDropdown(contacts: contacts),
+                  ContactDropdown(
+                    onContactSelected: (selectedContact) {
+                      setState(() {
+                        _selectedContact = selectedContact;
+                      });
+                    }, contacts: contacts
+                  ),
                   SizedBox(height: 40,),
                   Text('Message', 
                   style: GoogleFonts.montserrat(
@@ -72,7 +73,7 @@ class Transfer extends StatelessWidget {
                   ),),
                   SizedBox(height: 5,),
                   TextField(
-                    controller: _MsgController,
+                    controller: _msgController,
                     textAlign: TextAlign.start,
                     textAlignVertical: TextAlignVertical.top,
                     decoration: const InputDecoration(
@@ -124,9 +125,13 @@ class Transfer extends StatelessWidget {
                 ],
                 
               ),
-              const Align(
+              Align(
                 alignment: Alignment.bottomCenter,
-                child: wSlider(toWhere: 'Home'),)
+                child: wSlider(toWhere: 'Home', 
+                name: _selectedContact?.name ?? '', 
+                amount: int.tryParse(_amountController.text), 
+                msg: _msgController.text,
+                ),)
             ],
           ),
           
