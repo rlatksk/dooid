@@ -1,555 +1,409 @@
-import 'package:dooid/screens/widgets/home/home_circle_icon.dart';
-import 'package:dooid/screens/onboarding.dart';
-import 'package:dooid/screens/widgets/home/home_circle_button.dart';
-import 'package:dooid/screens/widgets/home/home_circle_button_transfer.dart';
-import 'package:dooid/screens/widgets/home/home_name_greetings.dart';
-import 'package:dooid/screens/widgets/home/home_notification_button.dart';
-import 'package:dooid/screens/widgets/home/home_circle_icon_image.dart';
-import 'package:dooid/screens/widgets/home/home_bottom_bar.dart';
+import 'package:dooid/data/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key});
+class Home extends StatefulWidget {
+  const Home({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<Home> createState() => _HomeState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  bool isBalanceVisible = false;
-  bool isSpentTodayVisible = false;
+class _HomeState extends State<Home> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          children: [
+            HomeTop(),
+            HomeCard(),
+            SizedBox(height: 5),
+            HomeMainButtons()
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class HomeTop extends StatelessWidget {
+  const HomeTop({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(25, 25, 25, 0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              CircleAvatar(
+                radius: 30,
+                backgroundImage: AssetImage('assets/images/home/nair_guy.jpeg'),
+              ),
+              SizedBox(width: 10),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        'Hello, ',
+                        style: GoogleFonts.montserrat(
+                          fontSize: 20, 
+                          color: Color(0xFF131313)
+                        ),
+                      ),
+                      Text(
+                        '${kevinProfile.first_name ?? ''}!',
+                        style: GoogleFonts.montserrat(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF131313)
+                        ),
+                      ),
+                      SizedBox(width: 4),
+                      Icon(
+                        Icons.verified_user,
+                        size: 12,
+                        color: Colors.grey.shade400
+                      )
+                    ],
+                  ),
+                  Text(
+                    'Welcome Back!',
+                    style: GoogleFonts.montserrat(
+                      fontSize: 14,
+                      color: Colors.grey.shade400,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        Home()), // Change Home() to the Notifications Screen
+              );
+            },
+            child: Container(
+              width: 35,
+              height: 35,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  width: 1, 
+                  color: Colors.grey.shade400
+                ),
+              ),
+              child: Icon(
+                Icons.notifications_none_sharp,
+                color: Colors.grey.shade400,
+                size: 20,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class HomeCard extends StatefulWidget {
+  const HomeCard({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  _HomeCardState createState() => _HomeCardState();
+}
+
+class _HomeCardState extends State<HomeCard> {
+  bool showBalance = false;
+  bool showSpentToday = false;
 
   void toggleBalanceVisibility() {
     setState(() {
-      isBalanceVisible = !isBalanceVisible;
+      showBalance = !showBalance;
     });
   }
 
   void toggleSpentTodayVisibility() {
     setState(() {
-      isSpentTodayVisible = !isSpentTodayVisible;
+      showSpentToday = !showSpentToday;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 40,
-            ),
-            // Top Bar
-            Row(
-              children: [
-                SizedBox(
-                  width: 20,
-                ),
-                CircleAvatar(
-                  radius: 32.0,
-                  backgroundImage: AssetImage('assets/images/home/nair_guy.jpeg'),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                HomeNameGreetings(),
-                Spacer(),
-                HomeNotificationButton(),
-                SizedBox(width: 20),
-              ],
-            ),
-            SizedBox(
-              height: 4,
-            ),
-            // Card
-            Stack(
-              children: [
-                Image.asset(
-                  'assets/images/home/Card.png',
-                  width: 385,
-                ),
-                Positioned(
-                  top: 50,
-                  left: 40,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'your balance',
-                        style: GoogleFonts.montserrat(
-                          color: Color(0xFFBFBFBF),
-                          fontWeight: FontWeight.w300,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 2,
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.baseline,
-                        textBaseline: TextBaseline.alphabetic,
-                        children: [
-                          Text(
-                            'RP',
-                            style: GoogleFonts.montserrat(
-                              color: Colors.white,
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          isBalanceVisible
-                              ? Text(
-                                  '24,365,322.46',
-                                  style: GoogleFonts.montserrat(
-                                    color: Colors.white,
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                )
-                              : Text(
-                                  '********',
-                                  style: GoogleFonts.montserrat(
-                                    color: Colors.white,
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                          SizedBox(
-                            width: 20,
-                          ),
-                          GestureDetector(
-                            onTap: toggleBalanceVisibility,
-                            child: Icon(
-                              isBalanceVisible
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
-                              color: Colors.grey,
-                              size: 16,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 25,
-                      ),
-                      Text(
-                        'spent today',
-                        style: GoogleFonts.montserrat(
-                          color: Color(0xFFBFBFBF),
-                          fontWeight: FontWeight.w300,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 2,
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.baseline,
-                        textBaseline: TextBaseline.alphabetic,
-                        children: [
-                          Text(
-                            'RP',
-                            style: GoogleFonts.montserrat(
-                              color: Color(0xFFFF5151),
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          isSpentTodayVisible
-                              ? Text(
-                                  '5,223,447.0',
-                                  style: GoogleFonts.montserrat(
-                                    color: Color(0xFFFF5151),
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                )
-                              : Text(
-                                  '********',
-                                  style: GoogleFonts.montserrat(
-                                    color: Color(0xFFFF5151),
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                          SizedBox(
-                            width: 20,
-                          ),
-                          GestureDetector(
-                            onTap: toggleSpentTodayVisibility,
-                            child: Icon(
-                              isSpentTodayVisible
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
-                              color: Colors.grey,
-                              size: 16,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 8,
-            ),
-            // Three Main Buttons
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 30),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => OnboardingScreen()),
-                      );
-                    },
-                    child: HomeCircleWidget(
-                      iconOrImage: Image.asset(
-                        'assets/images/home/transfer.png',
-                        width: 36,
-                        height: 36,
-                      ),
-                      text: 'Send',
-                    ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => OnboardingScreen()),
-                    );
-                  },
-                  child: HomeCircleWidget(
-                    iconOrImage: Image.asset(
-                      'assets/images/home/topup.png',
-                      width: 36,
-                      height: 36,
-                    ),
-                    text: 'Top Up',
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 30),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => OnboardingScreen()),
-                      );
-                    },
-                    child: HomeCircleWidget(
-                      iconOrImage: Image.asset(
-                        'assets/images/home/more.png',
-                        width: 36,
-                        height: 36,
-                      ),
-                      text: 'More',
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 23,
-            ),
-            // Quick Transfer
-            Row(
-              children: [
-                SizedBox(width: 30),
-                Text( 
-                  'Quick Transfer',
-                  style: GoogleFonts.montserrat(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 30),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => OnboardingScreen()),
-                      );
-                    },
-                    child: HomeCircleTransferWidget(
-                      textInside: 'I',
-                      text: 'Ivander',
-                    ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => OnboardingScreen()),
-                    );
-                  },
-                  child: HomeCircleTransferWidget(
-                    textInside: 'RS',
-                    text: 'Richard',
-                  )
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => OnboardingScreen()),
-                    );
-                  },
-                  child: HomeCircleTransferWidget(
-                    textInside: 'RT',
-                    text: 'Ruben',
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => OnboardingScreen()),
-                    );
-                  },
-                  child: HomeCircleTransferWidget(
-                    textInside: 'TI',
-                    text: 'Tigo',
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 30),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => OnboardingScreen()),
-                      );
-                    },
-                    child: HomeCircleTransferWidget(
-                      textInside: 'JC',
-                      text: 'Jason',
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            // Recent Transactions
-            Row(
-              children: [
-                SizedBox(width: 30),
-                Text( 
-                  'Recent Transactions',
-                  style: GoogleFonts.montserrat(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-            Column(
-              children: [
-                SizedBox(
-                  height: 12
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [            
-                    Padding(
-                      padding: const EdgeInsets.only(left: 30),
-                      child: HomeCircleIconWidget(
-                        textInside: 'JS', 
-                      ),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'JUSTIN SALIM',
-                          style: GoogleFonts.montserrat(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 2,
-                        ),
-                        Text(
-                          'bayar open bo',
-                          style: GoogleFonts.montserrat(
-                            fontSize: 10,
-                            color: Colors.grey.shade400,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Expanded(
-                      child: SizedBox(),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 30),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '+',
-                                style: GoogleFonts.montserrat(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Text(
-                                'RP',
-                                style: GoogleFonts.montserrat(
-                                  fontSize: 6,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Text(
-                                '750,000.01',
-                                style: GoogleFonts.montserrat(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Text(
-                            '21 September 2023',
-                            style: GoogleFonts.montserrat(
-                              fontSize: 8,
-                              color: Colors.grey.shade400,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    
-                  ],
-                ),
-              ],
-            ),
-            Column(
-              children: [
-                Column(
-                  children: [
-                    SizedBox(
-                      height: 8
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [            
-                        Padding(
-                          padding: const EdgeInsets.only(left: 30),
-                          child: HomeCircleIconImageWidget(
-                            iconOrImage: Image.asset(
-                              'assets/images/home/steam.png',
-                              width: 24,
-                              height: 24,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'STEAM',
-                              style: GoogleFonts.montserrat(
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 2,
-                            ),
-                            Text(
-                              'Entertainment - #25544',
-                              style: GoogleFonts.montserrat(
-                                fontSize: 10,
-                                color: Colors.grey.shade400,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Expanded(
-                          child: SizedBox(),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 30),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    '-',
-                                    style: GoogleFonts.montserrat(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
-                                      color: Color(0xFFFF5151),
-                                    ),
-                                  ),
-                                  Text(
-                                    'RP',
-                                    style: GoogleFonts.montserrat(
-                                      fontSize: 6,
-                                      fontWeight: FontWeight.bold,
-                                      color: Color(0xFFFF5151),
-                                    ),
-                                  ),
-                                  Text(
-                                    '5,223,447.01',
-                                    style: GoogleFonts.montserrat(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
-                                      color: Color(0xFFFF5151),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Text(
-                                '21 September 2023',
-                                style: GoogleFonts.montserrat(
-                                  fontSize: 8,
-                                  color: Colors.grey.shade400,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            // Bottom Bar
-            HomeBottomBarWidget(),
-          ],
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 25),
+          child: Image.asset(
+            'assets/images/home/Card.png',
+          ),
         ),
+        Positioned(
+          top: 40,
+          left: 60,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'your balance',
+                style: GoogleFonts.montserrat(
+                  fontSize: 14,
+                  color: Colors.grey.shade400,
+                ),
+              ),
+              SizedBox(height: 3),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    'RP',
+                    style: GoogleFonts.montserrat(
+                      fontSize: 13,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFFFF5151),
+                    ),
+                  ),
+                  Text(
+                    showBalance
+                        ? kevinProfile.balance ?? ''
+                        : '********',
+                    style: GoogleFonts.montserrat(
+                      fontSize: 23,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFFFF5151),
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                  GestureDetector(
+                    onTap: toggleBalanceVisibility,
+                    child: Container(
+                      padding: EdgeInsets.only(bottom: 5),
+                      child: Icon(
+                        showBalance
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: Color(0xFFFF5151),
+                        size: 15,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 21),
+              Text(
+                'spent today',
+                style: GoogleFonts.montserrat(
+                  fontSize: 14,
+                  color: Colors.grey.shade400,
+                ),
+              ),
+              SizedBox(height: 3),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    'RP',
+                    style: GoogleFonts.montserrat(
+                      fontSize: 13,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Text(
+                    showSpentToday
+                        ? '5,223,447.01'
+                        : '********',
+                    style: GoogleFonts.montserrat(
+                      fontSize: 23,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                  GestureDetector(
+                    onTap: toggleSpentTodayVisibility,
+                    child: Container(
+                      padding: EdgeInsets.only(bottom: 5),
+                      child: Icon(
+                        showSpentToday
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: Colors.white,
+                        size: 15,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class HomeCircleButtonIconText extends StatelessWidget {
+  final double width;
+  final double height;
+  final Color circleColor;
+  final Color strokeColor;
+  final IconData? iconData;
+  final double? iconSize;
+  final ImageProvider? imageProvider;
+  final double? imageSize;
+  final String? buttonText;
+  final Color? textColor;
+  final double? textSize;
+  final FontWeight? fontWeight;
+  final double? textCircleSpacing;
+  final Widget? navigateTo;
+
+  const HomeCircleButtonIconText({
+    Key? key,
+    required this.width,
+    required this.height,
+    required this.circleColor,
+    required this.strokeColor,
+    this.iconData,
+    this.iconSize,
+    this.imageProvider,
+    this.imageSize,
+    this.buttonText,
+    this.textColor,
+    this.textSize,
+    this.fontWeight,
+    this.textCircleSpacing,
+    this.navigateTo,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        if (navigateTo != null) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => navigateTo!),
+          );
+        }
+      },
+      child: Column(
+        children: [
+          Container(
+            width: width,
+            height: height,
+            decoration: BoxDecoration(
+              color: circleColor,
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: strokeColor,
+                width: 1.0,
+              ),
+            ),
+            child: Center(
+              child: iconData != null
+                  ? Icon(
+                      iconData,
+                      size: iconSize,
+                      color: Colors.white,
+                    )
+                  : imageProvider != null
+                      ? Image(
+                          image: imageProvider!,
+                          width: imageSize,
+                          height: imageSize,
+                        )
+                      : SizedBox.shrink(),
+            ),
+          ),
+          if (buttonText != null)
+            SizedBox(
+              height: textCircleSpacing ?? 8.0,
+            ),
+          if (buttonText != null)
+            Text(
+              buttonText!,
+              style: GoogleFonts.montserrat(
+                fontSize: textSize ?? 14,
+                color: textColor,
+                fontWeight: fontWeight,
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class HomeMainButtons extends StatelessWidget {
+  const HomeMainButtons({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(
+      horizontal: 30),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          HomeCircleButtonIconText(
+            width: 85,
+            height: 85,
+            circleColor: Colors.grey.shade300,
+            strokeColor: Colors.white,
+            imageProvider: AssetImage('assets/images/home/topup.png'),
+            imageSize: 40,
+            buttonText: 'Send',
+            textSize: 12,
+            textCircleSpacing: 5,
+            fontWeight: FontWeight.normal,
+            navigateTo: Home(),
+          ),
+          HomeCircleButtonIconText(
+            width: 85,
+            height: 85,
+            circleColor: Colors.grey.shade300,
+            strokeColor: Colors.white,
+            imageProvider: AssetImage('assets/images/home/transfer.png'),
+            imageSize: 40,
+            buttonText: 'Top Up',
+            textSize: 12,
+            textCircleSpacing: 5,
+            fontWeight: FontWeight.normal,
+            navigateTo: Home(),
+          ),
+          HomeCircleButtonIconText(
+            width: 85,
+            height: 85,
+            circleColor: Colors.grey.shade300,
+            strokeColor: Colors.white,
+            imageProvider: AssetImage('assets/images/home/more.png'),
+            imageSize: 40,
+            buttonText: 'More',
+            textSize: 12,
+            textCircleSpacing: 5,
+            fontWeight: FontWeight.normal,
+            navigateTo: Home(),
+          ),
+        ],
       ),
     );
   }
