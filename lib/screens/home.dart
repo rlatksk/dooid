@@ -119,6 +119,7 @@ class HomeTop extends StatelessWidget {
   }
 }
 
+
 class HomeCard extends StatefulWidget {
   const HomeCard({
     Key? key,
@@ -161,99 +162,82 @@ class _HomeCardState extends State<HomeCard> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              buildToggleText(
                 'your balance',
-                style: GoogleFonts.montserrat(
-                  fontSize: 14,
-                  color: Colors.grey.shade400,
-                ),
-              ),
-              SizedBox(height: 3),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    'RP',
-                    style: GoogleFonts.montserrat(
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFFFF5151),
-                    ),
-                  ),
-                  Text(
-                    showBalance
-                        ? kevinProfile.balance ?? ''
-                        : '********',
-                    style: GoogleFonts.montserrat(
-                      fontSize: 23,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFFFF5151),
-                    ),
-                  ),
-                  SizedBox(width: 10),
-                  GestureDetector(
-                    onTap: toggleBalanceVisibility,
-                    child: Container(
-                      padding: EdgeInsets.only(bottom: 5),
-                      child: Icon(
-                        showBalance
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                        color: Color(0xFFFF5151),
-                        size: 15,
-                      ),
-                    ),
-                  ),
-                ],
+                showBalance ? '1234567890' : '********',
+                showBalance,
+                toggleBalanceVisibility,
+                Color(0xFFFF5151),
               ),
               SizedBox(height: 21),
-              Text(
+              buildToggleText(
                 'spent today',
-                style: GoogleFonts.montserrat(
-                  fontSize: 14,
-                  color: Colors.grey.shade400,
-                ),
-              ),
-              SizedBox(height: 3),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    'RP',
-                    style: GoogleFonts.montserrat(
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  Text(
-                    showSpentToday
-                        ? '5,223,447.01'
-                        : '********',
-                    style: GoogleFonts.montserrat(
-                      fontSize: 23,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  SizedBox(width: 10),
-                  GestureDetector(
-                    onTap: toggleSpentTodayVisibility,
-                    child: Container(
-                      padding: EdgeInsets.only(bottom: 5),
-                      child: Icon(
-                        showSpentToday
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                        color: Colors.white,
-                        size: 15,
-                      ),
-                    ),
-                  ),
-                ],
+                showSpentToday ? '5,223,447.01' : '********',
+                showSpentToday,
+                toggleSpentTodayVisibility,
+                Colors.white,
               ),
             ],
           ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildToggleText(String label, String value, bool show, VoidCallback onTap, Color textColor) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: GoogleFonts.montserrat(
+            fontSize: 14,
+            color: Colors.grey.shade400,
+          ),
+        ),
+        SizedBox(height: 3),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Text(
+              'RP',
+              style: GoogleFonts.montserrat(
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+                color: textColor,
+              ),
+            ),
+            AnimatedSwitcher(
+              duration: Duration(milliseconds: 500),
+              transitionBuilder: (child, animation) {
+                return FadeTransition(
+                  opacity: animation,
+                  child: child,
+                );
+              },
+              child: Text(
+                show ? value : '********',
+                key: ValueKey<bool>(show),
+                style: GoogleFonts.montserrat(
+                  fontSize: 23,
+                  fontWeight: FontWeight.bold,
+                  color: textColor,
+                ),
+              ),
+            ),
+            SizedBox(width: 10),
+            GestureDetector(
+              onTap: onTap,
+              child: Container(
+                padding: EdgeInsets.only(bottom: 5),
+                child: Icon(
+                  show ? Icons.visibility : Icons.visibility_off,
+                  color: textColor,
+                  size: 15,
+                ),
+              ),
+            ),
+          ],
         ),
       ],
     );
@@ -839,7 +823,7 @@ class HomeBottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 20, bottom: 20, left: 25, right: 25),
+      padding: EdgeInsets.only(top: 20, bottom: 20, left: 40, right: 30),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
