@@ -1,109 +1,128 @@
-import 'package:dooid/provider/auth_provider.dart';
-import 'package:dooid/screens/auth/forgot_password.dart';
+import 'package:dooid/screens/auth/otp.dart';
+import 'package:dooid/screens/auth/register.dart';
 import 'package:dooid/utils/utils.dart';
+import 'package:dooid/widgets/widget_auth.dart';
 import 'package:dooid/widgets/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:dooid/widgets/widget_auth.dart';
-import 'package:dooid/screens/auth/register.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Login extends StatefulWidget {
   @override
   State<Login> createState() => _LoginState();
 }
 
+class NationDropdown extends StatefulWidget {
+  @override
+  _NationDropdownState createState() => _NationDropdownState();
+}
+
+class _NationDropdownState extends State<NationDropdown> {
+  String selectedNation = '🇮🇩 Indonesia'; // Default value
+
+  List<Map<String, String>> nations = [
+    {'name': '🇺🇸 United States', 'code': '+1'},
+    {'name': '🇬🇧 United Kingdom', 'code': '+44'},
+    {'name': '🇮🇩 Indonesia', 'code': '+62'},
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 320,
+      child: DropdownButtonFormField(
+        value: selectedNation,
+        onChanged: (String? newValue) {
+          setState(() {
+            selectedNation = newValue!;
+          });
+        },
+        items:
+            nations.map<DropdownMenuItem<String>>((Map<String, String> nation) {
+          return DropdownMenuItem<String>(
+            value: nation['name'],
+            child:
+                Container(child: Text('${nation['name']} (${nation['code']})')),
+          );
+        }).toList(),
+        decoration: InputDecoration(
+          filled: true,
+          fillColor: Color(0xFFEDEDED),
+          contentPadding: EdgeInsets.all(10),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide.none,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _LoginState extends State<Login> {
   TextEditingController _phoneNumber = TextEditingController();
-  TextEditingController _password = TextEditingController();
-  bool _obscureText = true;
-  bool _isLoading = false;
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  bool _isLoading = false;
 
   Widget _inputPhoneNumber() {
     return Container(
-      child: TextFormField(
-        controller: _phoneNumber,
-        decoration: InputDecoration(
-            hintText: 'Phone Number', helperText: 'Enter your phone number'),
-        validator: (val) => uValidator(value: val!, isRequired: true),
-        keyboardType: TextInputType.number,
-        inputFormatters: <TextInputFormatter>[
-          FilteringTextInputFormatter.digitsOnly
+      width: 320,
+      child: Column(
+        children: <Widget>[
+          DecoratedBox(
+            decoration: BoxDecoration(
+              color: Color(0xFFEDEDED),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: TextFormField(
+                controller: _phoneNumber,
+                decoration: InputDecoration(
+                  hintText: 'Phone Number',
+                  border: InputBorder.none,
+                ),
+                validator: (val) =>
+                    uValidator(value: val!, minLength: 12, isRequired: true),
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly
+                ],
+              ),
+            ),
+          ),
+          SizedBox(
+              height:
+                  8), // Add some space between TextFormField and the hint text
+          Text(
+            'We will send a verification code to your number to confirm it’s you.',
+            style: GoogleFonts.montserrat(fontSize: 9, color: Colors.black),
+          ),
         ],
       ),
     );
   }
 
-  Widget _inputPassword() {
-    return Stack(
-      children: <Widget>[
-        Container(
-          child: TextFormField(
-            controller: _password,
-            obscureText: _obscureText,
-            decoration: InputDecoration(
-              hintText: 'Password',
-            ),
-            validator: (val) =>
-                uValidator(value: val!, isRequired: true, minLength: 6),
-          ),
-        ),
-        Align(
-          alignment: Alignment.centerRight,
-          child: IconButton(
-            icon: Icon(
-              _obscureText ? Icons.visibility_off : Icons.visibility,
-              color: Colors.grey[400],
-            ),
-            onPressed: () {
-              setState(() => _obscureText = !_obscureText);
-            },
-          ),
-        )
-      ],
-    );
-  }
-
-  Widget _inputForgot() {
-    return GestureDetector(
-        child: Align(
-          alignment: Alignment.centerLeft,
-          child: Container(
-            padding: EdgeInsets.fromLTRB(0, 20, 20, 20),
-            child: Text('Forgot Password?'),
-          ),
-        ),
-        onTap: () => wPushTo(context, ForgotPassword()));
-  }
-
   Widget _inputSubmit() {
     return wInputSubmit(
       context: context,
-      title: 'Login',
+      title: 'Continue',
       onPressed: () {
         if (!_formKey.currentState!.validate()) return;
-        final auth = Provider.of<AuthProvider>(context, listen: false);
         setState(() => _isLoading = true);
-        auth.loginWithEmail(
+        registerWithEmail(
           context: context,
           phoneNumber: _phoneNumber.text,
-          password: _password.text,
         );
       },
     );
   }
 
-  Widget _googleSignIn() {
-    return wGoogleSignIn(
-      onPressed: () {},
-    );
-  }
-
   Widget _textRegister() {
     return wTextLink(
-        text: 'Dont have an account yet?',
-        title: 'Register',
+        text: 'Don’t have an account yet? Sign up.',
+        title: 'Sign Up',
         onTap: () => wPushReplaceTo(context, Register()));
   }
 
@@ -115,28 +134,62 @@ class _LoginState extends State<Login> {
           ? wAppLoading(context)
           : Scaffold(
               resizeToAvoidBottomInset: false,
-              body: Container(
-                margin: EdgeInsets.symmetric(horizontal: 20),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      wAuthTitle(
-                          title: 'Login',
-                          subtitle: 'Enter your phone number & password'),
-                      _inputPhoneNumber(),
-                      _inputPassword(),
-                      _inputForgot(),
-                      _inputSubmit(),
-                      wTextDivider(),
-                      _googleSignIn(),
-                      _textRegister(),
-                    ],
-                  ),
+              body: SafeArea(
+                child: Stack(
+                  children: <Widget>[
+                    Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage('assets/BackgroundD.png'),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      margin: EdgeInsets.symmetric(horizontal: 20),
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          children: <Widget>[
+                            SizedBox(
+                              height: 220,
+                            ),
+                            SizedBox(
+                              height: 110,
+                              child: Container(
+                                width: 320,
+                                child: wAuthTitle(
+                                  title: 'Sign In',
+                                  subtitle: 'Welcome back to Dooid!',
+                                ),
+                              ),
+                            ),
+                            NationDropdown(),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            _inputPhoneNumber(),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            _inputSubmit(),
+                            _textRegister(),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
     );
+  }
+
+  void registerWithEmail({
+    required BuildContext context,
+    required String phoneNumber,
+  }) async {
+    print(phoneNumber);
+
+    await Future.delayed(Duration(seconds: 2));
+    wPushReplaceTo(context, Otp());
   }
 }

@@ -1,5 +1,4 @@
 import 'package:dooid/screens/auth/login.dart';
-import 'package:dooid/screens/auth/otp.dart';
 import 'package:dooid/utils/utils.dart';
 import 'package:dooid/widgets/widget_auth.dart';
 import 'package:dooid/widgets/widgets.dart';
@@ -7,60 +6,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class Register extends StatefulWidget {
+class Otp extends StatefulWidget {
   @override
-  State<Register> createState() => _RegisterState();
+  State<Otp> createState() => _OtpState();
 }
 
-class NationDropdown extends StatefulWidget {
-  @override
-  _NationDropdownState createState() => _NationDropdownState();
-}
-
-class _NationDropdownState extends State<NationDropdown> {
-  String selectedNation = '🇮🇩 Indonesia'; // Default value
-
-  List<Map<String, String>> nations = [
-    {'name': '🇺🇸 United States', 'code': '+1'},
-    {'name': '🇬🇧 United Kingdom', 'code': '+44'},
-    {'name': '🇮🇩 Indonesia', 'code': '+62'},
+class _OtpState extends State<Otp> {
+  final List<TextEditingController> controllers = [
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
   ];
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 320,
-      child: DropdownButtonFormField(
-        value: selectedNation,
-        onChanged: (String? newValue) {
-          setState(() {
-            selectedNation = newValue!;
-          });
-        },
-        items:
-            nations.map<DropdownMenuItem<String>>((Map<String, String> nation) {
-          return DropdownMenuItem<String>(
-            value: nation['name'],
-            child:
-                Container(child: Text('${nation['name']} (${nation['code']})')),
-          );
-        }).toList(),
-        decoration: InputDecoration(
-          filled: true,
-          fillColor: Color(0xFFEDEDED), // Set your desired background color
-          contentPadding: EdgeInsets.all(10),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide.none,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _RegisterState extends State<Register> {
-  TextEditingController _phoneNumber = TextEditingController();
+  TextEditingController _otpNumber = TextEditingController();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   bool _isLoading = false;
@@ -78,7 +38,7 @@ class _RegisterState extends State<Register> {
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 10),
               child: TextFormField(
-                controller: _phoneNumber,
+                controller: _otpNumber,
                 decoration: InputDecoration(
                   hintText: 'Phone Number',
                   border: InputBorder.none,
@@ -97,7 +57,7 @@ class _RegisterState extends State<Register> {
                   8), // Add some space between TextFormField and the hint text
           Text(
             'We will send a verification code to your number to confirm it’s you.',
-            style: GoogleFonts.montserrat(color: Colors.black, fontSize: 9),
+            style: GoogleFonts.montserrat(color: Colors.black, fontSize: 8),
           ),
         ],
       ),
@@ -111,19 +71,20 @@ class _RegisterState extends State<Register> {
       onPressed: () {
         if (!_formKey.currentState!.validate()) return;
         setState(() => _isLoading = true);
-        registerWithPhoneNumber(
-            context: context,
-            phoneNumber: _phoneNumber.text,
-            );
+        otpInput(
+          context: context,
+          otpNumber: _otpNumber.text,
+        );
       },
     );
   }
 
-  Widget _textRegister() {
+  Widget _textResend() {
     return wTextLink(
-        text: 'Already have an account?',
-        title: 'Sign In',
-        onTap: () => wPushReplaceTo(context, Login()));
+      text: "Didn't receive an OTP code?",
+      title: 'Resend',
+      onTap: () => wPushReplaceTo(context, Login()),
+    );
   }
 
   @override
@@ -140,7 +101,7 @@ class _RegisterState extends State<Register> {
                     Container(
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                          image: AssetImage('assets/BackgroundD.png'),
+                          image: AssetImage('assets/Background.png'),
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -150,29 +111,63 @@ class _RegisterState extends State<Register> {
                         child: Column(
                           children: <Widget>[
                             SizedBox(
-                              height: 220,
+                              height: 110,
                             ),
                             SizedBox(
                               height: 110,
                               child: Container(
                                 width: 320,
                                 child: wAuthTitle(
-                                  title: 'Sign Up',
+                                  title: 'OTP Verification',
                                   subtitle:
-                                      'Create your account and revolutionize your finances.',
+                                      'We have sent an OTP code to your phone number.',
                                 ),
                               ),
                             ),
-                            NationDropdown(),
                             SizedBox(
                               height: 20,
                             ),
-                            _inputPhoneNumber(),
-                            SizedBox(
-                              height: 20,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                for (int i = 0; i < 5; i++)
+                                  Container(
+                                    margin: EdgeInsets.only(right: 10),
+                                    child: SizedBox(
+                                      height: 70,
+                                      width: 57,
+                                      child: TextField(
+                                        controller: controllers[i],
+                                        style: GoogleFonts.montserrat(
+                                          fontSize: 50,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        keyboardType: TextInputType.number,
+                                        textAlign: TextAlign.center,
+                                        inputFormatters: [
+                                          LengthLimitingTextInputFormatter(1),
+                                          FilteringTextInputFormatter
+                                              .digitsOnly,
+                                        ],
+                                        onChanged: (value) {
+                                          if (i < 4 && value.isNotEmpty) {
+                                            FocusScope.of(context).nextFocus();
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                              ],
                             ),
+                            SizedBox(height: 10),
+                            Text(
+                              'Do NOT send your OTP code to anybody else.',
+                              style: GoogleFonts.montserrat(
+                                  color: Colors.black, fontSize: 9),
+                            ),
+                            SizedBox(height: 40),
                             _inputSubmit(),
-                            _textRegister(),
+                            _textResend(),
                           ],
                         ),
                       ),
@@ -198,7 +193,7 @@ class _RegisterState extends State<Register> {
                             height: 10,
                             width: 100,
                             decoration: BoxDecoration(
-                              color: Colors.grey,
+                              color: Colors.black,
                               borderRadius: BorderRadius.circular(100),
                             ),
                             margin: EdgeInsets.only(right: 10),
@@ -223,13 +218,12 @@ class _RegisterState extends State<Register> {
     );
   }
 
-    void registerWithPhoneNumber(
-      {required BuildContext context,
-      required String phoneNumber,
-      }) async {
-    
-    print(phoneNumber);
-    
+  void otpInput({
+    required BuildContext context,
+    required String otpNumber,
+  }) async {
+    print(otpNumber);
+
     await Future.delayed(Duration(seconds: 2));
     wPushReplaceTo(context, Otp());
   }

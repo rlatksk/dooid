@@ -1,4 +1,3 @@
-import 'package:dooid/screens/auth/otp.dart';
 import 'package:dooid/screens/home.dart';
 import 'package:dooid/widgets/widgets.dart';
 import 'package:flutter/material.dart';
