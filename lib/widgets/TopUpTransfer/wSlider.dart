@@ -3,15 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:slide_to_act_reborn/slide_to_act_reborn.dart';
 
-import '../../screens/home.dart';
-
-class wSlider extends StatelessWidget {
+class wSlider extends StatefulWidget {
   final String toWhere;
-  final String name;
-  final int? amount;
-  final String msg;
+  String name;
+  int? amount;
+  String msg;
 
-  const wSlider({
+  wSlider({
     required this.toWhere,
     Key? key, 
     required this.name, 
@@ -19,6 +17,11 @@ class wSlider extends StatelessWidget {
     required this.msg, 
   }) : super(key: key);
 
+  @override
+  State<wSlider> createState() => _wSliderState();
+}
+
+class _wSliderState extends State<wSlider> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -37,18 +40,21 @@ class wSlider extends StatelessWidget {
           color: Color(0xFFBABABA),
         ),
         onSubmit: () {
-          if (toWhere == 'Home') {
+          setState(() {
+            if (widget.toWhere == 'Success') {
             Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => TfSuccess(
-                  name: name,
-                  amount: amount, 
-                  msg: msg,
+                  name: widget.name,
+                  amount: widget.amount, 
+                  msg: widget.msg,
                 ),
               ),
             );
           }
+          });
+          
         },
       ),
     );

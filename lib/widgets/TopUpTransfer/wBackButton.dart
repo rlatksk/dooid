@@ -19,7 +19,7 @@ import 'package:flutter_svg/svg.dart';
           splashRadius: 27,
           // splashColor: Color(0xFFFF5151),
           color: Colors.white,
-          icon: SvgPicture.asset('assets/icons/back.svg'),
+          icon: SvgPicture.asset('assets/icons/Back.svg'),
           onPressed: () {
             Navigator.pop(context);
           },
