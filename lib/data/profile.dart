@@ -2,7 +2,7 @@ class Profile {
   String? first_name;
   String? last_name;
   String? profile_picture;
-  String? balance;
+  double? balance;
   String? email;
   String? country_code;
   String? phone_number;
@@ -24,7 +24,7 @@ Profile kevinProfile = Profile(
   first_name: 'Kevin',
   last_name: 'Leonardo',
   profile_picture: 'assets/images/home/nair_guy.jpeg',
-  balance: '24,365,322.46',
+  balance: 2436532246,
   email: 'kevin@example.com',
   country_code: '62',
   phone_number: '081377758897',

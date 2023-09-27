@@ -1,4 +1,5 @@
 import 'package:dooid/data/profile.dart';
+import 'package:dooid/widgets/format.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -164,7 +165,7 @@ class _HomeCardState extends State<HomeCard> {
             children: [
               buildToggleText(
                 'your balance',
-                showBalance ? '1234567890' : '********',
+                showBalance ? kevinProfile.balance : 0.0,
                 showBalance,
                 toggleBalanceVisibility,
                 Color(0xFFFF5151),
@@ -172,7 +173,7 @@ class _HomeCardState extends State<HomeCard> {
               SizedBox(height: 21),
               buildToggleText(
                 'spent today',
-                showSpentToday ? '5,223,447.01' : '********',
+                showSpentToday ? 522344701 : 0.0,
                 showSpentToday,
                 toggleSpentTodayVisibility,
                 Colors.white,
@@ -184,7 +185,8 @@ class _HomeCardState extends State<HomeCard> {
     );
   }
 
-  Widget buildToggleText(String label, String value, bool show, VoidCallback onTap, Color textColor) {
+  Widget buildToggleText(String label, double? value, bool show, VoidCallback onTap, Color textColor) {
+    final formattedBalance = formatBalance(value);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -216,7 +218,7 @@ class _HomeCardState extends State<HomeCard> {
                 );
               },
               child: Text(
-                show ? value : '********',
+                show ? formattedBalance : '********',
                 key: ValueKey<bool>(show),
                 style: GoogleFonts.montserrat(
                   fontSize: 23,
@@ -665,7 +667,7 @@ class HomeRecentTransactions extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  '750,000.01',
+                                  formatBalance(75000001),
                                   style: GoogleFonts.montserrat(
                                     fontSize: 13,
                                     fontWeight: FontWeight.bold,
@@ -751,7 +753,7 @@ class HomeRecentTransactions extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  '5,223,447.01',
+                                  formatBalance(522344701),
                                   style: GoogleFonts.montserrat(
                                     fontSize: 13,
                                     fontWeight: FontWeight.bold,
