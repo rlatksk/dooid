@@ -1,9 +1,12 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import 'dart:io' show Platform;
 
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 
 // Returns a widget representing a loading indicator.
 Widget wAppLoading(BuildContext context) {
