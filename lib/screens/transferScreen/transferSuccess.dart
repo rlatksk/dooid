@@ -4,9 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 class TfSuccess extends StatelessWidget {
-  String name;
-  int? amount;
-  String msg;
+  final String name;
+  final int? amount;
+  final String msg;
   TfSuccess({super.key, 
   required this.name, required this.amount, required this.msg, 
 });

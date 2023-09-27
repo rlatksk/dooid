@@ -5,9 +5,9 @@ import 'package:slide_to_act_reborn/slide_to_act_reborn.dart';
 
 class wSlider extends StatefulWidget {
   final String toWhere;
-  String name;
-  int? amount;
-  String msg;
+  final String name;
+  final int? amount;
+  final String msg;
 
   wSlider({
     required this.toWhere,

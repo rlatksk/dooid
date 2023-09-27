@@ -170,10 +170,8 @@ class _TransferState extends State<Transfer> {
                             ),
                           ),
                         );
-                      
                       }
                       );
-                      
                     },
                   ),
                 )
