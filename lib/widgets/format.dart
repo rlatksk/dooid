@@ -1,12 +1,10 @@
 String formatBalance(double? balance) {
   if (balance == null) {
-    return "0.00";
+    return '0.00';
   }
 
-  // Divide the balance by 100 to get the correct value
   double formattedBalance = balance / 100.0;
-
-  // Convert the balance to a string with 2 decimal places
+  
   String balanceString = formattedBalance.toStringAsFixed(2);
 
   List<String> parts = balanceString.split('.');

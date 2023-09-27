@@ -4,7 +4,7 @@ class Transaction {
   String? icon;
   DateTime? date;
 
-  Transcation(){
+  Transaction(){
     this.name;
     this.amount;
     this.icon;

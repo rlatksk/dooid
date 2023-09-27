@@ -14,28 +14,24 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Column(
-          children: [
-            HomeTop(),
-            HomeCard(),
-            SizedBox(height: 12),
-            HomeMainButtons(),
-            SizedBox(height: 30),
-            HomeQuickTransfer(),
-            SizedBox(height: 30),
-            HomeRecentTransactions(),
-          ],
+        backgroundColor: Colors.white,
+        body: SafeArea(
+          child: Column(
+            children: [
+              HomeTop(),
+              HomeCard(),
+              SizedBox(height: 12),
+              HomeMainButtons(),
+              SizedBox(height: 30),
+              HomeQuickTransfer(),
+              SizedBox(height: 30),
+              HomeRecentTransactions(),
+            ],
+          ),
         ),
-      ),
-      floatingActionButton: HomeQRScanButton(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomAppBar(
-        shape: CircularNotchedRectangle(),
-        child: HomeBottomNavBar(),
-      )
-    );
+        floatingActionButton: HomeQRScanButton(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        bottomNavigationBar: HomeNavBar());
   }
 }
 
@@ -66,24 +62,18 @@ class HomeTop extends StatelessWidget {
                       Text(
                         'Hello, ',
                         style: GoogleFonts.montserrat(
-                          fontSize: 20, 
-                          color: Color(0xFF131313)
-                        ),
+                            fontSize: 20, color: Color(0xFF131313)),
                       ),
                       Text(
                         '${kevinProfile.first_name ?? ''}!',
                         style: GoogleFonts.montserrat(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF131313)
-                        ),
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF131313)),
                       ),
                       SizedBox(width: 4),
-                      Icon(
-                        Icons.verified_user,
-                        size: 12,
-                        color: Colors.grey.shade400
-                      )
+                      Icon(Icons.verified_user,
+                          size: 12, color: Colors.grey.shade400)
                     ],
                   ),
                   Text(
@@ -119,7 +109,6 @@ class HomeTop extends StatelessWidget {
     );
   }
 }
-
 
 class HomeCard extends StatefulWidget {
   const HomeCard({
@@ -201,24 +190,33 @@ class _HomeCardState extends State<HomeCard> {
         Row(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Text(
-              'RP',
-              style: GoogleFonts.montserrat(
-                fontSize: 13,
-                fontWeight: FontWeight.bold,
-                color: textColor,
+              Text(
+                'RP',
+                style: GoogleFonts.montserrat(
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold,
+                  color: textColor,
               ),
             ),
             AnimatedSwitcher(
               duration: Duration(milliseconds: 500),
               transitionBuilder: (child, animation) {
-                return FadeTransition(
-                  opacity: animation,
-                  child: child,
+                final curvedAnimation = CurvedAnimation(
+                  parent: animation,
+                  curve: Curves
+                      .elasticOut,
+                );
+                return ScaleTransition(
+                  scale: Tween<double>(begin: 0.5, end: 1.0)
+                      .animate(curvedAnimation),
+                  child: FadeTransition(
+                    opacity: animation,
+                    child: child,
+                  ),
                 );
               },
               child: Text(
-                show ? formattedBalance : '********',
+                show ? formattedBalance : '****************',
                 key: ValueKey<bool>(show),
                 style: GoogleFonts.montserrat(
                   fontSize: 23,
@@ -306,7 +304,6 @@ class HomeCircleButtonIconText extends StatelessWidget {
   }
 }
 
-
 class HomeMainButtons extends StatelessWidget {
   const HomeMainButtons({
     super.key,
@@ -315,8 +312,7 @@ class HomeMainButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(
-      horizontal: 30),
+      padding: EdgeInsets.symmetric(horizontal: 30),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -326,18 +322,14 @@ class HomeMainButtons extends StatelessWidget {
             circleColor: Colors.grey.shade200,
             strokeColor: Colors.white,
             strokeSize: 1,
-            insideWidget: Image.asset(
-              'assets/images/home/transfer.png', 
-              width: 40, 
-              height: 40),
-            buttonTextWidget: Text(
-              'Send',
-              style: GoogleFonts.montserrat(
-                fontSize: 12,
-                color: Color(0xFF131313),
-                fontWeight: FontWeight.normal,
-              )
-            ),
+            insideWidget: Image.asset('assets/images/home/transfer.png',
+                width: 40, height: 40),
+            buttonTextWidget: Text('Send',
+                style: GoogleFonts.montserrat(
+                  fontSize: 12,
+                  color: Color(0xFF131313),
+                  fontWeight: FontWeight.normal,
+                )),
             textCircleSpacing: 5,
             navigateToGesture: GestureDetector(
               onTap: () {
@@ -351,18 +343,14 @@ class HomeMainButtons extends StatelessWidget {
             circleColor: Colors.grey.shade200,
             strokeColor: Colors.white,
             strokeSize: 1,
-            insideWidget: Image.asset(
-              'assets/images/home/topup.png', 
-              width: 40, 
-              height: 40),
-            buttonTextWidget: Text(
-              'Top Up',
-              style: GoogleFonts.montserrat(
-                fontSize: 12,
-                color: Color(0xFF131313),
-                fontWeight: FontWeight.normal,
-              )
-            ),
+            insideWidget: Image.asset('assets/images/home/topup.png',
+                width: 40, height: 40),
+            buttonTextWidget: Text('Top Up',
+                style: GoogleFonts.montserrat(
+                  fontSize: 12,
+                  color: Color(0xFF131313),
+                  fontWeight: FontWeight.normal,
+                )),
             textCircleSpacing: 5,
             navigateToGesture: GestureDetector(
               onTap: () {
@@ -376,18 +364,14 @@ class HomeMainButtons extends StatelessWidget {
             circleColor: Colors.grey.shade200,
             strokeColor: Colors.white,
             strokeSize: 1,
-            insideWidget: Image.asset(
-              'assets/images/home/more.png', 
-              width: 40, 
-              height: 40),
-            buttonTextWidget: Text(
-              'More',
-              style: GoogleFonts.montserrat(
-                fontSize: 12,
-                color: Color(0xFF131313),
-                fontWeight: FontWeight.normal,
-              )
-            ),
+            insideWidget: Image.asset('assets/images/home/more.png',
+                width: 40, height: 40),
+            buttonTextWidget: Text('More',
+                style: GoogleFonts.montserrat(
+                  fontSize: 12,
+                  color: Color(0xFF131313),
+                  fontWeight: FontWeight.normal,
+                )),
             textCircleSpacing: 5,
             navigateToGesture: GestureDetector(
               onTap: () {
@@ -428,9 +412,9 @@ class HomeQuickTransfer extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 HomeCircleButtonIconText(
-                  width: 65, 
-                  height: 65, 
-                  circleColor: Colors.white, 
+                  width: 65,
+                  height: 65,
+                  circleColor: Colors.white,
                   strokeColor: Colors.grey.shade200,
                   strokeSize: 2,
                   insideWidget: Text(
@@ -456,9 +440,9 @@ class HomeQuickTransfer extends StatelessWidget {
                   ),
                 ),
                 HomeCircleButtonIconText(
-                  width: 65, 
-                  height: 65, 
-                  circleColor: Colors.white, 
+                  width: 65,
+                  height: 65,
+                  circleColor: Colors.white,
                   strokeColor: Colors.grey.shade200,
                   strokeSize: 2,
                   insideWidget: Text(
@@ -484,9 +468,9 @@ class HomeQuickTransfer extends StatelessWidget {
                   ),
                 ),
                 HomeCircleButtonIconText(
-                  width: 65, 
-                  height: 65, 
-                  circleColor: Colors.white, 
+                  width: 65,
+                  height: 65,
+                  circleColor: Colors.white,
                   strokeColor: Colors.grey.shade200,
                   strokeSize: 2,
                   insideWidget: Text(
@@ -512,9 +496,9 @@ class HomeQuickTransfer extends StatelessWidget {
                   ),
                 ),
                 HomeCircleButtonIconText(
-                  width: 65, 
-                  height: 65, 
-                  circleColor: Colors.white, 
+                  width: 65,
+                  height: 65,
+                  circleColor: Colors.white,
                   strokeColor: Colors.grey.shade200,
                   strokeSize: 2,
                   insideWidget: Text(
@@ -540,9 +524,9 @@ class HomeQuickTransfer extends StatelessWidget {
                   ),
                 ),
                 HomeCircleButtonIconText(
-                  width: 65, 
-                  height: 65, 
-                  circleColor: Colors.white, 
+                  width: 65,
+                  height: 65,
+                  circleColor: Colors.white,
                   strokeColor: Colors.grey.shade200,
                   strokeSize: 2,
                   insideWidget: Text(
@@ -618,8 +602,8 @@ class HomeRecentTransactions extends StatelessWidget {
                               fontSize: 25,
                               fontWeight: FontWeight.bold,
                               color: Color(0xFF131313),
-                              ),
                             ),
+                          ),
                         ),
                         SizedBox(width: 10),
                         Column(
@@ -649,11 +633,8 @@ class HomeRecentTransactions extends StatelessWidget {
                       children: [
                         Row(
                           children: [
-                            Icon(
-                              Icons.add_circle,
-                              size: 15,
-                              color: Color(0xFF131313)
-                            ),
+                            Icon(Icons.add_circle,
+                                size: 15, color: Color(0xFF131313)),
                             SizedBox(width: 5),
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.end,
@@ -679,7 +660,7 @@ class HomeRecentTransactions extends StatelessWidget {
                           ],
                         ),
                         Text(
-                          '21 September 2023', 
+                          '21 September 2023',
                           style: GoogleFonts.montserrat(
                             fontSize: 10,
                             color: Colors.grey.shade400,
@@ -705,7 +686,9 @@ class HomeRecentTransactions extends StatelessWidget {
                           circleColor: Colors.white,
                           strokeColor: Colors.grey.shade200,
                           strokeSize: 2,
-                          insideWidget: Image.asset('assets/images/home/steam.png', width: 25),
+                          insideWidget: Image.asset(
+                              'assets/images/home/steam.png',
+                              width: 25),
                         ),
                         SizedBox(width: 10),
                         Column(
@@ -735,11 +718,8 @@ class HomeRecentTransactions extends StatelessWidget {
                       children: [
                         Row(
                           children: [
-                            Icon(
-                              Icons.remove_circle,
-                              size: 15,
-                              color: Color(0xFFFF5151)
-                            ),
+                            Icon(Icons.remove_circle,
+                                size: 15, color: Color(0xFFFF5151)),
                             SizedBox(width: 5),
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.end,
@@ -765,7 +745,7 @@ class HomeRecentTransactions extends StatelessWidget {
                           ],
                         ),
                         Text(
-                          '21 September 2023', 
+                          '21 September 2023',
                           style: GoogleFonts.montserrat(
                             fontSize: 10,
                             color: Colors.grey.shade400,
@@ -804,11 +784,11 @@ class HomeQRScanButton extends StatelessWidget {
               colors: [Color(0xFF545454), Color(0xFF363636), Color(0xFF131313)],
               begin: Alignment.bottomCenter,
               end: Alignment.topCenter,
-              ),
-            shape: BoxShape.circle,
             ),
-            child: Center(
-              child: Image.asset('assets/images/home/scan.png', width: 35),
+            shape: BoxShape.circle,
+          ),
+          child: Center(
+            child: Image.asset('assets/images/home/scan.png', width: 35),
           ),
         ),
       ),
@@ -816,58 +796,59 @@ class HomeQRScanButton extends StatelessWidget {
   }
 }
 
-
-class HomeBottomNavBar extends StatelessWidget {
-  const HomeBottomNavBar({
+class HomeNavBar extends StatelessWidget {
+  const HomeNavBar({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(top: 20, bottom: 20, left: 40, right: 30),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          GestureDetector(
-            onTap: () {
-              print('Home Screen');
-            },
-            child: Icon(
-              Icons.home_filled,
-              color: Color(0xFFFF5151),
-            ),
+    return BottomAppBar(
+        shape: CircularNotchedRectangle(),
+        child: Padding(
+          padding: EdgeInsets.only(top: 20, bottom: 20, left: 40, right: 30),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  print('Home Screen');
+                },
+                child: Icon(
+                  Icons.home_filled,
+                  color: Color(0xFFFF5151),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  print('Transactions Screen');
+                },
+                child: Icon(
+                  Icons.swap_vert,
+                  color: Color(0xFF131313),
+                ),
+              ),
+              SizedBox(width: 50),
+              GestureDetector(
+                onTap: () {
+                  print('Offer Screen');
+                },
+                child: Icon(
+                  Icons.local_offer,
+                  color: Color(0xFF131313),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  print('Profile Screen');
+                },
+                child: Icon(
+                  Icons.person,
+                  color: Color(0xFF131313),
+                ),
+              ),
+            ],
           ),
-          GestureDetector(
-            onTap: () {
-              print('Transactions Screen');
-            },
-            child: Icon(
-              Icons.swap_vert,
-              color: Color(0xFF131313),
-            ),
-          ),
-          SizedBox(width: 50),
-          GestureDetector(
-            onTap: () {
-              print('Offer Screen');
-            },
-            child: Icon(
-              Icons.local_offer,
-              color: Color(0xFF131313),
-            ),
-          ),
-          GestureDetector(
-            onTap: () {
-              print('Profile Screen');
-            },
-            child: Icon(
-              Icons.person,
-              color: Color(0xFF131313),
-            ),
-          ),
-        ],
-      ),
-    );
+        ));
   }
 }
