@@ -1,7 +1,8 @@
 import 'package:dooid/data/profile.dart';
+import 'package:dooid/screens/transfer/transfer.dart';
 import 'package:dooid/widgets/colors.dart';
 import 'package:dooid/widgets/format.dart';
-import 'package:dooid/widgets/home_icons_icons.dart';
+import 'package:dooid/widgets/transition.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -54,7 +55,7 @@ class HomeTop extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 30,
-                backgroundImage: AssetImage(kevinProfile.profile_picture!),
+                backgroundImage: AssetImage(kevinProfile.profilePicture!),
               ),
               SizedBox(width: 10),
               Column(
@@ -68,7 +69,7 @@ class HomeTop extends StatelessWidget {
                             fontSize: 20, color: AppColors.black),
                       ),
                       Text(
-                        '${kevinProfile.first_name ?? ''}!',
+                        '${kevinProfile.firstName ?? ''}!',
                         style: GoogleFonts.montserrat(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -224,7 +225,7 @@ class _HomeCardState extends State<HomeCard> {
               ),
             ),
             AnimatedSwitcher(
-              duration: Duration(milliseconds: 500),
+              duration: Duration(milliseconds: 200),
               transitionBuilder: (child, animation) {
                 final curvedAnimation = CurvedAnimation(
                   parent: animation,
@@ -346,7 +347,11 @@ class HomeMainButtons extends StatelessWidget {
             circleColor: AppColors.lightGrey,
             strokeColor: Colors.white,
             strokeSize: 1,
-            insideWidget: Icon(HomeIcons.transfer, size: 40),
+            insideWidget: Image.asset(
+              'assets/images/home/transfer.png',
+              width: 40,
+              height: 40,
+            ),
             buttonTextWidget: Text('Send',
                 style: GoogleFonts.montserrat(
                   fontSize: 12,
@@ -356,7 +361,8 @@ class HomeMainButtons extends StatelessWidget {
             textCircleSpacing: 5,
             navigateToGesture: GestureDetector(
               onTap: () {
-                print('Transfer Screen');
+                Navigator.of(context)
+                    .push(BouncyPageRoute(destinationPage: Transfer()));
               },
             ),
           ),
@@ -366,7 +372,11 @@ class HomeMainButtons extends StatelessWidget {
             circleColor: AppColors.lightGrey,
             strokeColor: Colors.white,
             strokeSize: 1,
-            insideWidget: Icon(HomeIcons.topup, size: 40),
+            insideWidget: Image.asset(
+              'assets/images/home/topup.png',
+              width: 40,
+              height: 40,
+            ),
             buttonTextWidget: Text('Top Up',
                 style: GoogleFonts.montserrat(
                   fontSize: 12,
@@ -386,7 +396,11 @@ class HomeMainButtons extends StatelessWidget {
             circleColor: AppColors.lightGrey,
             strokeColor: Colors.white,
             strokeSize: 1,
-            insideWidget: Icon(HomeIcons.more, size: 40),
+            insideWidget: Image.asset(
+              'assets/images/home/more.png',
+              width: 40,
+              height: 40,
+            ),
             buttonTextWidget: Text('More',
                 style: GoogleFonts.montserrat(
                   fontSize: 12,
@@ -809,7 +823,11 @@ class HomeQRScanButton extends StatelessWidget {
             shape: BoxShape.circle,
           ),
           child: Center(
-            child: Icon(HomeIcons.scan, size: 40),
+            child: Image.asset(
+              'assets/images/home/scan.png',
+              width: 40,
+              height: 40,
+            ),
           ),
         ),
       ),
