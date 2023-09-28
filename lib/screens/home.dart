@@ -19,18 +19,20 @@ class _HomeState extends State<Home> {
     return Scaffold(
         backgroundColor: Colors.white,
         body: SafeArea(
-          child: Column(
-            children: [
-              HomeTop(),
-              SizedBox(height: 20),
-              HomeCard(),
-              SizedBox(height: 25),
-              HomeMainButtons(),
-              SizedBox(height: 30),
-              HomeQuickTransfer(),
-              SizedBox(height: 30),
-              HomeRecentTransactions(),
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                HomeTop(),
+                SizedBox(height: 20),
+                HomeCard(),
+                SizedBox(height: 25),
+                HomeMainButtons(),
+                SizedBox(height: 30),
+                HomeQuickTransfer(),
+                SizedBox(height: 30),
+                HomeRecentTransactions(),
+              ],
+            ),
           ),
         ),
         floatingActionButton: HomeQRScanButton(),
@@ -773,6 +775,276 @@ class HomeRecentTransactions extends StatelessWidget {
                                     fontSize: 13,
                                     fontWeight: FontWeight.bold,
                                     color: AppColors.red,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        Text(
+                          '21 September 2023',
+                          style: GoogleFonts.montserrat(
+                            fontSize: 10,
+                            color: AppColors.midGrey,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            SizedBox(height: 10),
+            Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        HomeCircleButtonIconText(
+                          width: 65,
+                          height: 65,
+                          circleColor: Colors.white,
+                          strokeColor: AppColors.lightGrey,
+                          strokeSize: 2,
+                          insideWidget: Text(
+                            'JS',
+                            style: GoogleFonts.montserrat(
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.black,
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'JUSTIN SALIM',
+                              style: GoogleFonts.montserrat(
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.black,
+                              ),
+                            ),
+                            Text(
+                              'bayar open bo',
+                              style: GoogleFonts.montserrat(
+                                fontSize: 10,
+                                color: AppColors.midGrey,
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(Icons.add_circle,
+                                size: 15, color: AppColors.black),
+                            SizedBox(width: 5),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Text(
+                                  'RP',
+                                  style: GoogleFonts.montserrat(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.black,
+                                  ),
+                                ),
+                                Text(
+                                  formatBalance(75000001),
+                                  style: GoogleFonts.montserrat(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        Text(
+                          '21 September 2023',
+                          style: GoogleFonts.montserrat(
+                            fontSize: 10,
+                            color: AppColors.midGrey,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            SizedBox(height: 10),
+            Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        HomeCircleButtonIconText(
+                          width: 65,
+                          height: 65,
+                          circleColor: Colors.white,
+                          strokeColor: AppColors.lightGrey,
+                          strokeSize: 2,
+                          insideWidget: Text(
+                            'JS',
+                            style: GoogleFonts.montserrat(
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.black,
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'JUSTIN SALIM',
+                              style: GoogleFonts.montserrat(
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.black,
+                              ),
+                            ),
+                            Text(
+                              'bayar open bo',
+                              style: GoogleFonts.montserrat(
+                                fontSize: 10,
+                                color: AppColors.midGrey,
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(Icons.add_circle,
+                                size: 15, color: AppColors.black),
+                            SizedBox(width: 5),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Text(
+                                  'RP',
+                                  style: GoogleFonts.montserrat(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.black,
+                                  ),
+                                ),
+                                Text(
+                                  formatBalance(75000001),
+                                  style: GoogleFonts.montserrat(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        Text(
+                          '21 September 2023',
+                          style: GoogleFonts.montserrat(
+                            fontSize: 10,
+                            color: AppColors.midGrey,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            SizedBox(height: 10),
+            Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        HomeCircleButtonIconText(
+                          width: 65,
+                          height: 65,
+                          circleColor: Colors.white,
+                          strokeColor: AppColors.lightGrey,
+                          strokeSize: 2,
+                          insideWidget: Text(
+                            'JS',
+                            style: GoogleFonts.montserrat(
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.black,
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'JUSTIN SALIM',
+                              style: GoogleFonts.montserrat(
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.black,
+                              ),
+                            ),
+                            Text(
+                              'bayar open bo',
+                              style: GoogleFonts.montserrat(
+                                fontSize: 10,
+                                color: AppColors.midGrey,
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(Icons.add_circle,
+                                size: 15, color: AppColors.black),
+                            SizedBox(width: 5),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Text(
+                                  'RP',
+                                  style: GoogleFonts.montserrat(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.black,
+                                  ),
+                                ),
+                                Text(
+                                  formatBalance(75000001),
+                                  style: GoogleFonts.montserrat(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.black,
                                   ),
                                 ),
                               ],
