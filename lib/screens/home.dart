@@ -1,6 +1,9 @@
 import 'package:dooid/data/profile.dart';
+import 'package:dooid/widgets/colors.dart';
 import 'package:dooid/widgets/format.dart';
+import 'package:dooid/widgets/home_icons_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Home extends StatefulWidget {
@@ -19,8 +22,9 @@ class _HomeState extends State<Home> {
           child: Column(
             children: [
               HomeTop(),
+              SizedBox(height: 20),
               HomeCard(),
-              SizedBox(height: 12),
+              SizedBox(height: 25),
               HomeMainButtons(),
               SizedBox(height: 30),
               HomeQuickTransfer(),
@@ -62,25 +66,25 @@ class HomeTop extends StatelessWidget {
                       Text(
                         'Hello, ',
                         style: GoogleFonts.montserrat(
-                            fontSize: 20, color: Color(0xFF131313)),
+                            fontSize: 20, color: AppColors.black),
                       ),
                       Text(
                         '${kevinProfile.first_name ?? ''}!',
                         style: GoogleFonts.montserrat(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
-                            color: Color(0xFF131313)),
+                            color: AppColors.black),
                       ),
                       SizedBox(width: 4),
                       Icon(Icons.verified_user,
-                          size: 12, color: Colors.grey.shade400)
+                          size: 12, color: AppColors.darkGrey)
                     ],
                   ),
                   Text(
                     'Welcome Back!',
                     style: GoogleFonts.montserrat(
                       fontSize: 14,
-                      color: Colors.grey.shade400,
+                      color: AppColors.midGrey,
                     ),
                   ),
                 ],
@@ -91,12 +95,12 @@ class HomeTop extends StatelessWidget {
             width: 35,
             height: 35,
             circleColor: Colors.white,
-            strokeColor: Colors.grey.shade400,
+            strokeColor: AppColors.midGrey,
             strokeSize: 1,
             insideWidget: Icon(
               Icons.notifications_none_sharp,
               size: 20,
-              color: Colors.grey.shade400,
+              color: AppColors.midGrey,
             ),
             navigateToGesture: GestureDetector(
               onTap: () {
@@ -140,15 +144,36 @@ class _HomeCardState extends State<HomeCard> {
     return Stack(
       alignment: Alignment.center,
       children: [
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 25),
-          child: Image.asset(
-            'assets/images/home/Card.png',
+        Positioned(
+          child: Transform.rotate(
+            angle: 3 * 3.14 / 180,
+            child: Container(
+              width: 350,
+              height: 190,
+              decoration: BoxDecoration(
+                color: AppColors.red,
+                borderRadius: BorderRadius.circular(40),
+              ),
+            ),
           ),
         ),
         Positioned(
-          top: 40,
-          left: 60,
+          child: Container(
+            width: 350,
+            height: 190,
+            decoration: BoxDecoration(
+              color: AppColors.black,
+              image: DecorationImage(
+                image: AssetImage('assets/images/home/card.png'),
+                fit: BoxFit.fill,
+              ),
+              borderRadius: BorderRadius.circular(40),
+            ),
+          ),
+        ),
+        Positioned(
+          top: 35,
+          left: 30,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -157,7 +182,7 @@ class _HomeCardState extends State<HomeCard> {
                 showBalance ? kevinProfile.balance : 0.0,
                 showBalance,
                 toggleBalanceVisibility,
-                Color(0xFFFF5151),
+                AppColors.red,
               ),
               SizedBox(height: 21),
               buildToggleText(
@@ -174,7 +199,8 @@ class _HomeCardState extends State<HomeCard> {
     );
   }
 
-  Widget buildToggleText(String label, double? value, bool show, VoidCallback onTap, Color textColor) {
+  Widget buildToggleText(String label, double? value, bool show,
+      VoidCallback onTap, Color textColor) {
     final formattedBalance = formatBalance(value);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -183,19 +209,19 @@ class _HomeCardState extends State<HomeCard> {
           label,
           style: GoogleFonts.montserrat(
             fontSize: 14,
-            color: Colors.grey.shade400,
+            color: AppColors.midGrey,
           ),
         ),
         SizedBox(height: 3),
         Row(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-              Text(
-                'RP',
-                style: GoogleFonts.montserrat(
-                  fontSize: 13,
-                  fontWeight: FontWeight.bold,
-                  color: textColor,
+            Text(
+              'RP',
+              style: GoogleFonts.montserrat(
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+                color: textColor,
               ),
             ),
             AnimatedSwitcher(
@@ -203,8 +229,7 @@ class _HomeCardState extends State<HomeCard> {
               transitionBuilder: (child, animation) {
                 final curvedAnimation = CurvedAnimation(
                   parent: animation,
-                  curve: Curves
-                      .elasticOut,
+                  curve: Curves.elasticOut,
                 );
                 return ScaleTransition(
                   scale: Tween<double>(begin: 0.5, end: 1.0)
@@ -319,15 +344,14 @@ class HomeMainButtons extends StatelessWidget {
           HomeCircleButtonIconText(
             width: 85,
             height: 85,
-            circleColor: Colors.grey.shade200,
+            circleColor: AppColors.lightGrey,
             strokeColor: Colors.white,
             strokeSize: 1,
-            insideWidget: Image.asset('assets/images/home/transfer.png',
-                width: 40, height: 40),
+            insideWidget: Icon(HomeIcons.transfer, size: 40),
             buttonTextWidget: Text('Send',
                 style: GoogleFonts.montserrat(
                   fontSize: 12,
-                  color: Color(0xFF131313),
+                  color: AppColors.black,
                   fontWeight: FontWeight.normal,
                 )),
             textCircleSpacing: 5,
@@ -340,15 +364,14 @@ class HomeMainButtons extends StatelessWidget {
           HomeCircleButtonIconText(
             width: 85,
             height: 85,
-            circleColor: Colors.grey.shade200,
+            circleColor: AppColors.lightGrey,
             strokeColor: Colors.white,
             strokeSize: 1,
-            insideWidget: Image.asset('assets/images/home/topup.png',
-                width: 40, height: 40),
+            insideWidget: Icon(HomeIcons.topup, size: 40),
             buttonTextWidget: Text('Top Up',
                 style: GoogleFonts.montserrat(
                   fontSize: 12,
-                  color: Color(0xFF131313),
+                  color: AppColors.black,
                   fontWeight: FontWeight.normal,
                 )),
             textCircleSpacing: 5,
@@ -361,15 +384,14 @@ class HomeMainButtons extends StatelessWidget {
           HomeCircleButtonIconText(
             width: 85,
             height: 85,
-            circleColor: Colors.grey.shade200,
+            circleColor: AppColors.lightGrey,
             strokeColor: Colors.white,
             strokeSize: 1,
-            insideWidget: Image.asset('assets/images/home/more.png',
-                width: 40, height: 40),
+            insideWidget: Icon(HomeIcons.more, size: 40),
             buttonTextWidget: Text('More',
                 style: GoogleFonts.montserrat(
                   fontSize: 12,
-                  color: Color(0xFF131313),
+                  color: AppColors.black,
                   fontWeight: FontWeight.normal,
                 )),
             textCircleSpacing: 5,
@@ -404,7 +426,7 @@ class HomeQuickTransfer extends StatelessWidget {
               style: GoogleFonts.montserrat(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF131313),
+                color: AppColors.black,
               ),
             ),
             SizedBox(height: 10),
@@ -415,21 +437,21 @@ class HomeQuickTransfer extends StatelessWidget {
                   width: 65,
                   height: 65,
                   circleColor: Colors.white,
-                  strokeColor: Colors.grey.shade200,
+                  strokeColor: AppColors.lightGrey,
                   strokeSize: 2,
                   insideWidget: Text(
                     'I',
                     style: GoogleFonts.montserrat(
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF131313),
+                      color: AppColors.black,
                     ),
                   ),
                   buttonTextWidget: Text(
                     'Ivander',
                     style: GoogleFonts.montserrat(
                       fontSize: 10,
-                      color: Colors.grey.shade400,
+                      color: AppColors.darkGrey,
                     ),
                   ),
                   textCircleSpacing: 4,
@@ -443,21 +465,21 @@ class HomeQuickTransfer extends StatelessWidget {
                   width: 65,
                   height: 65,
                   circleColor: Colors.white,
-                  strokeColor: Colors.grey.shade200,
+                  strokeColor: AppColors.lightGrey,
                   strokeSize: 2,
                   insideWidget: Text(
                     'RS',
                     style: GoogleFonts.montserrat(
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF131313),
+                      color: AppColors.black,
                     ),
                   ),
                   buttonTextWidget: Text(
                     'Richard',
                     style: GoogleFonts.montserrat(
                       fontSize: 10,
-                      color: Colors.grey.shade400,
+                      color: AppColors.darkGrey,
                     ),
                   ),
                   textCircleSpacing: 4,
@@ -471,21 +493,21 @@ class HomeQuickTransfer extends StatelessWidget {
                   width: 65,
                   height: 65,
                   circleColor: Colors.white,
-                  strokeColor: Colors.grey.shade200,
+                  strokeColor: AppColors.lightGrey,
                   strokeSize: 2,
                   insideWidget: Text(
                     'RT',
                     style: GoogleFonts.montserrat(
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF131313),
+                      color: AppColors.black,
                     ),
                   ),
                   buttonTextWidget: Text(
                     'Ruben',
                     style: GoogleFonts.montserrat(
                       fontSize: 10,
-                      color: Colors.grey.shade400,
+                      color: AppColors.darkGrey,
                     ),
                   ),
                   textCircleSpacing: 4,
@@ -499,21 +521,21 @@ class HomeQuickTransfer extends StatelessWidget {
                   width: 65,
                   height: 65,
                   circleColor: Colors.white,
-                  strokeColor: Colors.grey.shade200,
+                  strokeColor: AppColors.lightGrey,
                   strokeSize: 2,
                   insideWidget: Text(
                     'TI',
                     style: GoogleFonts.montserrat(
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF131313),
+                      color: AppColors.black,
                     ),
                   ),
                   buttonTextWidget: Text(
                     'Tigo',
                     style: GoogleFonts.montserrat(
                       fontSize: 10,
-                      color: Colors.grey.shade400,
+                      color: AppColors.darkGrey,
                     ),
                   ),
                   textCircleSpacing: 4,
@@ -527,21 +549,21 @@ class HomeQuickTransfer extends StatelessWidget {
                   width: 65,
                   height: 65,
                   circleColor: Colors.white,
-                  strokeColor: Colors.grey.shade200,
+                  strokeColor: AppColors.lightGrey,
                   strokeSize: 2,
                   insideWidget: Text(
                     'JS',
                     style: GoogleFonts.montserrat(
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF131313),
+                      color: AppColors.black,
                     ),
                   ),
                   buttonTextWidget: Text(
                     'Jason',
                     style: GoogleFonts.montserrat(
                       fontSize: 10,
-                      color: Colors.grey.shade400,
+                      color: AppColors.darkGrey,
                     ),
                   ),
                   textCircleSpacing: 4,
@@ -579,7 +601,7 @@ class HomeRecentTransactions extends StatelessWidget {
               style: GoogleFonts.montserrat(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF131313),
+                color: AppColors.black,
               ),
             ),
             SizedBox(height: 10),
@@ -594,14 +616,14 @@ class HomeRecentTransactions extends StatelessWidget {
                           width: 65,
                           height: 65,
                           circleColor: Colors.white,
-                          strokeColor: Colors.grey.shade200,
+                          strokeColor: AppColors.lightGrey,
                           strokeSize: 2,
                           insideWidget: Text(
                             'JS',
                             style: GoogleFonts.montserrat(
                               fontSize: 25,
                               fontWeight: FontWeight.bold,
-                              color: Color(0xFF131313),
+                              color: AppColors.black,
                             ),
                           ),
                         ),
@@ -614,14 +636,14 @@ class HomeRecentTransactions extends StatelessWidget {
                               style: GoogleFonts.montserrat(
                                 fontSize: 13,
                                 fontWeight: FontWeight.bold,
-                                color: Color(0xFF131313),
+                                color: AppColors.black,
                               ),
                             ),
                             Text(
                               'bayar open bo',
                               style: GoogleFonts.montserrat(
                                 fontSize: 10,
-                                color: Colors.grey.shade400,
+                                color: AppColors.midGrey,
                               ),
                             ),
                           ],
@@ -634,7 +656,7 @@ class HomeRecentTransactions extends StatelessWidget {
                         Row(
                           children: [
                             Icon(Icons.add_circle,
-                                size: 15, color: Color(0xFF131313)),
+                                size: 15, color: AppColors.black),
                             SizedBox(width: 5),
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.end,
@@ -644,7 +666,7 @@ class HomeRecentTransactions extends StatelessWidget {
                                   style: GoogleFonts.montserrat(
                                     fontSize: 10,
                                     fontWeight: FontWeight.bold,
-                                    color: Color(0xFF131313),
+                                    color: AppColors.black,
                                   ),
                                 ),
                                 Text(
@@ -652,7 +674,7 @@ class HomeRecentTransactions extends StatelessWidget {
                                   style: GoogleFonts.montserrat(
                                     fontSize: 13,
                                     fontWeight: FontWeight.bold,
-                                    color: Color(0xFF131313),
+                                    color: AppColors.black,
                                   ),
                                 ),
                               ],
@@ -663,7 +685,7 @@ class HomeRecentTransactions extends StatelessWidget {
                           '21 September 2023',
                           style: GoogleFonts.montserrat(
                             fontSize: 10,
-                            color: Colors.grey.shade400,
+                            color: AppColors.midGrey,
                           ),
                         ),
                       ],
@@ -684,7 +706,7 @@ class HomeRecentTransactions extends StatelessWidget {
                           width: 65,
                           height: 65,
                           circleColor: Colors.white,
-                          strokeColor: Colors.grey.shade200,
+                          strokeColor: AppColors.lightGrey,
                           strokeSize: 2,
                           insideWidget: Image.asset(
                               'assets/images/home/steam.png',
@@ -699,14 +721,14 @@ class HomeRecentTransactions extends StatelessWidget {
                               style: GoogleFonts.montserrat(
                                 fontSize: 13,
                                 fontWeight: FontWeight.bold,
-                                color: Color(0xFF131313),
+                                color: AppColors.black,
                               ),
                             ),
                             Text(
                               'Entertainment - #25544',
                               style: GoogleFonts.montserrat(
                                 fontSize: 10,
-                                color: Colors.grey.shade400,
+                                color: AppColors.midGrey,
                               ),
                             ),
                           ],
@@ -719,7 +741,7 @@ class HomeRecentTransactions extends StatelessWidget {
                         Row(
                           children: [
                             Icon(Icons.remove_circle,
-                                size: 15, color: Color(0xFFFF5151)),
+                                size: 15, color: AppColors.red),
                             SizedBox(width: 5),
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.end,
@@ -729,7 +751,7 @@ class HomeRecentTransactions extends StatelessWidget {
                                   style: GoogleFonts.montserrat(
                                     fontSize: 10,
                                     fontWeight: FontWeight.bold,
-                                    color: Color(0xFFFF5151),
+                                    color: AppColors.red,
                                   ),
                                 ),
                                 Text(
@@ -737,7 +759,7 @@ class HomeRecentTransactions extends StatelessWidget {
                                   style: GoogleFonts.montserrat(
                                     fontSize: 13,
                                     fontWeight: FontWeight.bold,
-                                    color: Color(0xFFFF5151),
+                                    color: AppColors.red,
                                   ),
                                 ),
                               ],
@@ -748,7 +770,7 @@ class HomeRecentTransactions extends StatelessWidget {
                           '21 September 2023',
                           style: GoogleFonts.montserrat(
                             fontSize: 10,
-                            color: Colors.grey.shade400,
+                            color: AppColors.midGrey,
                           ),
                         ),
                       ],
@@ -781,14 +803,14 @@ class HomeQRScanButton extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Color(0xFF545454), Color(0xFF363636), Color(0xFF131313)],
+              colors: [Color(0xFF545454), Color(0xFF363636), AppColors.black],
               begin: Alignment.bottomCenter,
               end: Alignment.topCenter,
             ),
             shape: BoxShape.circle,
           ),
           child: Center(
-            child: Image.asset('assets/images/home/scan.png', width: 35),
+            child: Icon(HomeIcons.scan, size: 40),
           ),
         ),
       ),
@@ -816,7 +838,7 @@ class HomeNavBar extends StatelessWidget {
                 },
                 child: Icon(
                   Icons.home_filled,
-                  color: Color(0xFFFF5151),
+                  color: AppColors.red,
                 ),
               ),
               GestureDetector(
@@ -825,7 +847,7 @@ class HomeNavBar extends StatelessWidget {
                 },
                 child: Icon(
                   Icons.swap_vert,
-                  color: Color(0xFF131313),
+                  color: AppColors.black,
                 ),
               ),
               SizedBox(width: 50),
@@ -835,7 +857,7 @@ class HomeNavBar extends StatelessWidget {
                 },
                 child: Icon(
                   Icons.local_offer,
-                  color: Color(0xFF131313),
+                  color: AppColors.black,
                 ),
               ),
               GestureDetector(
@@ -844,7 +866,7 @@ class HomeNavBar extends StatelessWidget {
                 },
                 child: Icon(
                   Icons.person,
-                  color: Color(0xFF131313),
+                  color: AppColors.black,
                 ),
               ),
             ],
