@@ -34,43 +34,6 @@ class TopUpState extends State<TopUp> {
     });
   }
 
-  @override
-  void initState() {
-    super.initState();
-
-    // Add the listener in the initState method
-    _controller.addListener(() {
-      final text = _controller.text;
-      final formattedText = formatInput(text);
-
-      if (text != formattedText) {
-        _controller.value = _controller.value.copyWith(
-          text: formattedText,
-          selection: TextSelection.collapsed(offset: formattedText.length),
-        );
-      }
-    });
-  }
-
-  String formatInput(String input) {
-
-    // Remove any non-numeric characters except a single decimal point
-    final cleanedText = input.replaceAll(RegExp(r'[^0-9.]'), '');
-
-    // Split the cleaned text into integer and decimal parts
-    final parts = cleanedText.split('.');
-    String integerPart = parts[0];
-    String decimalPart = parts.length > 1 ? '.' + parts[1] : '';
-
-    // Format the integer part with commas
-    final formatter = NumberFormat("#,###");
-    integerPart = formatter.format(int.parse(integerPart));
-
-    // Combine the formatted parts
-    return '$integerPart$decimalPart';
-  }
-
-
   double btnpaddinghorizontal = 25;
   double btnpaddingvertical = 10;
 
@@ -257,9 +220,6 @@ class TopUpState extends State<TopUp> {
     super.dispose();
   }
 }
-
-
-
 
 class AddAmountBtn extends StatelessWidget {
   final int add;
