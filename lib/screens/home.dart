@@ -3,7 +3,6 @@ import 'package:dooid/widgets/colors.dart';
 import 'package:dooid/widgets/format.dart';
 import 'package:dooid/widgets/home_icons_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Home extends StatefulWidget {
