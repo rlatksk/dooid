@@ -4,9 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 class TfSuccess extends StatelessWidget {
-  final String name;
+  final String? name;
   final int? amount;
-  final String msg;
+  final String? msg;
   TfSuccess({super.key, 
   required this.name, required this.amount, required this.msg, 
 });
@@ -69,7 +69,7 @@ class TfSuccess extends StatelessWidget {
                                 fontWeight: FontWeight.bold
                               )),
                               SizedBox(height: 100,),
-                              Text(name,
+                              Text(name!,
                                 style: GoogleFonts.montserrat(
                                   fontSize: 20,
                                   color: Colors.white,
@@ -103,18 +103,21 @@ class TfSuccess extends StatelessWidget {
                               )),
                               SizedBox(height: 20,),
                               Container(
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.all(10),
                                 height: 100,
                                 width: 230,
                                 decoration: BoxDecoration(
                                   color: Color(0xFFEDEDED),
                                   borderRadius: BorderRadius.circular(15)
                                 ),
-                                child: Center(
-                                  child: Text(msg,
-                                  style: GoogleFonts.montserrat(
-                                    fontSize: 15,
-                                    color: Color(0xFF131313)
-                                  ),),))
+                                child: Text(msg!,
+                                style: GoogleFonts.montserrat(
+                                  fontSize: 15,
+                                  color: Color(0xFF131313),
+                                ),
+                                textAlign: TextAlign.center,
+                                ))
                           ],
                         ),
                       ),
