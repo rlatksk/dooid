@@ -2,15 +2,19 @@ import 'package:dooid/data/profile.dart';
 import 'package:dooid/screens/transfer/transferSuccess.dart';
 import 'package:dooid/widgets/TopUpTransfer/wBackButton.dart';
 import 'package:dooid/widgets/colors.dart';
+import 'package:dooid/widgets/contactProvider.dart';
 import 'package:dooid/widgets/topUpTransfer/contactDropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:slide_to_act_reborn/slide_to_act_reborn.dart';
 
 class Transfer extends StatefulWidget {
-  const Transfer({super.key});
+  final Contact foundContact;
+
+  const Transfer({Key? key, required this.foundContact}) : super(key: key);
 
   @override
   State<Transfer> createState() => _TransferState();
@@ -166,18 +170,36 @@ class _TransferState extends State<Transfer> {
                     color: AppColors.midGrey,
                   ),
                   onSubmit: () {
-                    setState(() {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => TfSuccess(
-                            name: _selectedContact.name,
-                            amount: amount,
-                            msg: msg,
-                          ),
+                    final double senderAmount = -amount;
+                    final contactProvider = Provider.of<ContactProvider>(context, listen: false);
+                    contactProvider.addTransactionToContact(
+                      contacts.indexOf(widget.foundContact),
+                      Transaction(
+                        name: _selectedContact.name,
+                        amount: senderAmount,
+                        date: DateTime.now(),
+                        message: msg,
+                      ),
+                    );
+                    contactProvider.addTransactionToContact(
+                      contacts.indexOf(_selectedContact),
+                      Transaction(
+                        name: widget.foundContact.name,
+                        amount: amount,
+                        date: DateTime.now(),
+                        message: msg,
+                      ),
+                    );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TfSuccess(
+                          name: _selectedContact.name,
+                          amount: amount,
+                          msg: msg,
                         ),
-                      );
-                    });
+                      ),
+                    );
                   },
                 ),
               ),

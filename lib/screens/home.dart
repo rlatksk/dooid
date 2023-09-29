@@ -1,7 +1,10 @@
+import 'dart:math';
+
 import 'package:dooid/data/profile.dart';
 import 'package:dooid/screens/transfer/transfer.dart';
 import 'package:dooid/widgets/colors.dart';
 import 'package:dooid/widgets/format.dart';
+import 'package:dooid/widgets/initials.dart';
 import 'package:dooid/widgets/transition.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,6 +15,9 @@ class Home extends StatefulWidget {
   @override
   State<Home> createState() => _HomeState();
 }
+
+Contact foundContact =
+    findContactByCountryCodeAndPhoneNumber('81', '9876543210');
 
 class _HomeState extends State<Home> {
   @override
@@ -48,6 +54,8 @@ class HomeTop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String firstName = foundContact.firstName;
+
     return Padding(
       padding: EdgeInsets.fromLTRB(25, 25, 25, 0),
       child: Row(
@@ -71,7 +79,7 @@ class HomeTop extends StatelessWidget {
                             fontSize: 20, color: AppColors.black),
                       ),
                       Text(
-                        '${kevinProfile.firstName ?? ''}!',
+                        '${firstName}!',
                         style: GoogleFonts.montserrat(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -106,7 +114,7 @@ class HomeTop extends StatelessWidget {
             ),
             navigateToGesture: GestureDetector(
               onTap: () {
-                print('Notification Screen');
+                print('Notifications Screen');
               },
             ),
           ),
@@ -143,6 +151,7 @@ class _HomeCardState extends State<HomeCard> {
 
   @override
   Widget build(BuildContext context) {
+    double balance = foundContact.balance ?? 0.0;
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -181,7 +190,7 @@ class _HomeCardState extends State<HomeCard> {
             children: [
               buildToggleText(
                 'your balance',
-                showBalance ? kevinProfile.balance : 0.0,
+                showBalance ? balance : 0.0,
                 showBalance,
                 toggleBalanceVisibility,
                 AppColors.red,
@@ -363,8 +372,8 @@ class HomeMainButtons extends StatelessWidget {
             textCircleSpacing: 5,
             navigateToGesture: GestureDetector(
               onTap: () {
-                Navigator.of(context)
-                    .push(BouncyPageRoute(destinationPage: Transfer()));
+                Navigator.of(context).push(BouncyPageRoute(
+                    destinationPage: Transfer(foundContact: foundContact)));
               },
             ),
           ),
@@ -567,7 +576,7 @@ class HomeQuickTransfer extends StatelessWidget {
                   strokeColor: AppColors.lightGrey,
                   strokeSize: 2,
                   insideWidget: Text(
-                    'JS',
+                    'JC',
                     style: GoogleFonts.montserrat(
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
@@ -599,11 +608,26 @@ class HomeQuickTransfer extends StatelessWidget {
 
 class HomeRecentTransactions extends StatelessWidget {
   const HomeRecentTransactions({
-    super.key,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    List<Transaction>? transactions = foundContact.recentTransactions;
+
+    List<Widget> recentTransactionWidgets = [];
+    if (transactions != null && transactions.isNotEmpty) { // always not null so idk why chatgpt do this lol
+      transactions = transactions.reversed.toList();
+      for (int i = 0; i < transactions.length; i++) {
+        Transaction transaction = transactions[i];
+        recentTransactionWidgets.add(
+          buildTransactionWidget(transaction),
+        );
+        if (i < transactions.length - 1) {
+          recentTransactionWidgets.add(SizedBox(height: 10));
+        }
+      }
+    }
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 25),
       child: Align(
@@ -621,452 +645,109 @@ class HomeRecentTransactions extends StatelessWidget {
             ),
             SizedBox(height: 10),
             Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        HomeCircleButtonIconText(
-                          width: 65,
-                          height: 65,
-                          circleColor: Colors.white,
-                          strokeColor: AppColors.lightGrey,
-                          strokeSize: 2,
-                          insideWidget: Text(
-                            'JS',
-                            style: GoogleFonts.montserrat(
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.black,
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'JUSTIN SALIM',
-                              style: GoogleFonts.montserrat(
-                                fontSize: 13,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.black,
-                              ),
-                            ),
-                            Text(
-                              'bayar open bo',
-                              style: GoogleFonts.montserrat(
-                                fontSize: 10,
-                                color: AppColors.midGrey,
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(Icons.add_circle,
-                                size: 15, color: AppColors.black),
-                            SizedBox(width: 5),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Text(
-                                  'RP',
-                                  style: GoogleFonts.montserrat(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.black,
-                                  ),
-                                ),
-                                Text(
-                                  formatBalance(75000001),
-                                  style: GoogleFonts.montserrat(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.black,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        Text(
-                          '21 September 2023',
-                          style: GoogleFonts.montserrat(
-                            fontSize: 10,
-                            color: AppColors.midGrey,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            SizedBox(height: 10),
-            Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        HomeCircleButtonIconText(
-                          width: 65,
-                          height: 65,
-                          circleColor: Colors.white,
-                          strokeColor: AppColors.lightGrey,
-                          strokeSize: 2,
-                          insideWidget: Image.asset(
-                              'assets/images/home/steam.png',
-                              width: 25),
-                        ),
-                        SizedBox(width: 10),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'STEAM',
-                              style: GoogleFonts.montserrat(
-                                fontSize: 13,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.black,
-                              ),
-                            ),
-                            Text(
-                              'Entertainment - #25544',
-                              style: GoogleFonts.montserrat(
-                                fontSize: 10,
-                                color: AppColors.midGrey,
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(Icons.remove_circle,
-                                size: 15, color: AppColors.red),
-                            SizedBox(width: 5),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Text(
-                                  'RP',
-                                  style: GoogleFonts.montserrat(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.red,
-                                  ),
-                                ),
-                                Text(
-                                  formatBalance(522344701),
-                                  style: GoogleFonts.montserrat(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.red,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        Text(
-                          '21 September 2023',
-                          style: GoogleFonts.montserrat(
-                            fontSize: 10,
-                            color: AppColors.midGrey,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            SizedBox(height: 10),
-            Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        HomeCircleButtonIconText(
-                          width: 65,
-                          height: 65,
-                          circleColor: Colors.white,
-                          strokeColor: AppColors.lightGrey,
-                          strokeSize: 2,
-                          insideWidget: Text(
-                            'JS',
-                            style: GoogleFonts.montserrat(
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.black,
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'JUSTIN SALIM',
-                              style: GoogleFonts.montserrat(
-                                fontSize: 13,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.black,
-                              ),
-                            ),
-                            Text(
-                              'bayar open bo',
-                              style: GoogleFonts.montserrat(
-                                fontSize: 10,
-                                color: AppColors.midGrey,
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(Icons.add_circle,
-                                size: 15, color: AppColors.black),
-                            SizedBox(width: 5),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Text(
-                                  'RP',
-                                  style: GoogleFonts.montserrat(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.black,
-                                  ),
-                                ),
-                                Text(
-                                  formatBalance(75000001),
-                                  style: GoogleFonts.montserrat(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.black,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        Text(
-                          '21 September 2023',
-                          style: GoogleFonts.montserrat(
-                            fontSize: 10,
-                            color: AppColors.midGrey,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            SizedBox(height: 10),
-            Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        HomeCircleButtonIconText(
-                          width: 65,
-                          height: 65,
-                          circleColor: Colors.white,
-                          strokeColor: AppColors.lightGrey,
-                          strokeSize: 2,
-                          insideWidget: Text(
-                            'JS',
-                            style: GoogleFonts.montserrat(
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.black,
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'JUSTIN SALIM',
-                              style: GoogleFonts.montserrat(
-                                fontSize: 13,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.black,
-                              ),
-                            ),
-                            Text(
-                              'bayar open bo',
-                              style: GoogleFonts.montserrat(
-                                fontSize: 10,
-                                color: AppColors.midGrey,
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(Icons.add_circle,
-                                size: 15, color: AppColors.black),
-                            SizedBox(width: 5),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Text(
-                                  'RP',
-                                  style: GoogleFonts.montserrat(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.black,
-                                  ),
-                                ),
-                                Text(
-                                  formatBalance(75000001),
-                                  style: GoogleFonts.montserrat(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.black,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        Text(
-                          '21 September 2023',
-                          style: GoogleFonts.montserrat(
-                            fontSize: 10,
-                            color: AppColors.midGrey,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            SizedBox(height: 10),
-            Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        HomeCircleButtonIconText(
-                          width: 65,
-                          height: 65,
-                          circleColor: Colors.white,
-                          strokeColor: AppColors.lightGrey,
-                          strokeSize: 2,
-                          insideWidget: Text(
-                            'JS',
-                            style: GoogleFonts.montserrat(
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.black,
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'JUSTIN SALIM',
-                              style: GoogleFonts.montserrat(
-                                fontSize: 13,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.black,
-                              ),
-                            ),
-                            Text(
-                              'bayar open bo',
-                              style: GoogleFonts.montserrat(
-                                fontSize: 10,
-                                color: AppColors.midGrey,
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(Icons.add_circle,
-                                size: 15, color: AppColors.black),
-                            SizedBox(width: 5),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Text(
-                                  'RP',
-                                  style: GoogleFonts.montserrat(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.black,
-                                  ),
-                                ),
-                                Text(
-                                  formatBalance(75000001),
-                                  style: GoogleFonts.montserrat(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.black,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        Text(
-                          '21 September 2023',
-                          style: GoogleFonts.montserrat(
-                            fontSize: 10,
-                            color: AppColors.midGrey,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
+              children: recentTransactionWidgets,
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget buildTransactionWidget(Transaction transaction) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            HomeCircleButtonIconText(
+              width: 65,
+              height: 65,
+              circleColor: Colors.white,
+              strokeColor: AppColors.lightGrey,
+              strokeSize: 2,
+              insideWidget: Text(
+                getInitials(transaction.name),
+                style: GoogleFonts.montserrat(
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.black,
+                ),
+              ),
+            ),
+            SizedBox(width: 10),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  transaction.name.toUpperCase(),
+                  style: GoogleFonts.montserrat(
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.black,
+                  ),
+                ),
+                Text(
+                  transaction.message ?? '',
+                  style: GoogleFonts.montserrat(
+                    fontSize: 10,
+                    color: AppColors.midGrey,
+                  ),
+                ),
+              ],
+            )
+          ],
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Row(
+              children: [
+                Icon(
+                  transaction.amount >= 0
+                      ? Icons.add_circle
+                      : Icons.remove_circle,
+                  size: 15,
+                  color:
+                      transaction.amount >= 0 ? AppColors.black : AppColors.red,
+                ),
+                SizedBox(width: 5),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      'RP',
+                      style: GoogleFonts.montserrat(
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                        color: transaction.amount >= 0
+                            ? AppColors.black
+                            : AppColors.red,
+                      ),
+                    ),
+                    Text(
+                      formatBalance(transaction.amount.abs()),
+                      style: GoogleFonts.montserrat(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        color: transaction.amount >= 0
+                            ? AppColors.black
+                            : AppColors.red,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            Text(
+              transaction.date.toString(),
+              style: GoogleFonts.montserrat(
+                fontSize: 10,
+                color: AppColors.midGrey,
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
