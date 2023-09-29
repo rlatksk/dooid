@@ -15,7 +15,7 @@ void main() => runApp(
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(debugShowCheckedModeBanner: false, home: TopUp());
+    return MaterialApp(debugShowCheckedModeBanner: false, home: Splash());
   }
 }
 //test

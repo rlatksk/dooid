@@ -54,7 +54,7 @@ class _TransferState extends State<Transfer> {
                 Text(
                   'Send to',
                   style: GoogleFonts.montserrat(
-                    fontSize: 17,
+                    fontSize: 15,
                     color: const Color(0xFF333333),
                     fontWeight: FontWeight.bold,
                   ),
@@ -70,12 +70,12 @@ class _TransferState extends State<Transfer> {
                     },
                     contacts: contacts),
                 SizedBox(
-                  height: 40,
+                  height: 35,
                 ),
                 Text(
                   'Message',
                   style: GoogleFonts.montserrat(
-                    fontSize: 17,
+                    fontSize: 15,
                     color: const Color(0xFF333333),
                     fontWeight: FontWeight.bold,
                   ),
@@ -106,12 +106,12 @@ class _TransferState extends State<Transfer> {
                   maxLines: 4,
                   maxLength: 75,
                   style: GoogleFonts.montserrat(
-                    fontSize: 18,
+                    fontSize: 15,
                     color: Color(0xFF131313)
                   ),
                 ),
                 SizedBox(
-                  height: 15,
+                  height: 10,
                 ),
                 TextFormField(
                   onChanged: (value) {
@@ -175,7 +175,7 @@ class _TransferState extends State<Transfer> {
                     ),
                     onSubmit: () {
                       setState(() async {
-                        await Future.delayed(Duration(seconds: 1));
+                        await Future.delayed(const Duration(seconds: 1));
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(

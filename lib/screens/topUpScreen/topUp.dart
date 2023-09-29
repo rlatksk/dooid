@@ -1,3 +1,4 @@
+import 'package:dooid/screens/topUpScreen/topUpSuccess.dart';
 import 'package:dooid/widgets/TopUpTransfer/wBackButton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,7 +16,8 @@ class TopUp extends StatefulWidget {
 }
 
 class TopUpState extends State<TopUp> {
-  final int balance = 123456;
+  final int balance = 100000; // change this
+  String userName = 'Leonardo'; // this aswell
   bool isBalanceVisible = true;
   late final String formatted = NumberFormat("#,###.00", "en_US").format(balance);
   late int amount = 0;
@@ -34,12 +36,14 @@ class TopUpState extends State<TopUp> {
     });
   }
 
+  //for that setted amount button
   double btnpaddinghorizontal = 25;
   double btnpaddingvertical = 10;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         toolbarHeight: 100,
         elevation: 0,
@@ -128,7 +132,11 @@ class TopUpState extends State<TopUp> {
                   controller: _controller,
                     onChanged: (value) {
                       setState(() {
-                        amount = int.parse(value);  
+                        try {
+                        amount = int.parse(value);
+                      } catch (e) {
+                        amount = 0;
+                      }
                       });
                     },
                     inputFormatters: [
@@ -177,34 +185,38 @@ class TopUpState extends State<TopUp> {
               alignment: Alignment.bottomCenter,
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                  child: SlideAction(
-                    height: 73,
-                    borderRadius: 50,
-                    innerColor: Color(0xFFFF5151),
-                    outerColor: Color(0xFF131313),
-                    text: 'Slide to confirm',
-                    alignment: Alignment.bottomCenter,
-                    sliderButtonIcon: SvgPicture.asset('assets/icons/slider_button.svg'),
-                    sliderButtonIconPadding: 0,
-                    textStyle: const TextStyle(
-                      fontFamily: 'Montserrat',
-                      color: Color(0xFFBABABA),
+                  child: Visibility(
+                    visible: amount != 0,
+                    child: SlideAction(
+                      height: 73,
+                      borderRadius: 50,
+                      innerColor: Color(0xFFFF5151),
+                      outerColor: Color(0xFF131313),
+                      text: 'Slide to confirm',
+                      alignment: Alignment.bottomCenter,
+                      sliderButtonIcon: SvgPicture.asset('assets/icons/slider_button.svg'),
+                      sliderButtonIconPadding: 0,
+                      textStyle: const TextStyle(
+                        fontFamily: 'Montserrat',
+                        color: Color(0xFFBABABA),
+                      ),
+                      onSubmit: () {
+                        setState(() async {
+                          await Future.delayed(const Duration(seconds: 1));
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => TopUpSuccess(
+                                name: userName,
+                                newBalance: balance + amount,
+                                addedAmount: amount,
+                              ),
+                            ),
+                          );
+                        }
+                        );
+                      },
                     ),
-                    onSubmit: () {
-                      setState(() {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => TfSuccess(
-                        //       name: _selectedContact.name,
-                        //       amount: amount, 
-                        //       msg: msg,
-                        //     ),
-                        //   ),
-                        // );
-                      }
-                      );
-                    },
                   ),
                 )
             )
@@ -254,9 +266,9 @@ class AddAmountBtn extends StatelessWidget {
             )
           ),
         style: TextButton.styleFrom(
-          fixedSize: Size(100, 30),
+          fixedSize: Size(90, 30),
           padding: EdgeInsets.symmetric(
-            horizontal: 25, 
+            horizontal: 15, 
             vertical: 10),
           backgroundColor: Color(0xFF131313),
           foregroundColor: Color(0xFFEDEDED),

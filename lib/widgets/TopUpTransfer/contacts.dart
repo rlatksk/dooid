@@ -116,10 +116,10 @@ class _ContactDropdownState extends State<ContactDropdown> {
                       children: [
                         Text(contact.name.toUpperCase(),
                             style: GoogleFonts.montserrat(
-                                fontSize: 17, 
+                                fontSize: 15, 
                                 fontWeight: FontWeight.bold)),
                         Text(contact.phoneNumber,
-                            style: GoogleFonts.montserrat(fontSize: 14)),
+                            style: GoogleFonts.montserrat(fontSize: 10)),
                       ],
                     ),
                   ),

@@ -1,23 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
-class TfSuccess extends StatelessWidget {
-  final String? name;
-  final int amount;
-  final String? msg;
-  TfSuccess({super.key, 
-  required this.name, required this.amount, required this.msg, 
+class TopUpSuccess extends StatelessWidget {
+  final String name;
+  final int newBalance;
+  final int addedAmount;
+
+  TopUpSuccess({super.key, 
+  required this.name, required this.newBalance, required this.addedAmount, 
 });
+
+  
 
   @override
   Widget build(BuildContext context) {
-    
-    String formattedAmount = '';
+    String formattedBalance = '';
+    String formmattedAmount = '';
     NumberFormat formatter = NumberFormat("#,###.00", "en_US");
-    formattedAmount = formatter.format(amount);
-    
+
+    formattedBalance = formatter.format(newBalance);
+    formmattedAmount = formatter.format(addedAmount);
     return Scaffold(
       appBar: AppBar(
           toolbarHeight: 100,
@@ -63,18 +67,20 @@ class TfSuccess extends StatelessWidget {
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold
                               )),
-                              SizedBox(height: 100,),
-                              Text(name!,
+                              SizedBox(height: 110,),
+                              Text(name, //name
                                 style: GoogleFonts.montserrat(
                                   fontSize: 20,
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold
                                 )),
+                              SizedBox(height: 5,),
                               Text('received', 
                                 style: GoogleFonts.montserrat(
                                   fontSize: 12,
                                   color: Color(0xFF8A8A8A)
                                 ),),
+                                SizedBox(height: 5,),
                               RichText(
                                 text: TextSpan(
                                   children: [
@@ -87,7 +93,7 @@ class TfSuccess extends StatelessWidget {
                                         )
                                     ),
                                     TextSpan(
-                                      text: formattedAmount,
+                                      text: formmattedAmount,
                                       style: GoogleFonts.montserrat(
                                         fontSize: 28,
                                         fontWeight: FontWeight.bold,
@@ -97,21 +103,32 @@ class TfSuccess extends StatelessWidget {
                                   ]
                               )),
                               SizedBox(height: 20,),
-                              Container(
-                                alignment: Alignment.center,
-                                padding: EdgeInsets.all(10),
-                                height: 100,
-                                width: 230,
-                                decoration: BoxDecoration(
-                                  color: Color(0xFFEDEDED),
-                                  borderRadius: BorderRadius.circular(15)
-                                ),
-                                child: Text(msg!,
-                                style: GoogleFonts.montserrat(
-                                  fontSize: 15,
-                                  color: Color(0xFF131313),
-                                ),
-                                textAlign: TextAlign.center,
+                              Text('new balance',
+                              style: GoogleFonts.montserrat(
+                                  fontSize: 12,
+                                  color: Color(0xFF8A8A8A)
+                                )),
+                              SizedBox(height: 5,),
+                              RichText(
+                                text: TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: 'Rp',
+                                      style: GoogleFonts.montserrat(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                        color: Color(0xFFEDEDED)
+                                        )
+                                    ),
+                                    TextSpan(
+                                      text: formattedBalance,
+                                      style: GoogleFonts.montserrat(
+                                        fontSize: 28,
+                                        fontWeight: FontWeight.bold,
+                                        color: Color(0xFFEDEDED)
+                                      )
+                                    )
+                                  ]
                                 ))
                           ],
                         ),

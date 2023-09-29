@@ -6,7 +6,7 @@ import 'package:slide_to_act_reborn/slide_to_act_reborn.dart';
 class wSlider extends StatefulWidget {
   final String toWhere;
   final String name;
-  final int? amount;
+  final int amount;
   final String msg;
 
   wSlider({
@@ -41,8 +41,8 @@ class _wSliderState extends State<wSlider> {
         ),
         onSubmit: () {
           setState(() {
-            if (widget.toWhere == 'Success') {
-            Navigator.push(
+            if (widget.toWhere == 'TFSuccess') {
+            Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                 builder: (context) => TfSuccess(
@@ -53,7 +53,8 @@ class _wSliderState extends State<wSlider> {
               ),
             );
           }
-          });
+          }
+          );
           
         },
       ),
