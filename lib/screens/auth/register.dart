@@ -123,7 +123,8 @@ class _RegisterState extends State<Register> {
     return wTextLink(
         text: 'Already have an account?',
         title: 'Sign In',
-        onTap: () => wPushReplaceTo(context, Login()));
+        onTap: () => wPushReplaceTo(context, Login()),
+        fontSize: 13,);
   }
 
   @override
@@ -160,6 +161,8 @@ class _RegisterState extends State<Register> {
                                   title: 'Sign Up',
                                   subtitle:
                                       'Create your account and revolutionize your finances.',
+                                  titleFontSize: 32,
+                                  subtitleFontSize: 18,
                                 ),
                               ),
                             ),

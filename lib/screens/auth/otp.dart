@@ -1,3 +1,4 @@
+import 'package:dooid/screens/auth/data.dart';
 import 'package:dooid/screens/auth/login.dart';
 import 'package:dooid/utils/utils.dart';
 import 'package:dooid/widgets/widget_auth.dart';
@@ -84,6 +85,7 @@ class _OtpState extends State<Otp> {
       text: "Didn't receive an OTP code?",
       title: 'Resend',
       onTap: () => wPushReplaceTo(context, Login()),
+      fontSize: 12,
     );
   }
 
@@ -121,6 +123,8 @@ class _OtpState extends State<Otp> {
                                   title: 'OTP Verification',
                                   subtitle:
                                       'We have sent an OTP code to your phone number.',
+                                  titleFontSize: 32,
+                                  subtitleFontSize: 18,
                                 ),
                               ),
                             ),
@@ -225,6 +229,6 @@ class _OtpState extends State<Otp> {
     print(otpNumber);
 
     await Future.delayed(Duration(seconds: 2));
-    wPushReplaceTo(context, Otp());
+    wPushReplaceTo(context, Data());
   }
 }

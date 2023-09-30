@@ -71,6 +71,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         title: 'Forgot Password ?',
                         subtitle:
                             'Enter your email and we will send you a link \nto reset your password',
+                        titleFontSize: 32,
+                        subtitleFontSize: 18,
                       ),
                       _inputEmail(),
                       SizedBox(

@@ -12,7 +12,7 @@ String? uValidator({
     }
   }
 
-  if(isEmail){
+  if(isRequired && isEmail){
     if(!value.contains('@') || !value.contains('.')){
       return 'Invalid Email';
     }
