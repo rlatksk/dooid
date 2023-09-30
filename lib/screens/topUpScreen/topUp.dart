@@ -16,7 +16,7 @@ class TopUp extends StatefulWidget {
 }
 
 class TopUpState extends State<TopUp> {
-  final int balance = 100000; // change this
+  int balance = 100000; // change this
   String userName = 'Leonardo'; // this aswell
   bool isBalanceVisible = true;
   late final String formatted = NumberFormat("#,###.00", "en_US").format(balance);

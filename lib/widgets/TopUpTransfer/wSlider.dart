@@ -1,3 +1,4 @@
+//didn't really use this widget
 import 'package:dooid/screens/transferScreen/transferSuccess.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
