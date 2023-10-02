@@ -37,18 +37,6 @@ class _DataState extends State<Data> {
       });
   }
 
-  String? validateAge(DateTime selectedDate) {
-    DateTime today = DateTime.now();
-    DateTime minimumDate =
-        today.subtract(Duration(days: 16 * 365)); // Minimum age of 16 years
-
-    if (selectedDate.isAfter(minimumDate)) {
-      return 'Must be at least 16 years old';
-    }
-
-    return null; // Validation passed
-  }
-
   Widget _inputBirthday() {
     return Container(
       child: Column(
@@ -171,7 +159,8 @@ class _DataState extends State<Data> {
                   border: InputBorder.none,
                   hintStyle: TextStyle(color: Colors.grey),
                 ),
-                validator: (val) => uValidator(value: val!, isEmail: true, isRequired: false),
+                validator: (val) =>
+                    uValidator(value: val!, isEmail: true, isRequired: false),
                 style: GoogleFonts.montserrat(),
               ),
             ),
@@ -270,6 +259,22 @@ class _DataState extends State<Data> {
       title: 'Continue',
       onPressed: () {
         if (!_formKey.currentState!.validate()) return;
+        if (selectedDate == null) {
+          showSnackbar(
+            context: context,
+            message: 'Please select your birthday',
+          );
+          return;
+        }
+        DateTime today = DateTime.now();
+        DateTime minimumDate = today.subtract(Duration(days: 16 * 365));
+        if (selectedDate!.isAfter(minimumDate)) {
+          showSnackbar(
+            context: context,
+            message: 'You have to be at least 16 to join Dooid.',
+          );
+          return;
+        }
         setState(() => _isLoading = true);
         finishUp(
           context: context,
@@ -277,7 +282,7 @@ class _DataState extends State<Data> {
           lastName: _lastName.text,
           email: _email.text,
           pin: _pin.text,
-          confirmPin: _confirmPin.text, 
+          confirmPin: _confirmPin.text,
           selectedDate: selectedDate!,
         );
       },
@@ -411,17 +416,8 @@ class _DataState extends State<Data> {
     required String email,
     required String pin,
     required String confirmPin,
-    required DateTime
-        selectedDate,
+    required DateTime selectedDate,
   }) async {
-    String? ageValidationMessage = validateAge(selectedDate);
-
-    if (ageValidationMessage != null) {
-      print(ageValidationMessage);
-      return;
-    }
-
-    // Age validation passed
     print(firstName);
     print(lastName);
     print(email);
