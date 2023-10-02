@@ -1,230 +1,162 @@
-import 'package:dooid/screens/auth/login.dart';
-import 'package:dooid/utils/utils.dart';
-import 'package:dooid/widgets/widget_auth.dart';
+
+import 'package:dooid/screens/home.dart';
 import 'package:dooid/widgets/widgets.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class Otp extends StatefulWidget {
+class Pin extends StatefulWidget {
+  const Pin({super.key});
+
   @override
-  State<Otp> createState() => _OtpState();
+  State<Pin> createState() => _PinState();
 }
 
-class _OtpState extends State<Otp> {
-  final List<TextEditingController> controllers = [
-    TextEditingController(),
-    TextEditingController(),
-    TextEditingController(),
-    TextEditingController(),
-    TextEditingController(),
-  ];
+class _PinState extends State<Pin> {
+  String enteredPin = '';
+  bool isPinVisible = false;
 
-  TextEditingController _otpNumber = TextEditingController();
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  bool _isLoading = false;
-
-  Widget _inputPhoneNumber() {
-    return Container(
-      width: 320,
-      child: Column(
-        children: <Widget>[
-          DecoratedBox(
-            decoration: BoxDecoration(
-              color: Color(0xFFEDEDED),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: TextFormField(
-                controller: _otpNumber,
-                decoration: InputDecoration(
-                  hintText: 'Phone Number',
-                  border: InputBorder.none,
-                ),
-                validator: (val) =>
-                    uValidator(value: val!, minLength: 12, isRequired: true),
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.digitsOnly
-                ],
-              ),
-            ),
+  /// this widget will be use for each digit
+  Widget numButton(int number) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 45),
+      child: TextButton(
+        onPressed: () {
+          setState(() {
+            if (enteredPin.length < 6) {
+              enteredPin += number.toString();
+            }
+            if (enteredPin.length == 6) {
+              // Navigate to another screen
+              wPushReplaceTo(context, Home());
+            }
+          });
+        },
+        child: Text(
+          number.toString(),
+          style: GoogleFonts.montserrat(
+            fontSize: 40,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
           ),
-          SizedBox(
-              height:
-                  8), // Add some space between TextFormField and the hint text
-          Text(
-            'We will send a verification code to your number to confirm it’s you.',
-            style: GoogleFonts.montserrat(color: Colors.black, fontSize: 8),
-          ),
-        ],
+        ),
       ),
     );
   }
 
-  Widget _inputSubmit() {
-    return wInputSubmit(
-      context: context,
-      title: 'Continue',
-      onPressed: () {
-        if (!_formKey.currentState!.validate()) return;
-        setState(() => _isLoading = true);
-        otpInput(
-          context: context,
-          otpNumber: _otpNumber.text,
-        );
-      },
-    );
-  }
-
-  Widget _textResend() {
-    return wTextLink(
-      text: "Didn't receive an OTP code?",
-      title: 'Resend',
-      onTap: () => wPushReplaceTo(context, Login()),
-    );
-  }
+  Widget Title({required String title, String? subtitle, required double titleFontSize, required double subtitleFontSize}) {
+  return Container(
+    alignment: Alignment.center,
+    padding: EdgeInsets.only(bottom: 20),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          title,
+          style: GoogleFonts.montserrat(fontSize: titleFontSize, fontWeight: FontWeight.bold),
+        ),
+        SizedBox(height: 3),
+        Text(
+          subtitle ?? '',
+          style: GoogleFonts.montserrat(fontSize: subtitleFontSize, color: Colors.grey),
+        ),
+      ],
+    ),
+  );
+}
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
-      child: _isLoading
-          ? wAppLoading(context)
-          : Scaffold(
-              resizeToAvoidBottomInset: false,
-              body: SafeArea(
-                child: Stack(
-                  children: <Widget>[
-                    Container(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('assets/Background.png'),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      margin: EdgeInsets.symmetric(horizontal: 20),
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                          children: <Widget>[
-                            SizedBox(
-                              height: 110,
-                            ),
-                            SizedBox(
-                              height: 110,
-                              child: Container(
-                                width: 320,
-                                child: wAuthTitle(
-                                  title: 'OTP Verification',
-                                  subtitle:
-                                      'We have sent an OTP code to your phone number.',
-                                ),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: ListView(
+          padding: EdgeInsets.symmetric(horizontal: 24),
+          physics: BouncingScrollPhysics(),
+          children: [
+            SizedBox(height: 50),
+            Center(
+              child: Title(title: 'Enter Your Pin Code',titleFontSize: 22, subtitleFontSize: 15),
+            ),
+            SizedBox(height: 30),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(
+                6,
+                (index) {
+                  return Container(
+                    margin: EdgeInsets.all(8.0),
+                    width: isPinVisible ? 70 : 35,
+                    height: isPinVisible ? 70 : 35,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: index < enteredPin.length
+                          ? isPinVisible
+                              ? Colors.green
+                              : Colors.black
+                          : Color(0xFFD9D9D9),
+                    ),
+                    child: isPinVisible && index < enteredPin.length
+                        ? Center(
+                            child: Text(
+                              enteredPin[index],
+                              style: const TextStyle(
+                                fontSize: 17,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
                               ),
                             ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                for (int i = 0; i < 5; i++)
-                                  Container(
-                                    margin: EdgeInsets.only(right: 10),
-                                    child: SizedBox(
-                                      height: 70,
-                                      width: 57,
-                                      child: TextField(
-                                        controller: controllers[i],
-                                        style: GoogleFonts.montserrat(
-                                          fontSize: 50,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                        keyboardType: TextInputType.number,
-                                        textAlign: TextAlign.center,
-                                        inputFormatters: [
-                                          LengthLimitingTextInputFormatter(1),
-                                          FilteringTextInputFormatter
-                                              .digitsOnly,
-                                        ],
-                                        onChanged: (value) {
-                                          if (i < 4 && value.isNotEmpty) {
-                                            FocusScope.of(context).nextFocus();
-                                          }
-                                        },
-                                      ),
-                                    ),
-                                  ),
-                              ],
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              'Do NOT send your OTP code to anybody else.',
-                              style: GoogleFonts.montserrat(
-                                  color: Colors.black, fontSize: 9),
-                            ),
-                            SizedBox(height: 40),
-                            _inputSubmit(),
-                            _textResend(),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      top: 20,
-                      left: 0,
-                      right: 0,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Container(
-                            height: 10,
-                            width: 100,
-                            decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                            margin: EdgeInsets.only(right: 10),
-                            padding: EdgeInsets.all(10),
-                          ),
-                          Container(
-                            height: 10,
-                            width: 100,
-                            decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                            margin: EdgeInsets.only(right: 10),
-                            padding: EdgeInsets.all(10),
-                          ),
-                          Container(
-                            height: 10,
-                            width: 100,
-                            decoration: BoxDecoration(
-                              color: Colors.grey,
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                            padding: EdgeInsets.all(10),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                          )
+                        : null,
+                  );
+                },
               ),
             ),
+            SizedBox(height: isPinVisible ? 50.0 : 60.0),
+            /// digits
+            for (var i = 0; i < 3; i++)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: List.generate(
+                    3,
+                    (index) => numButton(1 + 3 * i + index),
+                  ).toList(),
+                ),
+              ),
+
+            /// 0 digit with back remove
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const TextButton(onPressed: null, child: SizedBox()),
+                  numButton(0),
+                  TextButton(
+                    onPressed: () {
+                      setState(
+                        () {
+                          if (enteredPin.isNotEmpty) {
+                            enteredPin =
+                                enteredPin.substring(0, enteredPin.length - 1);
+                          }
+                        },
+                      );
+                    },
+                    child: const Icon(
+                      Icons.backspace,
+                      color: Colors.black,
+                      size: 24,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
-  }
-
-  void otpInput({
-    required BuildContext context,
-    required String otpNumber,
-  }) async {
-    print(otpNumber);
-
-    await Future.delayed(Duration(seconds: 2));
-    wPushReplaceTo(context, Otp());
   }
 }
