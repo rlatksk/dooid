@@ -3,6 +3,7 @@ import 'package:dooid/screens/transfer/transferSuccess.dart';
 import 'package:dooid/widgets/TopUpTransfer/wBackButton.dart';
 import 'package:dooid/widgets/colors.dart';
 import 'package:dooid/widgets/contactProvider.dart';
+import 'package:dooid/widgets/format.dart';
 import 'package:dooid/widgets/topUpTransfer/contactDropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -23,7 +24,8 @@ class Transfer extends StatefulWidget {
 class _TransferState extends State<Transfer> {
   late Contact _selectedContact;
   late String msg;
-  late double amount;
+  late double amount = 0;
+  TextEditingController _amountController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -116,8 +118,11 @@ class _TransferState extends State<Transfer> {
                   height: 15,
                 ),
                 TextFormField(
+                  controller: _amountController,
                   onChanged: (value) {
                     setState(() {
+                      _amountController.text =
+                          formatBalance(double.parse(value));
                       amount = double.parse(value);
                     });
                   },
@@ -140,7 +145,6 @@ class _TransferState extends State<Transfer> {
                     border: UnderlineInputBorder(
                         borderSide: BorderSide(color: AppColors.lightGrey)),
                     prefixText: 'Rp.',
-                    suffixText: '.00',
                     alignLabelWithHint: true,
                     prefixStyle: GoogleFonts.montserrat(
                       fontSize: 15,
@@ -171,7 +175,8 @@ class _TransferState extends State<Transfer> {
                   ),
                   onSubmit: () {
                     final double senderAmount = -amount;
-                    final contactProvider = Provider.of<ContactProvider>(context, listen: false);
+                    final contactProvider =
+                        Provider.of<ContactProvider>(context, listen: false);
                     contactProvider.addTransactionToContact(
                       contacts.indexOf(widget.foundContact),
                       Transaction(

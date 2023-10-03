@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:dooid/data/profile.dart';
+import 'package:dooid/screens/topup/topUp.dart';
 import 'package:dooid/screens/transfer/transfer.dart';
 import 'package:dooid/widgets/colors.dart';
 import 'package:dooid/widgets/format.dart';
@@ -397,7 +398,8 @@ class HomeMainButtons extends StatelessWidget {
             textCircleSpacing: 5,
             navigateToGesture: GestureDetector(
               onTap: () {
-                print('Top Up Screen');
+                Navigator.of(context).push(BouncyPageRoute(
+                    destinationPage: TopUp(foundContact: foundContact)));
               },
             ),
           ),
@@ -616,7 +618,7 @@ class HomeRecentTransactions extends StatelessWidget {
     List<Transaction>? transactions = foundContact.recentTransactions;
 
     List<Widget> recentTransactionWidgets = [];
-    if (transactions != null && transactions.isNotEmpty) { // always not null so idk why chatgpt do this lol
+    if (transactions != null && transactions.isNotEmpty) { 
       transactions = transactions.reversed.toList();
       for (int i = 0; i < transactions.length; i++) {
         Transaction transaction = transactions[i];
