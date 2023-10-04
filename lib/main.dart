@@ -8,7 +8,7 @@ void main() {
   runApp(
     ChangeNotifierProvider(
       create: (_) => ContactProvider(contacts), // Initialize with your data
-      child: const MyApp(),
+      child: MyApp(),
     ),
   );
 }

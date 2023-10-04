@@ -1,14 +1,18 @@
+import 'package:dooid/widgets/format.dart';
+
 class Transaction {
   String name;
   double amount;
   DateTime date;
   String? message;
+  String type;
 
   Transaction({
     required this.name,
     required this.amount,
     required this.date,
     this.message,
+    required this.type,
   });
 }
 
@@ -22,7 +26,7 @@ class Contact {
   String phoneNumber;
   String pin;
   List<Transaction>? transactions;
-  List<Transaction> recentTransactions = [];
+  List<Transaction>? recentTransactions = [];
 
   Contact({
     required this.firstName,
@@ -69,6 +73,27 @@ class Contact {
     }
   }
 
+  double calculateTotalAmountForToday() {
+    DateTime now = DateTime.now();
+    DateTime todayStart = DateTime(now.year, now.month, now.day);
+    DateTime todayEnd = todayStart.add(Duration(days: 1));
+
+    double totalAmountSpent = 0.0;
+
+    if (transactions != null) {
+      for (Transaction transaction in transactions!) {
+        if (transaction.date.isAfter(todayStart) &&
+            transaction.date.isBefore(todayEnd)) {
+          if (transaction.amount < 0) {
+            totalAmountSpent += transaction.amount.abs();
+          }
+        }
+      }
+    }
+
+    return totalAmountSpent;
+  }
+
   String get name {
     if (firstName != null && lastName != null) {
       return '$firstName $lastName';
@@ -113,18 +138,7 @@ List<Contact> contacts = [
     countryCode: '62',
     phoneNumber: '8555123456',
     pin: '123456',
-    transactions: [
-      Transaction(
-          name: 'Salary',
-          amount: 500000000,
-          date: DateTime.now(),
-          message: 'Received monthly salary'),
-      Transaction(
-          name: 'Groceries',
-          amount: -100000000,
-          date: DateTime.now(),
-          message: 'Bought groceries'),
-    ],
+    transactions: [],
   ),
   Contact(
     firstName: 'Ivander',
@@ -136,30 +150,35 @@ List<Contact> contacts = [
     pin: '654321',
     transactions: [
       Transaction(
-          name: 'Salary',
-          amount: 0,
-          date: DateTime.now(),
-          message: 'Received monthly salary'),
+          name: 'Richard Souwiko',
+          amount: -17500175,
+          date: DateTime(2023, 9, 3, 10, 15),
+          message: 'test ahhhhhhhhhh',
+          type: 'transfer'),
       Transaction(
-          name: 'JUSTIN SALIM',
-          amount: 0,
-          date: DateTime.now(),
-          message: 'Paid rent'),
+          name: 'Justin Salim',
+          amount: 4500000000000,
+          date: DateTime(2023, 9, 3, 12, 45),
+          message: 'bayar open bo',
+          type: 'transferred'),
       Transaction(
-          name: 'FIRST',
-          amount: 0,
-          date: DateTime.now(),
-          message: 'Paid rent'),
+          name: 'Top Up',
+          amount: 50000000,
+          date: DateTime(2023, 9, 3, 14, 20),
+          message: 'Added Rp${formatBalance(50000000)}',
+          type: 'topup'),
       Transaction(
-          name: 'THIRD',
-          amount: 0,
-          date: DateTime.now(),
-          message: 'Paid rent'),
+          name: 'Top Up',
+          amount: 35000000,
+          date: DateTime(2023, 9, 4, 8, 50),
+          message: 'Added Rp${formatBalance(35000000)}',
+          type: 'topup'),
       Transaction(
-          name: 'HELLO',
-          amount: 0,
-          date: DateTime.now(),
-          message: 'Paid rent'),
+          name: 'Ruben Tobia Chaiyadi',
+          amount: -7500000,
+          date: DateTime(2023, 9, 4, 10, 30),
+          message: 'asjdfklajsdfzxnckvlnkasdfn',
+          type: 'transfer'),
     ],
   ),
   Contact(
@@ -210,6 +229,25 @@ Contact findContactByCountryCodeAndPhoneNumber(
     (contact) =>
         contact.countryCode == countryCode &&
         contact.phoneNumber == phoneNumber,
+    orElse: () => Contact(
+      firstName: '',
+      countryCode: '',
+      phoneNumber: '',
+      pin: '',
+    ),
+  );
+  return foundContact;
+}
+
+Contact findContactByFullName(String fullName) {
+  final parts = fullName.split(' ');
+  final firstName = parts[0];
+  final lastName = parts.length > 1 ? parts.sublist(1).join(' ') : null;
+
+  Contact foundContact = contacts.firstWhere(
+    (contact) =>
+        contact.firstName == firstName &&
+        (lastName == null || contact.lastName == lastName),
     orElse: () => Contact(
       firstName: '',
       countryCode: '',

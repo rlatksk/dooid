@@ -6,8 +6,13 @@ import 'package:google_fonts/google_fonts.dart';
 class ContactDropdown extends StatefulWidget {
   final List<Contact> contacts;
   final Function(Contact?) onContactSelected;
+  final Contact? initialSelection;
 
-  ContactDropdown({required this.contacts, required this.onContactSelected});
+  ContactDropdown({
+    required this.contacts,
+    required this.onContactSelected,
+    this.initialSelection,
+  });
 
   @override
   _ContactDropdownState createState() => _ContactDropdownState();
@@ -15,6 +20,12 @@ class ContactDropdown extends StatefulWidget {
 
 class _ContactDropdownState extends State<ContactDropdown> {
   Contact? _selectedContact;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedContact = widget.initialSelection;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +37,8 @@ class _ContactDropdownState extends State<ContactDropdown> {
           color: Color(0xFFEDEDED), // Specify the border color
           width: 2.0, // Specify the border width
         ),
-        borderRadius: BorderRadius.circular(15), // Optional: Add rounded corners
+        borderRadius:
+            BorderRadius.circular(15), // Optional: Add rounded corners
       ),
       child: Padding(
         padding: const EdgeInsets.all(10.0),
@@ -37,10 +49,13 @@ class _ContactDropdownState extends State<ContactDropdown> {
           hint: _selectedContact == null
               ? Text('Select a contact', style: GoogleFonts.montserrat())
               : Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(_selectedContact!.name.toUpperCase(), style: GoogleFonts.montserrat(fontSize: 18)),
-                    Text(_selectedContact!.phoneNumber ?? '', style: GoogleFonts.montserrat()),
+                    Text(_selectedContact!.name.toUpperCase(),
+                        style: GoogleFonts.montserrat(fontSize: 18)),
+                    Text(_selectedContact!.phoneNumber ?? '',
+                        style: GoogleFonts.montserrat()),
                   ],
                 ),
           value: _selectedContact,
@@ -50,7 +65,8 @@ class _ContactDropdownState extends State<ContactDropdown> {
             });
             widget.onContactSelected(newValue);
           },
-          items: widget.contacts.map<DropdownMenuItem<Contact>>((Contact contact) {
+          items:
+              widget.contacts.map<DropdownMenuItem<Contact>>((Contact contact) {
             return DropdownMenuItem<Contact>(
               value: contact,
               child: Row(
@@ -61,13 +77,18 @@ class _ContactDropdownState extends State<ContactDropdown> {
                     child: CircleAvatar(
                       radius: 22,
                       backgroundColor: Colors.white,
-                      backgroundImage: contact.profilePicture != null && contact.profilePicture!.isNotEmpty
+                      backgroundImage: contact.profilePicture != null &&
+                              contact.profilePicture!.isNotEmpty
                           ? NetworkImage(contact.profilePicture!)
                           : null,
-                      child: (contact.profilePicture == null || contact.profilePicture!.isEmpty)
+                      child: (contact.profilePicture == null ||
+                              contact.profilePicture!.isEmpty)
                           ? Text(
                               contact.displayProfilePicture,
-                              style: GoogleFonts.montserrat(fontSize: 20, color: Color(0xFF131313), fontWeight: FontWeight.w600),
+                              style: GoogleFonts.montserrat(
+                                  fontSize: 20,
+                                  color: Color(0xFF131313),
+                                  fontWeight: FontWeight.w600),
                             )
                           : null,
                     ),
@@ -75,10 +96,14 @@ class _ContactDropdownState extends State<ContactDropdown> {
                   SizedBox(width: 10.0),
                   Expanded(
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(contact.name.toUpperCase(), style: GoogleFonts.montserrat(fontSize: 15, fontWeight: FontWeight.bold)),
-                        Text(contact.phoneNumber ?? '', style: GoogleFonts.montserrat(fontSize: 10)),
+                        Text(contact.name.toUpperCase(),
+                            style: GoogleFonts.montserrat(
+                                fontSize: 15, fontWeight: FontWeight.bold)),
+                        Text(contact.phoneNumber ?? '',
+                            style: GoogleFonts.montserrat(fontSize: 10)),
                       ],
                     ),
                   ),

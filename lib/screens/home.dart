@@ -4,11 +4,13 @@ import 'package:dooid/data/profile.dart';
 import 'package:dooid/screens/topup/topUp.dart';
 import 'package:dooid/screens/transfer/transfer.dart';
 import 'package:dooid/widgets/colors.dart';
+import 'package:dooid/widgets/contactProvider.dart';
 import 'package:dooid/widgets/format.dart';
 import 'package:dooid/widgets/initials.dart';
 import 'package:dooid/widgets/transition.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -38,6 +40,7 @@ class _HomeState extends State<Home> {
                 HomeQuickTransfer(),
                 SizedBox(height: 30),
                 HomeRecentTransactions(),
+                SizedBox(height: 30),
               ],
             ),
           ),
@@ -199,7 +202,9 @@ class _HomeCardState extends State<HomeCard> {
               SizedBox(height: 21),
               buildToggleText(
                 'spent today',
-                showSpentToday ? 522344701 : 0.0,
+                showSpentToday
+                    ? foundContact.calculateTotalAmountForToday()
+                    : 0.0,
                 showSpentToday,
                 toggleSpentTodayVisibility,
                 Colors.white,
@@ -435,174 +440,88 @@ class HomeMainButtons extends StatelessWidget {
 
 class HomeQuickTransfer extends StatelessWidget {
   const HomeQuickTransfer({
-    super.key,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 25),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Quick Transfer',
-              style: GoogleFonts.montserrat(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: AppColors.black,
-              ),
-            ),
-            SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    // Store the context in a variable
+    BuildContext? parentContext = context;
+
+    return Consumer<ContactProvider>(
+      builder: (context, contactProvider, child) {
+        final recentTransferTransactions =
+            contactProvider.getFrequentTransferTransactions(foundContact, 5);
+
+        return Padding(
+          padding: EdgeInsets.symmetric(horizontal: 25),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                HomeCircleButtonIconText(
-                  width: 65,
-                  height: 65,
-                  circleColor: Colors.white,
-                  strokeColor: AppColors.lightGrey,
-                  strokeSize: 2,
-                  insideWidget: Text(
-                    'I',
-                    style: GoogleFonts.montserrat(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.black,
-                    ),
-                  ),
-                  buttonTextWidget: Text(
-                    'Ivander',
-                    style: GoogleFonts.montserrat(
-                      fontSize: 10,
-                      color: AppColors.darkGrey,
-                    ),
-                  ),
-                  textCircleSpacing: 4,
-                  navigateToGesture: GestureDetector(
-                    onTap: () {
-                      print('Transfer to Ivander Screen');
-                    },
+                Text(
+                  'Quick Transfer',
+                  style: GoogleFonts.montserrat(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.black,
                   ),
                 ),
-                HomeCircleButtonIconText(
-                  width: 65,
-                  height: 65,
-                  circleColor: Colors.white,
-                  strokeColor: AppColors.lightGrey,
-                  strokeSize: 2,
-                  insideWidget: Text(
-                    'RS',
-                    style: GoogleFonts.montserrat(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.black,
-                    ),
-                  ),
-                  buttonTextWidget: Text(
-                    'Richard',
-                    style: GoogleFonts.montserrat(
-                      fontSize: 10,
-                      color: AppColors.darkGrey,
-                    ),
-                  ),
-                  textCircleSpacing: 4,
-                  navigateToGesture: GestureDetector(
-                    onTap: () {
-                      print('Transfer to Richard Screen');
-                    },
-                  ),
-                ),
-                HomeCircleButtonIconText(
-                  width: 65,
-                  height: 65,
-                  circleColor: Colors.white,
-                  strokeColor: AppColors.lightGrey,
-                  strokeSize: 2,
-                  insideWidget: Text(
-                    'RT',
-                    style: GoogleFonts.montserrat(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.black,
-                    ),
-                  ),
-                  buttonTextWidget: Text(
-                    'Ruben',
-                    style: GoogleFonts.montserrat(
-                      fontSize: 10,
-                      color: AppColors.darkGrey,
-                    ),
-                  ),
-                  textCircleSpacing: 4,
-                  navigateToGesture: GestureDetector(
-                    onTap: () {
-                      print('Transfer to Ruben Screen');
-                    },
-                  ),
-                ),
-                HomeCircleButtonIconText(
-                  width: 65,
-                  height: 65,
-                  circleColor: Colors.white,
-                  strokeColor: AppColors.lightGrey,
-                  strokeSize: 2,
-                  insideWidget: Text(
-                    'TI',
-                    style: GoogleFonts.montserrat(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.black,
-                    ),
-                  ),
-                  buttonTextWidget: Text(
-                    'Tigo',
-                    style: GoogleFonts.montserrat(
-                      fontSize: 10,
-                      color: AppColors.darkGrey,
-                    ),
-                  ),
-                  textCircleSpacing: 4,
-                  navigateToGesture: GestureDetector(
-                    onTap: () {
-                      print('Transfer to Tigo Screen');
-                    },
-                  ),
-                ),
-                HomeCircleButtonIconText(
-                  width: 65,
-                  height: 65,
-                  circleColor: Colors.white,
-                  strokeColor: AppColors.lightGrey,
-                  strokeSize: 2,
-                  insideWidget: Text(
-                    'JC',
-                    style: GoogleFonts.montserrat(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.black,
-                    ),
-                  ),
-                  buttonTextWidget: Text(
-                    'Jason',
-                    style: GoogleFonts.montserrat(
-                      fontSize: 10,
-                      color: AppColors.darkGrey,
-                    ),
-                  ),
-                  textCircleSpacing: 4,
-                  navigateToGesture: GestureDetector(
-                    onTap: () {
-                      print('Transfer to Jason Screen');
-                    },
-                  ),
+                SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: recentTransferTransactions.map((transaction) {
+                    return buildTransferWidget(
+                        transaction, parentContext);
+                  }).toList(),
                 ),
               ],
             ),
-          ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget buildTransferWidget(Transaction transaction, BuildContext? context) {
+    Contact transferContact = findContactByFullName(transaction.name);
+
+    return HomeCircleButtonIconText(
+      width: 65,
+      height: 65,
+      circleColor: Colors.white,
+      strokeColor: AppColors.lightGrey,
+      strokeSize: 2,
+      insideWidget: Text(
+        getInitials(transferContact.name),
+        style: GoogleFonts.montserrat(
+          fontSize: 25,
+          fontWeight: FontWeight.bold,
+          color: AppColors.black,
         ),
+      ),
+      buttonTextWidget: Text(
+        transferContact.firstName,
+        style: GoogleFonts.montserrat(
+          fontSize: 10,
+          color: AppColors.darkGrey,
+        ),
+      ),
+      textCircleSpacing: 4,
+      navigateToGesture: GestureDetector(
+        onTap: () {
+          if (context != null) {
+            Navigator.of(context).push(
+              BouncyPageRoute(
+                destinationPage: Transfer(
+                  foundContact: foundContact,
+                  transferContact: transferContact,
+                ),
+              ),
+            );
+          }
+        },
       ),
     );
   }
@@ -615,140 +534,172 @@ class HomeRecentTransactions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Transaction>? transactions = foundContact.recentTransactions;
+    return Consumer<ContactProvider>(
+      builder: (context, contactProvider, child) {
+        final contactIndex = contacts.indexOf(foundContact);
+        final recentTransactions =
+            contactProvider.getRecentTransactions(contactIndex, 5).reversed;
 
-    List<Widget> recentTransactionWidgets = [];
-    if (transactions != null && transactions.isNotEmpty) { 
-      transactions = transactions.reversed.toList();
-      for (int i = 0; i < transactions.length; i++) {
-        Transaction transaction = transactions[i];
-        recentTransactionWidgets.add(
-          buildTransactionWidget(transaction),
-        );
-        if (i < transactions.length - 1) {
-          recentTransactionWidgets.add(SizedBox(height: 10));
-        }
-      }
-    }
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 25),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Recent Transactions',
-              style: GoogleFonts.montserrat(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: AppColors.black,
-              ),
-            ),
-            SizedBox(height: 10),
-            Column(
-              children: recentTransactionWidgets,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget buildTransactionWidget(Transaction transaction) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          children: [
-            HomeCircleButtonIconText(
-              width: 65,
-              height: 65,
-              circleColor: Colors.white,
-              strokeColor: AppColors.lightGrey,
-              strokeSize: 2,
-              insideWidget: Text(
-                getInitials(transaction.name),
-                style: GoogleFonts.montserrat(
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.black,
-                ),
-              ),
-            ),
-            SizedBox(width: 10),
-            Column(
+        return Padding(
+          padding: EdgeInsets.symmetric(horizontal: 25),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  transaction.name.toUpperCase(),
+                  'Recent Transactions',
                   style: GoogleFonts.montserrat(
-                    fontSize: 10,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: AppColors.black,
                   ),
                 ),
-                Text(
-                  transaction.message ?? '',
-                  style: GoogleFonts.montserrat(
-                    fontSize: 10,
-                    color: AppColors.midGrey,
-                  ),
+                SizedBox(height: 10),
+                Column(
+                  children: recentTransactions.map((transaction) {
+                    return buildTransactionWidget(transaction);
+                  }).toList(),
                 ),
               ],
-            )
-          ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget buildTransactionWidget(Transaction transaction) {
+    Widget insideWidget;
+    Color circleColor = Colors.white;
+    Color strokeColor = AppColors.lightGrey;
+
+    if (transaction.type == 'topup') {
+      insideWidget = Image.asset(
+        'assets/images/home/topup.png',
+        width: 30,
+        height: 30,
+      );
+    } else {
+      insideWidget = Text(
+        getInitials(transaction.name),
+        style: GoogleFonts.montserrat(
+          fontSize: 25,
+          fontWeight: FontWeight.bold,
+          color: AppColors.black,
         ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
+      );
+    }
+
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
               children: [
-                Icon(
-                  transaction.amount >= 0
-                      ? Icons.add_circle
-                      : Icons.remove_circle,
-                  size: 15,
-                  color:
-                      transaction.amount >= 0 ? AppColors.black : AppColors.red,
+                HomeCircleButtonIconText(
+                  width: 65,
+                  height: 65,
+                  circleColor: circleColor,
+                  strokeColor: strokeColor,
+                  strokeSize: 2,
+                  insideWidget: insideWidget,
                 ),
-                SizedBox(width: 5),
-                Row(
+                SizedBox(width: 8),
+                Container(
+                  height: 30,
+                  width: 140,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          transaction.name.toUpperCase(),
+                          style: GoogleFonts.montserrat(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.black,
+                          ),
+                        ),
+                        Text(
+                          transaction.message ?? '',
+                          style: GoogleFonts.montserrat(
+                            fontSize: 10,
+                            color: AppColors.midGrey,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Container(
+              height: 35,
+              width: 138,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                reverse: true,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text(
-                      'RP',
-                      style: GoogleFonts.montserrat(
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
-                        color: transaction.amount >= 0
-                            ? AppColors.black
-                            : AppColors.red,
-                      ),
+                    Row(
+                      children: [
+                        Icon(
+                          transaction.amount >= 0
+                              ? Icons.add_circle
+                              : Icons.remove_circle,
+                          size: 15,
+                          color: transaction.amount >= 0
+                              ? AppColors.black
+                              : AppColors.red,
+                        ),
+                        SizedBox(width: 5),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              'RP',
+                              style: GoogleFonts.montserrat(
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                                color: transaction.amount >= 0
+                                    ? AppColors.black
+                                    : AppColors.red,
+                              ),
+                            ),
+                            Text(
+                              formatBalance(transaction.amount.abs()),
+                              style: GoogleFonts.montserrat(
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold,
+                                color: transaction.amount >= 0
+                                    ? AppColors.black
+                                    : AppColors.red,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                     Text(
-                      formatBalance(transaction.amount.abs()),
+                      transaction.date.toString(),
                       style: GoogleFonts.montserrat(
-                        fontSize: 13,
-                        fontWeight: FontWeight.bold,
-                        color: transaction.amount >= 0
-                            ? AppColors.black
-                            : AppColors.red,
+                        fontSize: 10,
+                        color: AppColors.midGrey,
                       ),
                     ),
                   ],
                 ),
-              ],
-            ),
-            Text(
-              transaction.date.toString(),
-              style: GoogleFonts.montserrat(
-                fontSize: 10,
-                color: AppColors.midGrey,
               ),
             ),
           ],
         ),
+        SizedBox(height: 10),
       ],
     );
   }

@@ -14,8 +14,13 @@ import 'package:slide_to_act_reborn/slide_to_act_reborn.dart';
 
 class Transfer extends StatefulWidget {
   final Contact foundContact;
+  final Contact? transferContact;
 
-  const Transfer({Key? key, required this.foundContact}) : super(key: key);
+  const Transfer({
+    Key? key,
+    required this.foundContact,
+    this.transferContact,
+  }) : super(key: key);
 
   @override
   State<Transfer> createState() => _TransferState();
@@ -26,6 +31,14 @@ class _TransferState extends State<Transfer> {
   late String msg;
   late double amount = 0;
   TextEditingController _amountController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.transferContact != null) {
+      _selectedContact = widget.transferContact!;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,12 +83,14 @@ class _TransferState extends State<Transfer> {
                   height: 20,
                 ),
                 ContactDropdown(
-                    onContactSelected: (selectedContact) {
-                      setState(() {
-                        _selectedContact = selectedContact!;
-                      });
-                    },
-                    contacts: contacts),
+                  onContactSelected: (selectedContact) {
+                    setState(() {
+                      _selectedContact = selectedContact!;
+                    });
+                  },
+                  contacts: contacts,
+                  initialSelection: widget.transferContact,
+                ),
                 SizedBox(
                   height: 40,
                 ),
@@ -184,6 +199,7 @@ class _TransferState extends State<Transfer> {
                         amount: senderAmount,
                         date: DateTime.now(),
                         message: msg,
+                        type: 'transfer',
                       ),
                     );
                     contactProvider.addTransactionToContact(
@@ -193,6 +209,7 @@ class _TransferState extends State<Transfer> {
                         amount: amount,
                         date: DateTime.now(),
                         message: msg,
+                        type: 'transferred',
                       ),
                     );
                     Navigator.push(

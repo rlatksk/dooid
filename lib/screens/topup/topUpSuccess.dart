@@ -155,7 +155,7 @@ class TopUpSuccess extends StatelessWidget {
                 child: Container(
                   constraints: const BoxConstraints(
                       minWidth: 88.0,
-                      minHeight: 36.0), // min sizes for Material buttons
+                      minHeight: 36.0),
                   alignment: Alignment.center,
                   child: const Text(
                     'Back to Home',

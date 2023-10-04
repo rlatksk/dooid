@@ -230,6 +230,7 @@ class TopUpState extends State<TopUp> {
                             amount: amount,
                             date: DateTime.now(),
                             message: 'Added ${formatBalance(amount)}',
+                            type: 'topup'
                           ),
                         );
                         setState(() {
