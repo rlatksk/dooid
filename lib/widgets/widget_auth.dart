@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-
+import 'package:google_fonts/google_fonts.dart';
 
 //Widget to display an authentication title and subtitle.
-Widget wAuthTitle({required String title, required String subtitle}) {
+Widget wAuthTitle({required String title, String? subtitle, required double titleFontSize, required double subtitleFontSize}) {
   return Container(
     alignment: Alignment.centerLeft,
     padding: EdgeInsets.only(bottom: 20),
@@ -12,10 +11,13 @@ Widget wAuthTitle({required String title, required String subtitle}) {
       children: <Widget>[
         Text(
           title,
-          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+          style: GoogleFonts.montserrat(fontSize: titleFontSize, fontWeight: FontWeight.bold),
         ),
         SizedBox(height: 3),
-        Text(subtitle),
+        Text(
+          subtitle ?? '',
+          style: GoogleFonts.montserrat(fontSize: subtitleFontSize, color: Colors.grey),
+        ),
       ],
     ),
   );
@@ -32,7 +34,7 @@ Widget wTextDivider() {
           padding: const EdgeInsets.all(10),
           child: Text(
             'Or Connect With',
-            style: TextStyle(
+            style: GoogleFonts.montserrat(
               fontSize: 12,
               color: Colors.grey,
             ),
@@ -44,46 +46,33 @@ Widget wTextDivider() {
   );
 }
 
-// Widget to display a Google sign-in button.
-Widget wGoogleSignIn({required VoidCallback onPressed}) {
-  return Container(
-    width: double.infinity,
-    child: ElevatedButton.icon(
-      style: ElevatedButton.styleFrom(
-        foregroundColor: Colors.black,
-        backgroundColor: Colors.grey,
-        fixedSize: const Size(400, 50),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-      ),
-      icon: Icon(
-        MdiIcons.google,
-        size: 20,
-      ),
-      label: Text(
-        'Google',
-      ),
-      onPressed: onPressed,
-    ),
-  );
-}
-
 // Widget to display a text link with a clickable title.
 Widget wTextLink(
     {required String text,
     required String title,
-    required VoidCallback onTap}) {
+    required VoidCallback onTap,
+    required double fontSize}) {
   return Container(
-    margin: EdgeInsets.only(top: 40),
+    margin: EdgeInsets.only(top: 10),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Text(text),
+        Text(
+          text,
+          style: GoogleFonts.montserrat(
+            decoration: TextDecoration.underline,
+            fontSize: fontSize,
+          ),
+        ),
         GestureDetector(
             child: Container(
-              padding: EdgeInsets.all(10),
+              padding: EdgeInsets.all(1),
               child: Text(
                 title,
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: GoogleFonts.montserrat(
+                  decoration: TextDecoration.underline,
+                  fontWeight: FontWeight.bold,
+                  fontSize: fontSize,),
               ),
             ),
             onTap: onTap)

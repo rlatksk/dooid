@@ -1,104 +1,103 @@
 import 'package:dooid/screens/auth/login.dart';
 import 'package:dooid/screens/auth/otp.dart';
+import 'package:dooid/screens/auth/pin.dart';
 import 'package:dooid/utils/utils.dart';
 import 'package:dooid/widgets/widget_auth.dart';
 import 'package:dooid/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:dooid/provider/UserDataProvider.dart';
+import 'package:provider/provider.dart';
 
-class Register extends StatefulWidget {
+class ChangePin extends StatefulWidget {
   @override
-  State<Register> createState() => _RegisterState();
+  State<ChangePin> createState() => _ChangePinState();
 }
 
-class NationDropdown extends StatefulWidget {
-  @override
-  _NationDropdownState createState() => _NationDropdownState();
-}
-
-class _NationDropdownState extends State<NationDropdown> {
-  String selectedNation = '🇮🇩 Indonesia'; // Default value
-
-  List<Map<String, String>> nations = [
-    {'name': '🇺🇸 United States', 'code': '+1'},
-    {'name': '🇬🇧 United Kingdom', 'code': '+44'},
-    {'name': '🇮🇩 Indonesia', 'code': '+62'},
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 320,
-      child: DropdownButtonFormField(
-        value: selectedNation,
-        onChanged: (String? newValue) {
-          setState(() {
-            selectedNation = newValue!;
-          });
-        },
-        items:
-            nations.map<DropdownMenuItem<String>>((Map<String, String> nation) {
-          return DropdownMenuItem<String>(
-            value: nation['name'],
-            child:
-                Container(child: Text('${nation['name']} (${nation['code']})')),
-          );
-        }).toList(),
-        decoration: InputDecoration(
-          filled: true,
-          fillColor: Color(0xFFEDEDED), // Set your desired background color
-          contentPadding: EdgeInsets.all(10),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide.none,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _RegisterState extends State<Register> {
-  TextEditingController _phoneNumber = TextEditingController();
+class _ChangePinState extends State<ChangePin> {
+  TextEditingController _pin = TextEditingController();
+  TextEditingController _confirmPin = TextEditingController();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  DateTime? selectedDate;
 
   bool _isLoading = false;
 
-  Widget _inputPhoneNumber() {
+  Widget _inputPin() {
     return Container(
       width: 320,
       child: Column(
         children: <Widget>[
           DecoratedBox(
             decoration: BoxDecoration(
-              color: Color(0xFFEDEDED),
+              color: Color(0xFFBFBFBF),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 10),
               child: TextFormField(
-                controller: _phoneNumber,
+                controller: _pin,
+                obscureText: true,
                 decoration: InputDecoration(
-                  hintText: 'Phone Number',
+                  hintText: 'PIN',
                   border: InputBorder.none,
+                  hintStyle: TextStyle(color: Colors.white),
                 ),
-                validator: (val) =>
-                    uValidator(value: val!, minLength: 12, isRequired: true),
+                validator: (val) => uValidator(
+                    value: val!, isRequired: true, match: _confirmPin.text),
                 keyboardType: TextInputType.number,
                 inputFormatters: <TextInputFormatter>[
                   FilteringTextInputFormatter.digitsOnly
                 ],
+                style: GoogleFonts.montserrat(color: Colors.white),
               ),
             ),
           ),
           SizedBox(
               height:
                   8), // Add some space between TextFormField and the hint text
-          Text(
-            'We will send a verification code to your number to confirm it’s you.',
-            style: GoogleFonts.montserrat(color: Colors.black, fontSize: 9),
+        ],
+      ),
+    );
+  }
+
+  Widget _inputConfirmPin() {
+    return Container(
+      width: 320,
+      child: Column(
+        children: <Widget>[
+          DecoratedBox(
+            decoration: BoxDecoration(
+              color: Color(0xFFBFBFBF),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: TextFormField(
+                controller: _confirmPin,
+                obscureText: true,
+                decoration: InputDecoration(
+                  hintText: 'Confirm Pin',
+                  border: InputBorder.none,
+                  hintStyle: TextStyle(color: Colors.white),
+                ),
+                validator: (val) =>
+                    uValidator(value: val!, isRequired: true, match: _pin.text),
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly
+                ],
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
           ),
+          Text(
+            'Choose an easy to remember 6-number combination.',
+            style: GoogleFonts.montserrat(color: Colors.black, fontSize: 10),
+          ),
+          SizedBox(
+              height:
+                  8), // Add some space between TextFormField and the hint text
         ],
       ),
     );
@@ -109,22 +108,14 @@ class _RegisterState extends State<Register> {
       context: context,
       title: 'Continue',
       onPressed: () {
-        if (!_formKey.currentState!.validate()) return;
         setState(() => _isLoading = true);
-        registerWithPhoneNumber(
-            context: context,
-            phoneNumber: _phoneNumber.text,
-            );
+        changeUp(
+          context: context,
+          pin: _pin.text,
+          confirmPin: _confirmPin.text,
+        );
       },
     );
-  }
-
-  Widget _textRegister() {
-    return wTextLink(
-        text: 'Already have an account?',
-        title: 'Sign In',
-        onTap: () => wPushReplaceTo(context, Login()),
-        fontSize: 13,);
   }
 
   @override
@@ -141,7 +132,7 @@ class _RegisterState extends State<Register> {
                     Container(
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                          image: AssetImage('assets/BackgroundD.png'),
+                          image: AssetImage('assets/Background.png'),
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -151,31 +142,30 @@ class _RegisterState extends State<Register> {
                         child: Column(
                           children: <Widget>[
                             SizedBox(
-                              height: 220,
+                              height: 80,
                             ),
                             SizedBox(
-                              height: 110,
+                              height: 85,
                               child: Container(
                                 width: 320,
                                 child: wAuthTitle(
-                                  title: 'Sign Up',
+                                  title: 'Finish Up',
                                   subtitle:
-                                      'Create your account and revolutionize your finances.',
+                                      'It’s time to set up your Dooid profile.',
                                   titleFontSize: 32,
-                                  subtitleFontSize: 18,
+                                  subtitleFontSize: 15,
                                 ),
                               ),
                             ),
-                            NationDropdown(),
                             SizedBox(
-                              height: 20,
+                              height: 15,
                             ),
-                            _inputPhoneNumber(),
+                            _inputPin(),
+                            _inputConfirmPin(),
                             SizedBox(
                               height: 20,
                             ),
                             _inputSubmit(),
-                            _textRegister(),
                           ],
                         ),
                       ),
@@ -201,7 +191,7 @@ class _RegisterState extends State<Register> {
                             height: 10,
                             width: 100,
                             decoration: BoxDecoration(
-                              color: Colors.grey,
+                              color: Colors.black,
                               borderRadius: BorderRadius.circular(100),
                             ),
                             margin: EdgeInsets.only(right: 10),
@@ -211,7 +201,7 @@ class _RegisterState extends State<Register> {
                             height: 10,
                             width: 100,
                             decoration: BoxDecoration(
-                              color: Colors.grey,
+                              color: Colors.black,
                               borderRadius: BorderRadius.circular(100),
                             ),
                             padding: EdgeInsets.all(10),
@@ -226,14 +216,23 @@ class _RegisterState extends State<Register> {
     );
   }
 
-    void registerWithPhoneNumber(
-      {required BuildContext context,
-      required String phoneNumber,
-      }) async {
-    
-    print(phoneNumber);
-    
+  void changeUp({
+    required BuildContext context,
+    required String pin,
+    required String confirmPin,
+  }) async {
+    print(pin);
+    print(confirmPin);
+
+    final userDataProvider =
+        Provider.of<UserDataProvider>(context, listen: false);
+    userDataProvider.setUserData("", pin);
     await Future.delayed(Duration(seconds: 2));
-    wPushReplaceTo(context, Otp());
+    wPushReplaceTo(context, Pin());
   }
+
+  // Getter for firstname
+
+  // Getter for pin
+  String get pin => _pin.text;
 }

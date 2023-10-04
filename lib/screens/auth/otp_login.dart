@@ -1,68 +1,27 @@
-import 'package:dooid/screens/auth/otp_login.dart';
-import 'package:dooid/screens/auth/register.dart';
+import 'package:dooid/screens/auth/data.dart';
+import 'package:dooid/screens/auth/login.dart';
 import 'package:dooid/utils/utils.dart';
 import 'package:dooid/widgets/widget_auth.dart';
 import 'package:dooid/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:dooid/provider/UserDataProvider.dart';
-import 'package:provider/provider.dart';
 
-class Login extends StatefulWidget {
+class OtpLogin extends StatefulWidget {
   @override
-  State<Login> createState() => _LoginState();
+  State<OtpLogin> createState() => _OtpLoginState();
 }
 
-class NationDropdown extends StatefulWidget {
-  @override
-  _NationDropdownState createState() => _NationDropdownState();
-}
-
-class _NationDropdownState extends State<NationDropdown> {
-  String selectedNation = '🇮🇩 Indonesia'; // Default value
-
-  List<Map<String, String>> nations = [
-    {'name': '🇺🇸 United States', 'code': '+1'},
-    {'name': '🇬🇧 United Kingdom', 'code': '+44'},
-    {'name': '🇮🇩 Indonesia', 'code': '+62'},
+class _OtpLoginState extends State<OtpLogin> {
+  final List<TextEditingController> controllers = [
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
+    TextEditingController(),
   ];
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 320,
-      child: DropdownButtonFormField(
-        value: selectedNation,
-        onChanged: (String? newValue) {
-          setState(() {
-            selectedNation = newValue!;
-          });
-        },
-        items:
-            nations.map<DropdownMenuItem<String>>((Map<String, String> nation) {
-          return DropdownMenuItem<String>(
-            value: nation['name'],
-            child:
-                Container(child: Text('${nation['name']} (${nation['code']})')),
-          );
-        }).toList(),
-        decoration: InputDecoration(
-          filled: true,
-          fillColor: Color(0xFFEDEDED),
-          contentPadding: EdgeInsets.all(10),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide.none,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _LoginState extends State<Login> {
-  TextEditingController _phoneNumber = TextEditingController();
+  TextEditingController _otpNumber = TextEditingController();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   bool _isLoading = false;
@@ -80,7 +39,7 @@ class _LoginState extends State<Login> {
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 10),
               child: TextFormField(
-                controller: _phoneNumber,
+                controller: _otpNumber,
                 decoration: InputDecoration(
                   hintText: 'Phone Number',
                   border: InputBorder.none,
@@ -99,7 +58,7 @@ class _LoginState extends State<Login> {
                   8), // Add some space between TextFormField and the hint text
           Text(
             'We will send a verification code to your number to confirm it’s you.',
-            style: GoogleFonts.montserrat(fontSize: 9, color: Colors.black),
+            style: GoogleFonts.montserrat(color: Colors.black, fontSize: 8),
           ),
         ],
       ),
@@ -113,20 +72,21 @@ class _LoginState extends State<Login> {
       onPressed: () {
         if (!_formKey.currentState!.validate()) return;
         setState(() => _isLoading = true);
-        registerWithEmail(
+        otpInput(
           context: context,
-          phoneNumber: _phoneNumber.text,
+          otpNumber: _otpNumber.text,
         );
       },
     );
   }
 
-  Widget _textRegister() {
+  Widget _textResend() {
     return wTextLink(
-        text: 'Don’t have an account yet?',
-        title: 'Sign Up',
-        onTap: () => wPushReplaceTo(context, Register()),
-        fontSize: 13);
+      text: "Didn't receive an OTP code?",
+      title: 'Resend',
+      onTap: () => wPushReplaceTo(context, Login()),
+      fontSize: 12,
+    );
   }
 
   @override
@@ -143,7 +103,7 @@ class _LoginState extends State<Login> {
                     Container(
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                          image: AssetImage('assets/BackgroundD.png'),
+                          image: AssetImage('assets/Background.png'),
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -153,30 +113,65 @@ class _LoginState extends State<Login> {
                         child: Column(
                           children: <Widget>[
                             SizedBox(
-                              height: 220,
+                              height: 110,
                             ),
                             SizedBox(
                               height: 110,
                               child: Container(
                                 width: 320,
                                 child: wAuthTitle(
-                                  title: 'Sign In',
-                                  subtitle: 'Welcome back to Dooid!',
+                                  title: 'OTP Verification',
+                                  subtitle:
+                                      'We have sent an OTP code to your phone number.',
                                   titleFontSize: 32,
                                   subtitleFontSize: 18,
                                 ),
                               ),
                             ),
-                            NationDropdown(),
                             SizedBox(
                               height: 20,
                             ),
-                            _inputPhoneNumber(),
-                            SizedBox(
-                              height: 30,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                for (int i = 0; i < 5; i++)
+                                  Container(
+                                    margin: EdgeInsets.only(right: 10),
+                                    child: SizedBox(
+                                      height: 70,
+                                      width: 57,
+                                      child: TextField(
+                                        controller: controllers[i],
+                                        style: GoogleFonts.montserrat(
+                                          fontSize: 50,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        keyboardType: TextInputType.number,
+                                        textAlign: TextAlign.center,
+                                        inputFormatters: [
+                                          LengthLimitingTextInputFormatter(1),
+                                          FilteringTextInputFormatter
+                                              .digitsOnly,
+                                        ],
+                                        onChanged: (value) {
+                                          if (i < 4 && value.isNotEmpty) {
+                                            FocusScope.of(context).nextFocus();
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                              ],
                             ),
+                            SizedBox(height: 10),
+                            Text(
+                              'Do NOT send your OTP code to anybody else.',
+                              style: GoogleFonts.montserrat(
+                                  color: Colors.black, fontSize: 9),
+                            ),
+                            SizedBox(height: 40),
                             _inputSubmit(),
-                            _textRegister(),
+                            _textResend(),
                           ],
                         ),
                       ),
@@ -188,15 +183,13 @@ class _LoginState extends State<Login> {
     );
   }
 
-  void registerWithEmail({
+  void otpInput({
     required BuildContext context,
-    required String phoneNumber,
+    required String otpNumber,
   }) async {
-    print(phoneNumber);
-
-    final userDataProvider = Provider.of<UserDataProvider>(context, listen: false);
+    print(otpNumber);
 
     await Future.delayed(Duration(seconds: 2));
-    wPushReplaceTo(context, OtpLogin());
+    wPushReplaceTo(context, Data());
   }
 }

@@ -1,11 +1,17 @@
 import 'dart:io';
+import 'package:dooid/screens/auth/pin.dart';
+import 'package:dooid/screens/changePin.dart';
 import 'package:dooid/splash.dart';
+import 'package:dooid/widgets/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:dooid/screens/TNC.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:dooid/screens/auth/data.dart';
+import 'package:provider/provider.dart';
+import 'package:dooid/provider/UserDataProvider.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -15,8 +21,10 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   XFile? tempo;
   XFile? profile_image;
-  // = AssetImage("assets/default.svg");
   Widget build(BuildContext context) {
+    final userData = Provider.of<UserDataProvider>(context).userData;
+
+    String name = userData!.firstname;
     return Stack(alignment: Alignment.topCenter, children: [
       Scaffold(
         appBar: AppBar(
@@ -49,7 +57,7 @@ class _ProfileState extends State<Profile> {
                 Material(
                     child: ListTile(
                   onTap: () {
-                    debugPrint("Change Security Pin tapped");
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ChangePin()),);
                   },
                   title: Text("Change Security Pin"),
                   leading: SvgPicture.asset(
@@ -133,12 +141,12 @@ class _ProfileState extends State<Profile> {
                                                 height: 400,
                                                 child: Expanded(
                                                   child: SingleChildScrollView(
-                                                      scrollDirection:
-                                                          Axis.vertical,
-                                                          child: RichText(
-                                                            text: TNC.TNCSpan,
-                                                          ),
-                                                      ),
+                                                    scrollDirection:
+                                                        Axis.vertical,
+                                                    child: RichText(
+                                                      text: TNC.TNCSpan,
+                                                    ),
+                                                  ),
                                                 ))),
                                         Padding(
                                           padding: const EdgeInsets.all(8),
@@ -178,10 +186,7 @@ class _ProfileState extends State<Profile> {
         padding: const EdgeInsets.only(top: 700),
         child: GestureDetector(
           onTap: () {
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => Splash()),
-              (route) => false, // This predicate removes all routes
+            wPushReplaceTo(context, Splash()// This predicate removes all routes
             );
           },
           child: SvgPicture.asset(
@@ -210,7 +215,7 @@ class _ProfileState extends State<Profile> {
           width: MediaQuery.sizeOf(context).width - 25,
           height: 350,
           child: Text(
-            "Hello Kevin!",
+            "Hello " + name,
             style: TextStyle(
                 decoration: TextDecoration.none,
                 color: Colors.black,
@@ -223,8 +228,7 @@ class _ProfileState extends State<Profile> {
         child: SizedBox(
           width: 100,
           height: 350,
-          child: Text(
-            "08123123123",
+          child: Text( "",
             style: TextStyle(
                 decoration: TextDecoration.none,
                 color: Colors.black,
