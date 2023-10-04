@@ -1,10 +1,11 @@
-// Function to validate a string based on provided criteria.
+import 'package:flutter/material.dart';
+
 String? uValidator({
-      required String value, 
-      bool isRequired = false, 
-      bool isEmail = false,
-      int? minLength,
-      String? match,
+  required String value,
+  bool isRequired = false,
+  bool isEmail = false,
+  int? minLength,
+  String? match,
 }) {
   if (isRequired) {
     if (value.isEmpty) {
@@ -12,23 +13,35 @@ String? uValidator({
     }
   }
 
-  if(isRequired && isEmail){
-    if(!value.contains('@') || !value.contains('.')){
+  if (isRequired && isEmail) {
+    if (!value.contains('@') || !value.contains('.')) {
       return 'Invalid Email';
     }
   }
 
-  if(minLength != null){
-    if(value.length < minLength){
-      return 'Minimum $minLength character';
+  if (minLength != null) {
+    if (value.length < minLength) {
+      return 'Minimum $minLength characters';
     }
   }
 
-  if(match != null){
-    if(value != match){
+  if (match != null) {
+    if (value != match) {
       return 'Not Match';
     }
   }
 
   return null;
+}
+
+void showSnackbar({
+  required BuildContext context,
+  required String message,
+}) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(message),
+      backgroundColor: Color(0xFFFF5151),
+    ),
+  );
 }
