@@ -42,6 +42,7 @@ dependencies:
   google_fonts: ^6.1.0
   intl: ^0.18.1
   flutter_multi_formatter: ^2.11.11
+  carousel_slider: ^4.2.1
 
 dev_dependencies:
   flutter_test:
@@ -67,6 +68,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/icons/
+    - assets/promoImage/
     - assets/BackgroundD.png
     - assets/Background.png
 
