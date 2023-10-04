@@ -1,5 +1,5 @@
 import 'package:dooid/screens/auth/login.dart';
-import 'package:dooid/screens/auth/otp.dart';
+import 'package:dooid/screens/auth/pin.dart';
 import 'package:dooid/utils/utils.dart';
 import 'package:dooid/widgets/widget_auth.dart';
 import 'package:dooid/widgets/widgets.dart';
@@ -20,6 +20,7 @@ class _DataState extends State<Data> {
   TextEditingController _confirmPin = TextEditingController();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   DateTime? selectedDate;
+  String? value;
 
   bool _isLoading = false;
 
@@ -234,6 +235,9 @@ class _DataState extends State<Data> {
                 validator: (val) =>
                     uValidator(value: val!, isRequired: true, match: _pin.text),
                 keyboardType: TextInputType.number,
+                onChanged: (text){
+                  value = text;
+                },
                 inputFormatters: <TextInputFormatter>[
                   FilteringTextInputFormatter.digitsOnly
                 ],
@@ -426,6 +430,6 @@ class _DataState extends State<Data> {
     print(selectedDate);
 
     await Future.delayed(Duration(seconds: 2));
-    wPushReplaceTo(context, Otp());
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => Pin(value: _pin.text)));
   }
 }

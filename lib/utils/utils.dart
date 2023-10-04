@@ -21,7 +21,7 @@ String? uValidator({
 
   if (minLength != null) {
     if (value.length < minLength) {
-      return 'Minimum $minLength characters';
+      return 'Minimum $minLength digits';
     }
   }
 
