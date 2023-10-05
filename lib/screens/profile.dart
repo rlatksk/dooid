@@ -57,7 +57,10 @@ class _ProfileState extends State<Profile> {
                 Material(
                     child: ListTile(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ChangePin()),);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ChangePin()),
+                    );
                   },
                   title: Text("Change Security Pin"),
                   leading: SvgPicture.asset(
@@ -106,7 +109,7 @@ class _ProfileState extends State<Profile> {
                 Material(
                     child: ListTile(
                   onTap: () {
-                    debugPrint("Ayam");
+                    _launchURL();
                   },
                   title: Text("Dooid Guideline"),
                   leading: SvgPicture.asset(
@@ -186,8 +189,9 @@ class _ProfileState extends State<Profile> {
         padding: const EdgeInsets.only(top: 700),
         child: GestureDetector(
           onTap: () {
-            wPushReplaceTo(context, Splash()// This predicate removes all routes
-            );
+            wPushReplaceTo(
+                context, Splash() // This predicate removes all routes
+                );
           },
           child: SvgPicture.asset(
             "assets/logout.svg",
@@ -228,7 +232,8 @@ class _ProfileState extends State<Profile> {
         child: SizedBox(
           width: 100,
           height: 350,
-          child: Text( "",
+          child: Text(
+            "",
             style: TextStyle(
                 decoration: TextDecoration.none,
                 color: Colors.black,
@@ -301,5 +306,12 @@ class _ProfileState extends State<Profile> {
       profile_image;
       tempo = profile_image;
     });
+  }
+
+  _launchURL() async {
+    final Uri url = Uri.parse('https://github.com/rlatksk/dooid');
+    if (!await launchUrl(url)) {
+      throw Exception('Could not launch $url');
+    }
   }
 }
