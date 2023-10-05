@@ -1,22 +1,26 @@
-
 import 'package:dooid/screens/home.dart';
+import 'package:dooid/utils/utils.dart';
 import 'package:dooid/widgets/widgets.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class Pin extends StatefulWidget {
-  const Pin({super.key});
 
+// ignore: must_be_immutable
+class Pin extends StatefulWidget {
+  late String value;
+  Pin({required this.value});
+  
   @override
-  State<Pin> createState() => _PinState();
+  State<Pin> createState() => _PinState(value);
 }
 
 class _PinState extends State<Pin> {
+  String? Pin;
   String enteredPin = '';
   bool isPinVisible = false;
+  late String value;
+  _PinState(this.value);
 
-  /// this widget will be use for each digit
   Widget numButton(int number) {
     return Padding(
       padding: const EdgeInsets.only(top: 45),
@@ -27,11 +31,15 @@ class _PinState extends State<Pin> {
               enteredPin += number.toString();
             }
             if (enteredPin.length == 6) {
-              // Navigate to another screen
-              wPushReplaceTo(context, Home());
+              if (enteredPin == value){
+                wPushReplaceTo(context, Home());
+              }else{
+                enteredPin = '';
+                showSnackbar(context: context, message: 'Please Enter Correct Pin');
+              }
             }
           });
-        },
+        }, //Pin = 120303
         child: Text(
           number.toString(),
           style: GoogleFonts.montserrat(
@@ -44,26 +52,32 @@ class _PinState extends State<Pin> {
     );
   }
 
-  Widget Title({required String title, String? subtitle, required double titleFontSize, required double subtitleFontSize}) {
-  return Container(
-    alignment: Alignment.center,
-    padding: EdgeInsets.only(bottom: 20),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          title,
-          style: GoogleFonts.montserrat(fontSize: titleFontSize, fontWeight: FontWeight.bold),
-        ),
-        SizedBox(height: 3),
-        Text(
-          subtitle ?? '',
-          style: GoogleFonts.montserrat(fontSize: subtitleFontSize, color: Colors.grey),
-        ),
-      ],
-    ),
-  );
-}
+  Widget Title(
+      {required String title,
+      String? subtitle,
+      required double titleFontSize,
+      required double subtitleFontSize}) {
+    return Container(
+      alignment: Alignment.center,
+      padding: EdgeInsets.only(bottom: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            title,
+            style: GoogleFonts.montserrat(
+                fontSize: titleFontSize, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 3),
+          Text(
+            subtitle ?? '',
+            style: GoogleFonts.montserrat(
+                fontSize: subtitleFontSize, color: Colors.grey),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +90,10 @@ class _PinState extends State<Pin> {
           children: [
             SizedBox(height: 50),
             Center(
-              child: Title(title: 'Enter Your Pin Code',titleFontSize: 22, subtitleFontSize: 15),
+              child: Title(
+                  title: 'Enter Your Pin Code',
+                  titleFontSize: 22,
+                  subtitleFontSize: 15),
             ),
             SizedBox(height: 30),
             Row(
@@ -112,11 +129,23 @@ class _PinState extends State<Pin> {
                 },
               ),
             ),
-            SizedBox(height: isPinVisible ? 50.0 : 60.0),
-            /// digits
+            SizedBox(height: 10),
+            TextButton(
+              onPressed: () {
+                wPushReplaceTo(context, Home());
+              },
+              child: Text(
+                'Forgot Pin Code',
+                style: GoogleFonts.montserrat(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black),
+              ),
+            ),
+            SizedBox(height: isPinVisible ? 5.0 : 5.0),
             for (var i = 0; i < 3; i++)
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
+                padding: const EdgeInsets.symmetric(horizontal: 25),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: List.generate(
@@ -125,30 +154,31 @@ class _PinState extends State<Pin> {
                   ).toList(),
                 ),
               ),
-
-            /// 0 digit with back remove
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
+              padding: const EdgeInsets.symmetric(horizontal: 30),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const TextButton(onPressed: null, child: SizedBox()),
                   numButton(0),
-                  TextButton(
-                    onPressed: () {
-                      setState(
-                        () {
-                          if (enteredPin.isNotEmpty) {
-                            enteredPin =
-                                enteredPin.substring(0, enteredPin.length - 1);
-                          }
-                        },
-                      );
-                    },
-                    child: const Icon(
-                      Icons.backspace,
-                      color: Colors.black,
-                      size: 24,
+                  Padding(
+                    padding: const EdgeInsets.only(top: 45),
+                    child: TextButton(
+                      onPressed: () {
+                        setState(
+                          () {
+                            if (enteredPin.isNotEmpty) {
+                              enteredPin = enteredPin.substring(
+                                  0, enteredPin.length - 1);
+                            }
+                          },
+                        );
+                      },
+                      child: const Icon(
+                        Icons.backspace_outlined,
+                        color: Colors.black,
+                        size: 50,
+                      ),
                     ),
                   ),
                 ],
