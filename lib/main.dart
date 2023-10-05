@@ -1,7 +1,7 @@
 import 'package:dooid/provider/auth_provider.dart';
 import 'package:dooid/provider/UserDataProvider.dart';
 import 'package:dooid/screens/auth/login.dart';
-import 'package:dooid/screens/changePin.dart';
+import 'package:dooid/screens/auth/changePin.dart';
 import 'package:dooid/screens/home.dart';
 import 'package:dooid/screens/profile.dart';
 import 'package:dooid/screens/auth/data.dart';

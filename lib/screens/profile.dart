@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:dooid/screens/auth/login.dart';
-import 'package:dooid/screens/changePin.dart';
+import 'package:dooid/screens/auth/changePin.dart';
 import 'package:dooid/screens/home.dart';
 import 'package:dooid/splash.dart';
 import 'package:dooid/utils/utils.dart';
