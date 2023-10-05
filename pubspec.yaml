@@ -44,6 +44,8 @@ dependencies:
   flutter_multi_formatter: ^2.11.11
   qr_code_scanner: ^1.0.1
   qr_flutter: ^4.1.0
+  image_picker: ^1.0.4
+  url_launcher: ^6.1.14
 
 dev_dependencies:
   flutter_test:
