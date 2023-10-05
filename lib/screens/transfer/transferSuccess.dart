@@ -8,14 +8,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class TfSuccess extends StatelessWidget {
-  final Contact? foundContact;
+  final Contact foundContact;
   String name;
   double? amount;
   String msg;
 
   TfSuccess({
     super.key,
-    this.foundContact,
+    required this.foundContact,
     required this.name,
     required this.amount,
     required this.msg,
@@ -125,7 +125,7 @@ class TfSuccess extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context)
-                    .push(BouncyPageRoute(destinationPage: Home()));
+                    .push(BouncyPageRoute(destinationPage: Home(foundContact: foundContact)));
               },
               style: ButtonStyle(
                 padding: MaterialStateProperty.all<EdgeInsetsGeometry>(

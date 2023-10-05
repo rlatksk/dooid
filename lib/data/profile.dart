@@ -21,7 +21,6 @@ class Contact {
   String? lastName;
   String? profilePicture;
   double? balance;
-  String? email;
   String countryCode;
   String phoneNumber;
   String pin;
@@ -33,7 +32,6 @@ class Contact {
     this.lastName,
     this.profilePicture,
     this.balance,
-    this.email,
     required this.countryCode,
     required this.phoneNumber,
     required this.pin,
@@ -60,10 +58,6 @@ class Contact {
 
   void changePin(String newPin) {
     pin = newPin;
-  }
-
-  void changeEmail(String newEmail) {
-    email = newEmail;
   }
 
   void updateBalance() {
@@ -132,19 +126,36 @@ List<Contact> contacts = [
   Contact(
     firstName: 'Jason',
     lastName: 'Chainara Putra',
-    profilePicture: null,
+    profilePicture: 'assets/images/profile_pictures/jason.png',
     balance: 1000000000,
-    email: 'jason@example.com',
     countryCode: '62',
     phoneNumber: '8555123456',
     pin: '123456',
-    transactions: [],
+    transactions: [
+      Transaction(
+          name: 'Ruben Tobia Chaiyadi',
+          amount: -17500175,
+          date: DateTime(2023, 9, 3, 10, 15),
+          message: 'test ahhhhhhhhhh',
+          type: 'transfer'),
+      Transaction(
+          name: 'Richard Souwiko',
+          amount: -3000000,
+          date: DateTime(2023, 9, 3, 12, 45),
+          message: 'bayar open bo',
+          type: 'transfer'),
+      Transaction(
+          name: 'Justin Salim',
+          amount: -50000000,
+          date: DateTime(2023, 9, 3, 14, 20),
+          message: 'Added Rp${formatBalance(50000000)}',
+          type: 'transfer'),
+    ]
   ),
   Contact(
     firstName: 'Ivander',
-    profilePicture: null,
+    profilePicture: 'assets/images/profile_pictures/ivander.png',
     balance: 987654321.0,
-    email: 'ivander@example.com',
     countryCode: '81',
     phoneNumber: '9876543210',
     pin: '654321',
@@ -184,42 +195,82 @@ List<Contact> contacts = [
   Contact(
     firstName: 'Justin',
     lastName: 'Salim',
-    profilePicture: null,
+    profilePicture: 'assets/images/profile_pictures/justin.png',
     balance: 87654321.0,
-    email: 'justin@example.com',
     countryCode: '1',
     phoneNumber: '234567890',
     pin: '987654',
+    transactions: [
+      Transaction(
+          name: 'Top Up',
+          amount: 17500175,
+          date: DateTime(2023, 9, 3, 10, 15),
+          message: 'test ahhhhhhhhhh',
+          type: 'topup'),
+    ]
   ),
   Contact(
     firstName: 'Richard',
     lastName: 'Souwiko',
-    profilePicture: null,
+    profilePicture: 'assets/images/profile_pictures/richard.jpeg',
     balance: 1234567890.0,
-    email: 'richard@example.com',
     countryCode: '227',
     phoneNumber: '000000',
     pin: '112233',
+    transactions: [
+      Transaction(
+          name: 'Top Up',
+          amount: 500000,
+          date: DateTime(2023, 9, 3, 10, 15),
+          message: 'test ahhhhhhhhhh',
+          type: 'topup'),
+      Transaction(
+          name: 'Tigo Ilhami Faisyah',
+          amount: -350700,
+          date: DateTime(2023, 9, 3, 10, 15),
+          message: 'test ahhhhhhhhhh',
+          type: 'transfer')
+    ]
   ),
   Contact(
     firstName: 'Tigo',
     lastName: 'Ilhami Fasyah',
-    profilePicture: null,
+    profilePicture: 'assets/images/profile_pictures/tigo.jpeg',
     balance: 9876543210.0,
-    email: 'tigo@example.com',
-    countryCode: '420',
+    countryCode: '200',
     phoneNumber: '420420',
-    pin: '1337',
+    pin: '133737',
+    transactions: [
+      Transaction(
+          name: 'Top Up',
+          amount: 500000000,
+          date: DateTime(2023, 9, 3, 10, 15),
+          message: 'test ahhhhhhhhhh',
+          type: 'topup'),
+    ]
   ),
   Contact(
     firstName: 'Ruben',
     lastName: 'Tobia Chaiyadi',
-    profilePicture: null,
+    profilePicture: 'assets/images/profile_pictures/ruben.png',
     balance: 12345678900.0,
-    email: 'ruben@example.com',
     countryCode: '123',
     phoneNumber: '123123',
     pin: '246810',
+    transactions: [
+      Transaction(
+          name: 'Ivander',
+          amount: 5000000,
+          date: DateTime(2023, 9, 3, 10, 15),
+          message: 'test ahhhhhhhhhh',
+          type: 'transferred'),
+      Transaction(
+          name: 'Jason Chainara Putra',
+          amount: 5000000,
+          date: DateTime(2023, 9, 3, 10, 15),
+          message: 'test ahhhhhhhhhh',
+          type: 'transferred'),
+    ]
   ),
 ];
 
@@ -257,14 +308,3 @@ Contact findContactByFullName(String fullName) {
   );
   return foundContact;
 }
-
-Contact kevinProfile = Contact(
-  firstName: 'Kevin',
-  lastName: 'Leonardo',
-  profilePicture: 'assets/images/home/nair_guy.jpeg',
-  balance: 2436532246,
-  email: 'kevin@example.com',
-  countryCode: '62',
-  phoneNumber: '081377758897',
-  pin: '132546',
-);

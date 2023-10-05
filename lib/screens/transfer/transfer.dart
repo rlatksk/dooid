@@ -27,17 +27,28 @@ class Transfer extends StatefulWidget {
 }
 
 class _TransferState extends State<Transfer> {
-  late Contact _selectedContact;
-  late String msg;
-  late double amount = 0;
+  Contact? _selectedContact;
+  String? msg;
+  double? amount;
   TextEditingController _amountController = TextEditingController();
+  final GlobalKey<SlideActionState> slideActionKey = GlobalKey<SlideActionState>();
 
   @override
   void initState() {
     super.initState();
     if (widget.transferContact != null) {
-      _selectedContact = widget.transferContact!;
+      _selectedContact = widget.transferContact;
     }
+  }
+
+  void showErrorSnackbar(String message) {
+    slideActionKey.currentState?.reset();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: AppColors.red,
+      ),
+    );
   }
 
   @override
@@ -51,17 +62,19 @@ class _TransferState extends State<Transfer> {
         title: Text(
           'Send',
           style: GoogleFonts.montserrat(
-              fontSize: 28,
-              color: AppColors.black,
-              fontWeight: FontWeight.bold),
+            fontSize: 28,
+            color: AppColors.black,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         centerTitle: true,
         leading: const wBackButton(),
         backgroundColor: Colors.white,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(25),
-              bottomRight: Radius.circular(25)),
+            bottomLeft: Radius.circular(25),
+            bottomRight: Radius.circular(25),
+          ),
         ),
       ),
       body: Container(
@@ -88,6 +101,7 @@ class _TransferState extends State<Transfer> {
                       _selectedContact = selectedContact!;
                     });
                   },
+                  currentContact: widget.foundContact,
                   contacts: contacts,
                   initialSelection: widget.transferContact,
                 ),
@@ -114,17 +128,18 @@ class _TransferState extends State<Transfer> {
                   textAlign: TextAlign.start,
                   textAlignVertical: TextAlignVertical.top,
                   decoration: const InputDecoration(
-                      fillColor: AppColors.midGrey,
-                      filled: true,
-                      hintText: 'Write your messsage',
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(15)),
-                        borderSide: BorderSide(color: Colors.transparent),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(15)),
-                        borderSide: BorderSide(color: Colors.transparent),
-                      )),
+                    fillColor: AppColors.midGrey,
+                    filled: true,
+                    hintText: 'Write your message',
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                      borderSide: BorderSide(color: Colors.transparent),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                      borderSide: BorderSide(color: Colors.transparent),
+                    ),
+                  ),
                   minLines: 4,
                   maxLines: 4,
                   style: GoogleFonts.montserrat(),
@@ -147,18 +162,22 @@ class _TransferState extends State<Transfer> {
                   textAlign: TextAlign.center,
                   keyboardType: TextInputType.number,
                   style: GoogleFonts.montserrat(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.black),
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.black,
+                  ),
                   decoration: InputDecoration(
                     label: Center(
                       child: Text('Enter Amount'),
                     ),
                     contentPadding: EdgeInsets.fromLTRB(20, 10, 20, 15),
                     labelStyle: GoogleFonts.montserrat(
-                        fontWeight: FontWeight.bold, color: Color(0xFFBABABA)),
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFFBABABA),
+                    ),
                     border: UnderlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.lightGrey)),
+                      borderSide: BorderSide(color: AppColors.lightGrey),
+                    ),
                     prefixText: 'Rp.',
                     alignLabelWithHint: true,
                     prefixStyle: GoogleFonts.montserrat(
@@ -173,8 +192,9 @@ class _TransferState extends State<Transfer> {
             Align(
               alignment: Alignment.bottomCenter,
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                padding: const EdgeInsets.fromLTRB(15, 0, 15, 30),
                 child: SlideAction(
+                  key: slideActionKey,
                   height: 73,
                   borderRadius: 50,
                   innerColor: AppColors.red,
@@ -182,33 +202,52 @@ class _TransferState extends State<Transfer> {
                   text: 'Slide to confirm',
                   alignment: Alignment.bottomCenter,
                   sliderButtonIcon: SvgPicture.asset(
-                      'assets/images/transfer_topup/slider_button.svg'),
+                    'assets/images/transfer_topup/slider_button.svg',
+                  ),
                   sliderButtonIconPadding: 0,
                   textStyle: const TextStyle(
                     fontFamily: 'Montserrat',
                     color: AppColors.midGrey,
                   ),
                   onSubmit: () {
-                    final double senderAmount = -amount;
+                    if (_selectedContact == null) {
+                      showErrorSnackbar('Please select a contact.');
+                      return;
+                    }
+
+                    if (amount == null || amount! < 100000) {
+                      showErrorSnackbar(
+                          'Amount must be more than ${formatBalance(1000000)}');
+                      return;
+                    }
+
+                    if (amount != null &&
+                        amount! > (widget.foundContact.balance ?? 0)) {
+                      showErrorSnackbar(
+                          'Insufficient balance for this transfer.');
+                      return;
+                    }
+
+                    final double senderAmount = -amount!;
                     final contactProvider =
                         Provider.of<ContactProvider>(context, listen: false);
                     contactProvider.addTransactionToContact(
                       contacts.indexOf(widget.foundContact),
                       Transaction(
-                        name: _selectedContact.name,
+                        name: _selectedContact!.name,
                         amount: senderAmount,
                         date: DateTime.now(),
-                        message: msg,
+                        message: msg ?? '',
                         type: 'transfer',
                       ),
                     );
                     contactProvider.addTransactionToContact(
-                      contacts.indexOf(_selectedContact),
+                      contacts.indexOf(_selectedContact!),
                       Transaction(
                         name: widget.foundContact.name,
-                        amount: amount,
+                        amount: amount!,
                         date: DateTime.now(),
-                        message: msg,
+                        message: msg ?? '',
                         type: 'transferred',
                       ),
                     );
@@ -216,9 +255,10 @@ class _TransferState extends State<Transfer> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => TfSuccess(
-                          name: _selectedContact.name,
-                          amount: amount,
-                          msg: msg,
+                          foundContact: widget.foundContact,
+                          name: _selectedContact!.name,
+                          amount: amount!,
+                          msg: msg ?? '',
                         ),
                       ),
                     );

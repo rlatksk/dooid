@@ -7,11 +7,13 @@ class ContactDropdown extends StatefulWidget {
   final List<Contact> contacts;
   final Function(Contact?) onContactSelected;
   final Contact? initialSelection;
+  final Contact? currentContact; 
 
   ContactDropdown({
     required this.contacts,
     required this.onContactSelected,
     this.initialSelection,
+    this.currentContact,
   });
 
   @override
@@ -29,16 +31,20 @@ class _ContactDropdownState extends State<ContactDropdown> {
 
   @override
   Widget build(BuildContext context) {
+    // Filter out the currentContact from the items list
+    final filteredContacts = widget.contacts
+        .where((contact) => contact != widget.currentContact)
+        .toList();
+
     return Container(
-      width: 420, // Adjust the width as needed
-      height: 70, // Adjust the height as needed
+      width: 420,
+      height: 70,
       decoration: BoxDecoration(
         border: Border.all(
-          color: Color(0xFFEDEDED), // Specify the border color
-          width: 2.0, // Specify the border width
+          color: Color(0xFFEDEDED),
+          width: 2.0,
         ),
-        borderRadius:
-            BorderRadius.circular(15), // Optional: Add rounded corners
+        borderRadius: BorderRadius.circular(15),
       ),
       child: Padding(
         padding: const EdgeInsets.all(10.0),
@@ -65,52 +71,57 @@ class _ContactDropdownState extends State<ContactDropdown> {
             });
             widget.onContactSelected(newValue);
           },
-          items:
-              widget.contacts.map<DropdownMenuItem<Contact>>((Contact contact) {
-            return DropdownMenuItem<Contact>(
-              value: contact,
-              child: Row(
-                children: [
-                  CircleAvatar(
-                    backgroundColor: Color(0xFFEDEDED),
-                    radius: 30,
-                    child: CircleAvatar(
-                      radius: 22,
-                      backgroundColor: Colors.white,
-                      backgroundImage: contact.profilePicture != null &&
-                              contact.profilePicture!.isNotEmpty
-                          ? NetworkImage(contact.profilePicture!)
-                          : null,
-                      child: (contact.profilePicture == null ||
-                              contact.profilePicture!.isEmpty)
-                          ? Text(
-                              contact.displayProfilePicture,
+          items: filteredContacts.map<DropdownMenuItem<Contact>>(
+            (Contact contact) {
+              return DropdownMenuItem<Contact>(
+                value: contact,
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      backgroundColor: Color(0xFFEDEDED),
+                      radius: 30,
+                      child: CircleAvatar(
+                        backgroundColor: Color(0xFFEDEDED),
+                        radius: 30,
+                        child: CircleAvatar(
+                          radius: 22,
+                          backgroundColor: Colors.white,
+                          backgroundImage: contact.profilePicture != null &&
+                                  contact.profilePicture!.isNotEmpty
+                              ? AssetImage(contact.profilePicture!)
+                              : null,
+                          child: (contact.profilePicture == null ||
+                                  contact.profilePicture!.isEmpty)
+                              ? Text(
+                                  contact.displayProfilePicture,
+                                  style: GoogleFonts.montserrat(
+                                      fontSize: 20,
+                                      color: Color(0xFF131313),
+                                      fontWeight: FontWeight.w600),
+                                )
+                              : null,
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 10.0),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(contact.name.toUpperCase(),
                               style: GoogleFonts.montserrat(
-                                  fontSize: 20,
-                                  color: Color(0xFF131313),
-                                  fontWeight: FontWeight.w600),
-                            )
-                          : null,
+                                  fontSize: 15, fontWeight: FontWeight.bold)),
+                          Text(contact.phoneNumber ?? '',
+                              style: GoogleFonts.montserrat(fontSize: 10)),
+                        ],
+                      ),
                     ),
-                  ),
-                  SizedBox(width: 10.0),
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(contact.name.toUpperCase(),
-                            style: GoogleFonts.montserrat(
-                                fontSize: 15, fontWeight: FontWeight.bold)),
-                        Text(contact.phoneNumber ?? '',
-                            style: GoogleFonts.montserrat(fontSize: 10)),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            );
-          }).toList(),
+                  ],
+                ),
+              );
+            },
+          ).toList(),
           underline: Container(height: 0.0, color: Colors.transparent),
         ),
       ),

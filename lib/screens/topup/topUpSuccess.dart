@@ -1,12 +1,13 @@
+import 'package:dooid/data/profile.dart';
 import 'package:dooid/screens/home.dart';
 import 'package:dooid/widgets/format.dart';
 import 'package:dooid/widgets/transition.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 
 class TopUpSuccess extends StatelessWidget {
+  final Contact foundContact;
   final String name;
   final double newBalance;
   final double addedAmount;
@@ -15,7 +16,8 @@ class TopUpSuccess extends StatelessWidget {
     super.key,
     required this.name,
     required this.newBalance,
-    required this.addedAmount,
+    required this.addedAmount, 
+    required this.foundContact,
   });
 
   @override
@@ -137,7 +139,7 @@ class TopUpSuccess extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context)
-                    .push(BouncyPageRoute(destinationPage: Home()));
+                    .push(BouncyPageRoute(destinationPage: Home(foundContact: foundContact)));
               },
               style: ButtonStyle(
                 padding: MaterialStateProperty.all<EdgeInsetsGeometry>(

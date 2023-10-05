@@ -21,8 +21,8 @@ class ContactProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void changeEmail(int contactIndex, String newEmail) {
-    contacts[contactIndex].changeEmail(newEmail);
+  void addContact(Contact contact) {
+    contacts.add(contact);
     notifyListeners();
   }
 

@@ -1,64 +1,113 @@
-import 'dart:math';
-
 import 'package:dooid/data/profile.dart';
+import 'package:dooid/screens/onboarding.dart';
 import 'package:dooid/screens/topup/topUp.dart';
 import 'package:dooid/screens/transfer/transfer.dart';
 import 'package:dooid/widgets/colors.dart';
 import 'package:dooid/widgets/contactProvider.dart';
 import 'package:dooid/widgets/format.dart';
 import 'package:dooid/widgets/initials.dart';
+import 'package:dooid/widgets/logOut.dart';
 import 'package:dooid/widgets/transition.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
-  const Home({super.key});
+  final Contact foundContact;
+  const Home({super.key, required this.foundContact});
 
   @override
   State<Home> createState() => _HomeState();
 }
 
-Contact foundContact =
-    findContactByCountryCodeAndPhoneNumber('81', '9876543210');
-
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Colors.white,
-        body: SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                HomeTop(),
-                SizedBox(height: 20),
-                HomeCard(),
-                SizedBox(height: 25),
-                HomeMainButtons(),
-                SizedBox(height: 30),
-                HomeQuickTransfer(),
-                SizedBox(height: 30),
-                HomeRecentTransactions(),
-                SizedBox(height: 30),
-              ],
+    return WillPopScope(
+        onWillPop: () async {
+          return await showLogoutConfirmationDialog(context);
+        },
+        child: Scaffold(
+            backgroundColor: Colors.white,
+            body: SafeArea(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    HomeTop(foundContact: widget.foundContact),
+                    SizedBox(height: 20),
+                    HomeCard(foundContact: widget.foundContact),
+                    SizedBox(height: 25),
+                    HomeMainButtons(foundContact: widget.foundContact),
+                    SizedBox(height: 30),
+                    HomeQuickTransfer(foundContact: widget.foundContact),
+                    SizedBox(height: 30),
+                    HomeRecentTransactions(foundContact: widget.foundContact),
+                    SizedBox(height: 30),
+                  ],
+                ),
+              ),
             ),
-          ),
-        ),
-        floatingActionButton: HomeQRScanButton(),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        bottomNavigationBar: HomeNavBar());
+            floatingActionButton: HomeQRScanButton(),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
+            bottomNavigationBar: HomeNavBar()));
+  }
+
+  Future<bool> showLogoutConfirmationDialog(BuildContext context) async {
+    return await showDialog(
+      context: context,
+      builder: (context) {
+        return LogoutConfirmationDialog(
+          onLogoutConfirmed: () {
+            Navigator.of(context).pushAndRemoveUntil(
+              BouncyPageRoute(destinationPage: Onboarding()),
+              (route) => false, 
+            );
+          },
+        );
+      },
+    );
   }
 }
 
 class HomeTop extends StatelessWidget {
+  final Contact foundContact;
+
   const HomeTop({
     super.key,
+    required this.foundContact,
   });
+
+  Widget _buildProfileWidget(String? profilePicture, String name) {
+    if (profilePicture != null && profilePicture.isNotEmpty) {
+      return CircleAvatar(
+        radius: 30,
+        backgroundImage: AssetImage(profilePicture),
+      );
+    } else {
+      return HomeCircleButtonIconText(
+        width: 65,
+        height: 65,
+        circleColor: AppColors.black,
+        strokeColor: AppColors.black,
+        strokeSize: 2,
+        insideWidget: Text(
+          getInitials(name),
+          style: GoogleFonts.montserrat(
+            fontSize: 25,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     String firstName = foundContact.firstName;
+    String name = foundContact.name;
+    String? profilePicture = foundContact.profilePicture;
 
     return Padding(
       padding: EdgeInsets.fromLTRB(25, 25, 25, 0),
@@ -67,10 +116,7 @@ class HomeTop extends StatelessWidget {
         children: [
           Row(
             children: [
-              CircleAvatar(
-                radius: 30,
-                backgroundImage: AssetImage(kevinProfile.profilePicture!),
-              ),
+              _buildProfileWidget(profilePicture, name),
               SizedBox(width: 10),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -129,8 +175,11 @@ class HomeTop extends StatelessWidget {
 }
 
 class HomeCard extends StatefulWidget {
+  final Contact foundContact;
+
   const HomeCard({
     Key? key,
+    required this.foundContact,
   }) : super(key: key);
 
   @override
@@ -155,7 +204,7 @@ class _HomeCardState extends State<HomeCard> {
 
   @override
   Widget build(BuildContext context) {
-    double balance = foundContact.balance ?? 0.0;
+    double balance = widget.foundContact.balance ?? 0.0;
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -203,7 +252,7 @@ class _HomeCardState extends State<HomeCard> {
               buildToggleText(
                 'spent today',
                 showSpentToday
-                    ? foundContact.calculateTotalAmountForToday()
+                    ? widget.foundContact.calculateTotalAmountForToday()
                     : 0.0,
                 showSpentToday,
                 toggleSpentTodayVisibility,
@@ -347,8 +396,11 @@ class HomeCircleButtonIconText extends StatelessWidget {
 }
 
 class HomeMainButtons extends StatelessWidget {
+  final Contact foundContact;
+
   const HomeMainButtons({
     super.key,
+    required this.foundContact,
   });
 
   @override
@@ -439,19 +491,55 @@ class HomeMainButtons extends StatelessWidget {
 }
 
 class HomeQuickTransfer extends StatelessWidget {
+  final Contact foundContact;
+
   const HomeQuickTransfer({
     Key? key,
+    required this.foundContact,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // Store the context in a variable
     BuildContext? parentContext = context;
 
     return Consumer<ContactProvider>(
       builder: (context, contactProvider, child) {
         final recentTransferTransactions =
             contactProvider.getFrequentTransferTransactions(foundContact, 5);
+
+        if (recentTransferTransactions.isEmpty) {
+          return Padding(
+            padding: EdgeInsets.symmetric(horizontal: 25),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Quick Transfer',
+                  style: GoogleFonts.montserrat(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.black,
+                  ),
+                ),
+                SizedBox(height: 10),
+                Container(
+                  width: double.infinity,
+                  height: 65,
+                  color: AppColors.lightGrey,
+                  child: Center(
+                    child: Text(
+                      'No Transfers Yet',
+                      style: GoogleFonts.montserrat(
+                        fontSize: 15,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
 
         return Padding(
           padding: EdgeInsets.symmetric(horizontal: 25),
@@ -472,8 +560,7 @@ class HomeQuickTransfer extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: recentTransferTransactions.map((transaction) {
-                    return buildTransferWidget(
-                        transaction, parentContext);
+                    return buildTransferWidget(transaction, parentContext);
                   }).toList(),
                 ),
               ],
@@ -528,8 +615,11 @@ class HomeQuickTransfer extends StatelessWidget {
 }
 
 class HomeRecentTransactions extends StatelessWidget {
+  final Contact foundContact;
+
   const HomeRecentTransactions({
     Key? key,
+    required this.foundContact,
   }) : super(key: key);
 
   @override

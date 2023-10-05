@@ -1,5 +1,4 @@
 import 'package:dooid/data/profile.dart';
-import 'package:dooid/screens/home.dart';
 import 'package:dooid/screens/topup/topUpSuccess.dart';
 import 'package:dooid/widgets/TopUpTransfer/wBackButton.dart';
 import 'package:dooid/widgets/contactProvider.dart';
@@ -21,11 +20,18 @@ class TopUp extends StatefulWidget {
 }
 
 class TopUpState extends State<TopUp> {
-  final double? balance = foundContact.balance;
-  String userName = foundContact.name;
+  double? balance;
+  String userName = '';
   bool isBalanceVisible = true;
   late double amount = 0;
   final TextEditingController _controller = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    balance = widget.foundContact.balance;
+    userName = widget.foundContact.name;
+  }
 
   void toggleBalanceVisibility() {
     setState(() {
@@ -113,7 +119,7 @@ class TopUpState extends State<TopUp> {
                           TextSpan(
                               text: isBalanceVisible
                                   ? '****************'
-                                  : formatBalance(foundContact.balance),
+                                  : formatBalance(widget.foundContact.balance),
                               style: GoogleFonts.montserrat(
                                   fontSize: 28,
                                   fontWeight: FontWeight.bold,
@@ -226,18 +232,18 @@ class TopUpState extends State<TopUp> {
                         contactProvider.addTransactionToContact(
                           contacts.indexOf(widget.foundContact),
                           Transaction(
-                            name: "Top Up",
-                            amount: amount,
-                            date: DateTime.now(),
-                            message: 'Added ${formatBalance(amount)}',
-                            type: 'topup'
-                          ),
+                              name: "Top Up",
+                              amount: amount,
+                              date: DateTime.now(),
+                              message: 'Added ${formatBalance(amount)}',
+                              type: 'topup'),
                         );
                         setState(() {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                               builder: (context) => TopUpSuccess(
+                                foundContact: widget.foundContact,
                                 name: userName,
                                 newBalance: balance! + amount,
                                 addedAmount: amount,
