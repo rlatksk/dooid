@@ -11,6 +11,7 @@ import 'package:dooid/provider/UserDataProvider.dart';
 import 'package:provider/provider.dart';
 
 class Data extends StatefulWidget {
+
   @override
   State<Data> createState() => _DataState();
 }
@@ -412,6 +413,7 @@ class _DataState extends State<Data> {
     );
   }
 
+
   void finishUp({
     required BuildContext context,
     required String firstName,
@@ -428,15 +430,10 @@ class _DataState extends State<Data> {
     print(confirmPin);
     print(selectedDate);
 
-    final userDataProvider = Provider.of<UserDataProvider>(context, listen: false);
-    userDataProvider.setUserData(firstname,pin);
+    final userDataProvider =
+        Provider.of<UserDataProvider>(context, listen: false);
+    userDataProvider.setUserData(firstName, pin);
     await Future.delayed(Duration(seconds: 2));
     wPushReplaceTo(context, Pin());
   }
-
-  // Getter for firstname
-  String get firstname => _firstName.text;
-
-  // Getter for pin
-  String get pin => _pin.text;
 }

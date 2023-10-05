@@ -6,10 +6,8 @@ class UserDataProvider extends ChangeNotifier {
 
   UserDataModel? get userData => _userData;
 
-  void setUserData(String firstname, String pin) {
+  void setUserData(String? firstname, String? pin) {
     _userData = UserDataModel(firstname: firstname, pin: pin);
     notifyListeners();
   }
-
-  
 }

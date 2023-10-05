@@ -1,3 +1,4 @@
+import 'package:dooid/screens/auth/data.dart';
 import 'package:dooid/screens/auth/login.dart';
 import 'package:dooid/screens/auth/otp.dart';
 import 'package:dooid/screens/auth/pin.dart';
@@ -110,7 +111,7 @@ class _ChangePinState extends State<ChangePin> {
       onPressed: () {
         setState(() => _isLoading = true);
         changeUp(
-          context: context,
+          context: context, 
           pin: _pin.text,
           confirmPin: _confirmPin.text,
         );
@@ -128,7 +129,10 @@ class _ChangePinState extends State<ChangePin> {
               resizeToAvoidBottomInset: false,
               body: SafeArea(
                 child: Stack(
+                  alignment: Alignment.center,
                   children: <Widget>[
+                    // Center(
+                    // child:
                     Container(
                       decoration: BoxDecoration(
                         image: DecorationImage(
@@ -136,7 +140,7 @@ class _ChangePinState extends State<ChangePin> {
                           fit: BoxFit.cover,
                         ),
                       ),
-                      margin: EdgeInsets.symmetric(horizontal: 20),
+                      margin: EdgeInsets.symmetric(horizontal: 40),
                       child: Form(
                         key: _formKey,
                         child: Column(
@@ -145,70 +149,74 @@ class _ChangePinState extends State<ChangePin> {
                               height: 80,
                             ),
                             SizedBox(
-                              height: 85,
+                              height: 90,
                               child: Container(
                                 width: 320,
                                 child: wAuthTitle(
-                                  title: 'Finish Up',
+                                  title: 'Change Your Pin',
                                   subtitle:
-                                      'It’s time to set up your Dooid profile.',
+                                      'It’s time to change your security pin.',
                                   titleFontSize: 32,
                                   subtitleFontSize: 15,
                                 ),
                               ),
                             ),
                             SizedBox(
-                              height: 15,
+                              height: 100,
                             ),
                             _inputPin(),
+                            SizedBox(
+                              height: 15,
+                            ),
                             _inputConfirmPin(),
                             SizedBox(
-                              height: 20,
+                              height: 50,
                             ),
                             _inputSubmit(),
                           ],
                         ),
                       ),
                     ),
-                    Positioned(
-                      top: 20,
-                      left: 0,
-                      right: 0,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Container(
-                            height: 10,
-                            width: 100,
-                            decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                            margin: EdgeInsets.only(right: 10),
-                            padding: EdgeInsets.all(10),
-                          ),
-                          Container(
-                            height: 10,
-                            width: 100,
-                            decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                            margin: EdgeInsets.only(right: 10),
-                            padding: EdgeInsets.all(10),
-                          ),
-                          Container(
-                            height: 10,
-                            width: 100,
-                            decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                            padding: EdgeInsets.all(10),
-                          ),
-                        ],
-                      ),
-                    ),
+                    // ),
+                    // Positioned(
+                    //   top: 20,
+                    //   left: 0,
+                    //   right: 0,
+                    //   child: Row(
+                    //     mainAxisAlignment: MainAxisAlignment.center,
+                    //     children: <Widget>[
+                    //       Container(
+                    //         height: 10,
+                    //         width: 100,
+                    //         decoration: BoxDecoration(
+                    //           color: Colors.black,
+                    //           borderRadius: BorderRadius.circular(100),
+                    //         ),
+                    //         margin: EdgeInsets.only(right: 10),
+                    //         padding: EdgeInsets.all(10),
+                    //       ),
+                    //       Container(
+                    //         height: 10,
+                    //         width: 100,
+                    //         decoration: BoxDecoration(
+                    //           color: Colors.black,
+                    //           borderRadius: BorderRadius.circular(100),
+                    //         ),
+                    //         margin: EdgeInsets.only(right: 10),
+                    //         padding: EdgeInsets.all(10),
+                    //       ),
+                    //       Container(
+                    //         height: 10,
+                    //         width: 100,
+                    //         decoration: BoxDecoration(
+                    //           color: Colors.black,
+                    //           borderRadius: BorderRadius.circular(100),
+                    //         ),
+                    //         padding: EdgeInsets.all(10),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
@@ -224,9 +232,13 @@ class _ChangePinState extends State<ChangePin> {
     print(pin);
     print(confirmPin);
 
+    final userData =
+        Provider.of<UserDataProvider>(context, listen: false).userData;
+    String? name = userData!.firstname;
+
     final userDataProvider =
         Provider.of<UserDataProvider>(context, listen: false);
-    userDataProvider.setUserData("", pin);
+    userDataProvider.setUserData(name, pin);
     await Future.delayed(Duration(seconds: 2));
     wPushReplaceTo(context, Pin());
   }

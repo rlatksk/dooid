@@ -24,7 +24,8 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     final userData = Provider.of<UserDataProvider>(context).userData;
 
-    String name = userData!.firstname;
+    String? name = userData!.firstname;
+
     return Stack(alignment: Alignment.topCenter, children: [
       Scaffold(
         appBar: AppBar(
@@ -219,7 +220,7 @@ class _ProfileState extends State<Profile> {
           width: MediaQuery.sizeOf(context).width - 25,
           height: 350,
           child: Text(
-            "Hello " + name,
+            "Hello " + name!,
             style: TextStyle(
                 decoration: TextDecoration.none,
                 color: Colors.black,

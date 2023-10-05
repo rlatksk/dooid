@@ -1,5 +1,6 @@
 import 'package:dooid/provider/auth_provider.dart';
 import 'package:dooid/provider/UserDataProvider.dart';
+import 'package:dooid/screens/changePin.dart';
 import 'package:dooid/screens/profile.dart';
 import 'package:dooid/screens/auth/data.dart';
 import 'package:dooid/splash.dart';
@@ -20,7 +21,7 @@ void main() => runApp(
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(debugShowCheckedModeBanner: false, home: Splash());
+    return MaterialApp(debugShowCheckedModeBanner: false, home: ChangePin());
   }
 }
 //test
