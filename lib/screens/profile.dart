@@ -28,7 +28,7 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     final userData = Provider.of<UserDataProvider>(context);
 
-    String name = userData.name;
+    String name = userData.firstname;
     String phone = userData.phone;
     String photo = userData.photo;
 

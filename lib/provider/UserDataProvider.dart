@@ -1,13 +1,21 @@
 import 'package:flutter/foundation.dart';
 
 class UserDataProvider extends ChangeNotifier {
-  String name = "";
+  String firstname = "";
+  String lastname = "";
   String phone = "";
   String pin = "";
   String photo = "";
+  String bday = "";
+  String email = "";
 
   void setUserName(String firstName) {
-    name = firstName;
+    firstname = firstName;
+    notifyListeners();
+  }
+
+  void setUserLastName(String lastName) {
+    lastname = lastName;
     notifyListeners();
   }
 
@@ -23,6 +31,15 @@ class UserDataProvider extends ChangeNotifier {
 
   void setUserPhoto(String profilepic) {
     photo = profilepic;
+    notifyListeners();
+  }
+  void setUserBirthday(String birthDay) {
+    bday = birthDay;
+    notifyListeners();
+  }
+
+  void setUserEmail(String eMail) {
+    email = eMail;
     notifyListeners();
   }
 }
