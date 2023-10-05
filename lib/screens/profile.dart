@@ -1,15 +1,17 @@
 import 'dart:io';
-import 'package:dooid/screens/auth/pin.dart';
+import 'package:dooid/screens/auth/login.dart';
 import 'package:dooid/screens/changePin.dart';
+import 'package:dooid/screens/home.dart';
 import 'package:dooid/splash.dart';
+import 'package:dooid/utils/utils.dart';
 import 'package:dooid/widgets/widgets.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:dooid/screens/TNC.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:dooid/screens/auth/data.dart';
 import 'package:provider/provider.dart';
 import 'package:dooid/provider/UserDataProvider.dart';
 
@@ -21,10 +23,14 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   XFile? tempo;
   XFile? profile_image;
-  Widget build(BuildContext context) {
-    final userData = Provider.of<UserDataProvider>(context).userData;
+  TextEditingController pincur = TextEditingController();
 
-    String? name = userData!.firstname;
+  Widget build(BuildContext context) {
+    final userData = Provider.of<UserDataProvider>(context);
+
+    String name = userData.name;
+    String phone = userData.phone;
+    String photo = userData.photo;
 
     return Stack(alignment: Alignment.topCenter, children: [
       Scaffold(
@@ -46,7 +52,7 @@ class _ProfileState extends State<Profile> {
                   15, 0, 15, 0), // Remove or reduce top padding
               children: <Widget>[
                 SizedBox(
-                  height: 140,
+                  height: 150,
                 ),
                 Text(
                   "Security",
@@ -57,11 +63,41 @@ class _ProfileState extends State<Profile> {
                 ),
                 Material(
                     child: ListTile(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ChangePin()),
-                    );
+                  onTap: () async {
+                    await showDialog<void>(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                              content: Stack(
+                                clipBehavior: Clip.none,
+                                children: <Widget>[
+                                  Form(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                8, 8, 8, 0),
+                                            child: Container(
+                                                height: 50,
+                                                child: Expanded(
+                                                  child: Text(
+                                                    "Enter Your Currenct Pin : ",
+                                                  ),
+                                                ))),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(bottom: 15),
+                                          child: _inputPin(),
+                                        ),
+                                        Center(child: _inputSubmit())
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ));
                   },
                   title: Text("Change Security Pin"),
                   leading: SvgPicture.asset(
@@ -190,9 +226,7 @@ class _ProfileState extends State<Profile> {
         padding: const EdgeInsets.only(top: 700),
         child: GestureDetector(
           onTap: () {
-            wPushReplaceTo(
-                context, Splash() // This predicate removes all routes
-                );
+            wPushReplaceTo(context, Login());
           },
           child: SvgPicture.asset(
             "assets/logout.svg",
@@ -220,7 +254,7 @@ class _ProfileState extends State<Profile> {
           width: MediaQuery.sizeOf(context).width - 25,
           height: 350,
           child: Text(
-            "Hello " + name!,
+            "Hello " + name,
             style: TextStyle(
                 decoration: TextDecoration.none,
                 color: Colors.black,
@@ -231,14 +265,14 @@ class _ProfileState extends State<Profile> {
       Container(
         padding: const EdgeInsets.fromLTRB(0, 230, 0, 0),
         child: SizedBox(
-          width: 100,
+          width: 120,
           height: 350,
           child: Text(
-            "",
+            phone,
             style: TextStyle(
                 decoration: TextDecoration.none,
-                color: Colors.black,
-                fontSize: 15,
+                color: Colors.black38,
+                fontSize: 14,
                 fontWeight: FontWeight.w300),
           ),
         ),
@@ -276,10 +310,8 @@ class _ProfileState extends State<Profile> {
               child: CircleAvatar(
                   radius: 32,
                   backgroundColor: Colors.grey.shade500,
-                  backgroundImage: profile_image == null
-                      ? null
-                      : FileImage(File(profile_image!.path)),
-                  child: profile_image == null
+                  backgroundImage: photo == "" ? null : FileImage(File(photo)),
+                  child: photo == ""
                       ? CircleAvatar(
                           radius: 32,
                           backgroundColor: Colors.grey.shade500,
@@ -287,16 +319,74 @@ class _ProfileState extends State<Profile> {
                       : null),
             ),
           )),
-      Container(
-        alignment: Alignment.bottomCenter,
-        child: SizedBox(
-          width: MediaQuery.sizeOf(context).width,
-          height: 140,
-          child: SvgPicture.asset("assets/Bottom.svg"),
-        ),
-      )
     ]);
-    // ]);
+  }
+
+  Widget _inputPin() {
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.8,
+      child: Column(
+        children: <Widget>[
+          DecoratedBox(
+            decoration: BoxDecoration(
+              color: Color(0xFFBFBFBF),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: TextFormField(
+                controller: pincur,
+                obscureText: true,
+                decoration: InputDecoration(
+                  hintText: 'Your Current Pin',
+                  border: InputBorder.none,
+                  hintStyle: TextStyle(color: Colors.white),
+                ),
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly
+                ],
+                style: GoogleFonts.montserrat(color: Colors.white),
+              ),
+            ),
+          ),
+          SizedBox(
+              height:
+                  8), // Add some space between TextFormField and the hint text
+        ],
+      ),
+    );
+  }
+
+  Widget _inputSubmit() {
+    final userData = Provider.of<UserDataProvider>(context);
+    String pin = userData.pin;
+    return wInputSubmit(
+      context: context,
+      title: 'Continue',
+      onPressed: () {
+        // if (!_formKey.currentState!.validate()) return;
+
+        String pinValue = pincur.text;
+
+        if (pinValue.isEmpty || pinValue != pin) {
+          showSnackbar(
+            context: context,
+            message: pinValue.isEmpty
+                ? 'PIN can\'t be empty'
+                : 'PIN doesn\'t match current PIN',
+          );
+          pincur.text = "";
+        } else {
+          Navigator.of(context).pop();
+          pincur.text = "";
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ChangePin()),
+          );
+        }
+      },
+    );
   }
 
   getImageGallery() async {
@@ -306,6 +396,9 @@ class _ProfileState extends State<Profile> {
     setState(() {
       profile_image;
       tempo = profile_image;
+      final userDataProvider =
+          Provider.of<UserDataProvider>(context, listen: false);
+      userDataProvider.setUserPhoto(tempo!.path);
     });
   }
 

@@ -1,6 +1,6 @@
-import 'package:dooid/screens/auth/data.dart';
-import 'package:dooid/screens/auth/login.dart';
-import 'package:dooid/screens/auth/otp.dart';
+// import 'package:dooid/screens/auth/data.dart';
+// import 'package:dooid/screens/auth/login.dart';
+// import 'package:dooid/screens/auth/otp.dart';
 import 'package:dooid/screens/auth/pin.dart';
 import 'package:dooid/utils/utils.dart';
 import 'package:dooid/widgets/widget_auth.dart';
@@ -20,13 +20,13 @@ class _ChangePinState extends State<ChangePin> {
   TextEditingController _pin = TextEditingController();
   TextEditingController _confirmPin = TextEditingController();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  DateTime? selectedDate;
+  String? value;
 
   bool _isLoading = false;
 
   Widget _inputPin() {
     return Container(
-      width: 320,
+      width: MediaQuery.of(context).size.width * 0.8,
       child: Column(
         children: <Widget>[
           DecoratedBox(
@@ -44,8 +44,6 @@ class _ChangePinState extends State<ChangePin> {
                   border: InputBorder.none,
                   hintStyle: TextStyle(color: Colors.white),
                 ),
-                validator: (val) => uValidator(
-                    value: val!, isRequired: true, match: _confirmPin.text),
                 keyboardType: TextInputType.number,
                 inputFormatters: <TextInputFormatter>[
                   FilteringTextInputFormatter.digitsOnly
@@ -64,7 +62,7 @@ class _ChangePinState extends State<ChangePin> {
 
   Widget _inputConfirmPin() {
     return Container(
-      width: 320,
+      width: MediaQuery.of(context).size.width * 0.8,
       child: Column(
         children: <Widget>[
           DecoratedBox(
@@ -82,9 +80,10 @@ class _ChangePinState extends State<ChangePin> {
                   border: InputBorder.none,
                   hintStyle: TextStyle(color: Colors.white),
                 ),
-                validator: (val) =>
-                    uValidator(value: val!, isRequired: true, match: _pin.text),
                 keyboardType: TextInputType.number,
+                onChanged: (text) {
+                  value = text;
+                },
                 inputFormatters: <TextInputFormatter>[
                   FilteringTextInputFormatter.digitsOnly
                 ],
@@ -109,9 +108,32 @@ class _ChangePinState extends State<ChangePin> {
       context: context,
       title: 'Continue',
       onPressed: () {
+        if (!_formKey.currentState!.validate()) return;
+
+        String pinValue = _pin.text;
+        String confirmPinValue = _confirmPin.text;
+
+        if (pinValue.isEmpty || pinValue != confirmPinValue) {
+          showSnackbar(
+            context: context,
+            message:
+                pinValue.isEmpty ? 'PIN can\'t be empty' : 'PIN doesn\'t match',
+          );
+          return;
+        }
+
+        if (confirmPinValue.isEmpty || confirmPinValue != pinValue) {
+          showSnackbar(
+            context: context,
+            message: pinValue.isEmpty
+                ? 'Confirm PIN can\'t be empty'
+                : 'Confirm PIN doesn\'t match',
+          );
+          return;
+        }
         setState(() => _isLoading = true);
         changeUp(
-          context: context, 
+          context: context,
           pin: _pin.text,
           confirmPin: _confirmPin.text,
         );
@@ -232,15 +254,16 @@ class _ChangePinState extends State<ChangePin> {
     print(pin);
     print(confirmPin);
 
-    final userData =
-        Provider.of<UserDataProvider>(context, listen: false).userData;
-    String? name = userData!.firstname;
-
     final userDataProvider =
         Provider.of<UserDataProvider>(context, listen: false);
-    userDataProvider.setUserData(name, pin);
+    userDataProvider.setUserPin(pin);
     await Future.delayed(Duration(seconds: 2));
-    wPushReplaceTo(context, Pin());
+    wPushReplaceTo(
+        context,
+        Pin(
+          value: 'pin',
+        ));
+    // Navigator.pop(context,Material())
   }
 
   // Getter for firstname

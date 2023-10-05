@@ -1,13 +1,28 @@
 import 'package:flutter/foundation.dart';
-import 'UserDataModel.dart';
 
 class UserDataProvider extends ChangeNotifier {
-  UserDataModel? _userData;
+  String name = "";
+  String phone = "";
+  String pin = "";
+  String photo = "";
 
-  UserDataModel? get userData => _userData;
+  void setUserName(String firstName) {
+    name = firstName;
+    notifyListeners();
+  }
 
-  void setUserData(String? firstname, String? pin) {
-    _userData = UserDataModel(firstname: firstname, pin: pin);
+  void setUserPhone(String phoneNumber) {
+    phone = phoneNumber;
+    notifyListeners();
+  }
+
+  void setUserPin(String securityPin) {
+    pin = securityPin;
+    notifyListeners();
+  }
+
+  void setUserPhoto(String profilepic) {
+    photo = profilepic;
     notifyListeners();
   }
 }

@@ -11,7 +11,6 @@ import 'package:dooid/provider/UserDataProvider.dart';
 import 'package:provider/provider.dart';
 
 class Data extends StatefulWidget {
-
   @override
   State<Data> createState() => _DataState();
 }
@@ -24,6 +23,7 @@ class _DataState extends State<Data> {
   TextEditingController _confirmPin = TextEditingController();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   DateTime? selectedDate;
+  String? value;
 
   bool _isLoading = false;
 
@@ -43,6 +43,7 @@ class _DataState extends State<Data> {
 
   Widget _inputBirthday() {
     return Container(
+      width: MediaQuery.of(context).size.width * 0.8,
       child: Column(
         children: <Widget>[
           DecoratedBox(
@@ -80,7 +81,7 @@ class _DataState extends State<Data> {
 
   Widget _inputFirstName() {
     return Container(
-      width: 320,
+      width: MediaQuery.of(context).size.width * 0.8,
       child: Column(
         children: <Widget>[
           DecoratedBox(
@@ -97,7 +98,6 @@ class _DataState extends State<Data> {
                   border: InputBorder.none,
                   hintStyle: TextStyle(color: Colors.grey),
                 ),
-                validator: (val) => uValidator(value: val!, isRequired: true),
                 style: GoogleFonts.montserrat(),
               ),
             ),
@@ -112,7 +112,7 @@ class _DataState extends State<Data> {
 
   Widget _inputLastName() {
     return Container(
-      width: 320,
+      width: MediaQuery.of(context).size.width * 0.8,
       child: Column(
         children: <Widget>[
           DecoratedBox(
@@ -129,7 +129,6 @@ class _DataState extends State<Data> {
                   border: InputBorder.none,
                   hintStyle: TextStyle(color: Colors.grey),
                 ),
-                validator: (val) => uValidator(value: val!, isRequired: true),
                 style: GoogleFonts.montserrat(),
               ),
             ),
@@ -146,7 +145,7 @@ class _DataState extends State<Data> {
 
   Widget _inputEmail() {
     return Container(
-      width: 320,
+      width: MediaQuery.of(context).size.width * 0.8,
       child: Column(
         children: <Widget>[
           DecoratedBox(
@@ -163,8 +162,6 @@ class _DataState extends State<Data> {
                   border: InputBorder.none,
                   hintStyle: TextStyle(color: Colors.grey),
                 ),
-                validator: (val) =>
-                    uValidator(value: val!, isEmail: true, isRequired: false),
                 style: GoogleFonts.montserrat(),
               ),
             ),
@@ -179,7 +176,7 @@ class _DataState extends State<Data> {
 
   Widget _inputPin() {
     return Container(
-      width: 320,
+      width: MediaQuery.of(context).size.width * 0.8,
       child: Column(
         children: <Widget>[
           DecoratedBox(
@@ -197,8 +194,6 @@ class _DataState extends State<Data> {
                   border: InputBorder.none,
                   hintStyle: TextStyle(color: Colors.white),
                 ),
-                validator: (val) => uValidator(
-                    value: val!, isRequired: true, match: _confirmPin.text),
                 keyboardType: TextInputType.number,
                 inputFormatters: <TextInputFormatter>[
                   FilteringTextInputFormatter.digitsOnly
@@ -217,7 +212,7 @@ class _DataState extends State<Data> {
 
   Widget _inputConfirmPin() {
     return Container(
-      width: 320,
+      width: MediaQuery.of(context).size.width * 0.8,
       child: Column(
         children: <Widget>[
           DecoratedBox(
@@ -235,9 +230,10 @@ class _DataState extends State<Data> {
                   border: InputBorder.none,
                   hintStyle: TextStyle(color: Colors.white),
                 ),
-                validator: (val) =>
-                    uValidator(value: val!, isRequired: true, match: _pin.text),
                 keyboardType: TextInputType.number,
+                onChanged: (text) {
+                  value = text;
+                },
                 inputFormatters: <TextInputFormatter>[
                   FilteringTextInputFormatter.digitsOnly
                 ],
@@ -263,6 +259,37 @@ class _DataState extends State<Data> {
       title: 'Continue',
       onPressed: () {
         if (!_formKey.currentState!.validate()) return;
+
+        String firstNameValue = _firstName.text;
+        String lastNameValue = _lastName.text;
+        String pinValue = _pin.text;
+        String confirmPinValue = _confirmPin.text;
+        String emailValue = _email.text;
+
+        if (firstNameValue.isEmpty) {
+          showSnackbar(
+            context: context,
+            message: 'Please enter your first name',
+          );
+          return;
+        }
+
+        if (lastNameValue.isEmpty) {
+          showSnackbar(
+            context: context,
+            message: 'Please enter your last name',
+          );
+          return;
+        }
+
+        if (emailValue.contains('@') || emailValue.contains('.')) {
+          showSnackbar(
+            context: context,
+            message: 'Please enter a valid email',
+          );
+          return;
+        }
+
         if (selectedDate == null) {
           showSnackbar(
             context: context,
@@ -276,6 +303,25 @@ class _DataState extends State<Data> {
           showSnackbar(
             context: context,
             message: 'You have to be at least 16 to join Dooid.',
+          );
+          return;
+        }
+
+        if (pinValue.isEmpty || pinValue != confirmPinValue) {
+          showSnackbar(
+            context: context,
+            message:
+                pinValue.isEmpty ? 'PIN can\'t be empty' : 'PIN doesn\'t match',
+          );
+          return;
+        }
+
+        if (confirmPinValue.isEmpty || confirmPinValue != pinValue) {
+          showSnackbar(
+            context: context,
+            message: pinValue.isEmpty
+                ? 'Confirm PIN can\'t be empty'
+                : 'Confirm PIN doesn\'t match',
           );
           return;
         }
@@ -303,116 +349,120 @@ class _DataState extends State<Data> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
-      child: _isLoading
-          ? wAppLoading(context)
-          : Scaffold(
-              resizeToAvoidBottomInset: false,
-              body: SafeArea(
-                child: Stack(
-                  children: <Widget>[
-                    Container(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('assets/Background.png'),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      margin: EdgeInsets.symmetric(horizontal: 20),
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                          children: <Widget>[
-                            SizedBox(
-                              height: 80,
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        return GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: _isLoading
+              ? wAppLoading(context)
+              : Scaffold(
+                  resizeToAvoidBottomInset: false,
+                  body: SafeArea(
+                    child: Stack(
+                      children: <Widget>[
+                        Container(
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage('assets/Background.png'),
+                              fit: BoxFit.cover,
                             ),
-                            SizedBox(
-                              height: 85,
-                              child: Container(
-                                width: 320,
-                                child: wAuthTitle(
-                                  title: 'Finish Up',
-                                  subtitle:
-                                      'It’s time to set up your Dooid profile.',
-                                  titleFontSize: 32,
-                                  subtitleFontSize: 15,
+                          ),
+                          margin: EdgeInsets.symmetric(horizontal: 20),
+                          child: Form(
+                            key: _formKey,
+                            child: Column(
+                              children: <Widget>[
+                                SizedBox(
+                                  height: 80,
                                 ),
-                              ),
+                                SizedBox(
+                                  height: 85,
+                                  child: Container(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.8,
+                                    child: wAuthTitle(
+                                      title: 'Finish Up',
+                                      subtitle:
+                                          'It’s time to set up your Dooid profile.',
+                                      titleFontSize: 32,
+                                      subtitleFontSize: 15,
+                                    ),
+                                  ),
+                                ),
+                                _inputFirstName(),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                _inputLastName(),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                _inputBirthday(),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                _inputEmail(),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                _inputPin(),
+                                _inputConfirmPin(),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                _inputSubmit(),
+                                _textRegister(),
+                              ],
                             ),
-                            _inputFirstName(),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            _inputLastName(),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            _inputBirthday(),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            _inputEmail(),
-                            SizedBox(
-                              height: 15,
-                            ),
-                            _inputPin(),
-                            _inputConfirmPin(),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            _inputSubmit(),
-                            _textRegister(),
-                          ],
+                          ),
                         ),
-                      ),
+                        Positioned(
+                          top: 20,
+                          left: 0,
+                          right: 0,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Container(
+                                height: 10,
+                                width: 100,
+                                decoration: BoxDecoration(
+                                  color: Colors.black,
+                                  borderRadius: BorderRadius.circular(100),
+                                ),
+                                margin: EdgeInsets.only(right: 10),
+                                padding: EdgeInsets.all(10),
+                              ),
+                              Container(
+                                height: 10,
+                                width: 100,
+                                decoration: BoxDecoration(
+                                  color: Colors.black,
+                                  borderRadius: BorderRadius.circular(100),
+                                ),
+                                margin: EdgeInsets.only(right: 10),
+                                padding: EdgeInsets.all(10),
+                              ),
+                              Container(
+                                height: 10,
+                                width: 100,
+                                decoration: BoxDecoration(
+                                  color: Colors.black,
+                                  borderRadius: BorderRadius.circular(100),
+                                ),
+                                padding: EdgeInsets.all(10),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                    Positioned(
-                      top: 20,
-                      left: 0,
-                      right: 0,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Container(
-                            height: 10,
-                            width: 100,
-                            decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                            margin: EdgeInsets.only(right: 10),
-                            padding: EdgeInsets.all(10),
-                          ),
-                          Container(
-                            height: 10,
-                            width: 100,
-                            decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                            margin: EdgeInsets.only(right: 10),
-                            padding: EdgeInsets.all(10),
-                          ),
-                          Container(
-                            height: 10,
-                            width: 100,
-                            decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                            padding: EdgeInsets.all(10),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
+        );
+      },
     );
   }
-
 
   void finishUp({
     required BuildContext context,
@@ -432,8 +482,9 @@ class _DataState extends State<Data> {
 
     final userDataProvider =
         Provider.of<UserDataProvider>(context, listen: false);
-    userDataProvider.setUserData(firstName, pin);
+    userDataProvider.setUserName(firstName);
+    userDataProvider.setUserPin(pin);
     await Future.delayed(Duration(seconds: 2));
-    wPushReplaceTo(context, Pin());
+    wPushReplaceTo(context, Pin(value: 'pin'));
   }
 }

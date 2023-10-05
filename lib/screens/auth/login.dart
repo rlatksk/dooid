@@ -85,8 +85,6 @@ class _LoginState extends State<Login> {
                   hintText: 'Phone Number',
                   border: InputBorder.none,
                 ),
-                validator: (val) =>
-                    uValidator(value: val!, minLength: 12, isRequired: true),
                 keyboardType: TextInputType.number,
                 inputFormatters: <TextInputFormatter>[
                   FilteringTextInputFormatter.digitsOnly
@@ -112,6 +110,17 @@ class _LoginState extends State<Login> {
       title: 'Continue',
       onPressed: () {
         if (!_formKey.currentState!.validate()) return;
+        String phoneNumberValue = _phoneNumber.text;
+
+        if (phoneNumberValue.isEmpty || phoneNumberValue.length < 12) {
+          showSnackbar(
+            context: context,
+            message: phoneNumberValue.isEmpty
+                ? 'Phone number can\'t be empty'
+                : 'Phone number should be 12 digits',
+          );
+          return;
+        }
         setState(() => _isLoading = true);
         registerWithEmail(
           context: context,
@@ -194,7 +203,9 @@ class _LoginState extends State<Login> {
   }) async {
     print(phoneNumber);
 
-    final userDataProvider = Provider.of<UserDataProvider>(context, listen: false);
+    final userDataProvider =
+        Provider.of<UserDataProvider>(context, listen: false);
+    userDataProvider.setUserPhone(phoneNumber);
 
     await Future.delayed(Duration(seconds: 2));
     wPushReplaceTo(context, OtpLogin());

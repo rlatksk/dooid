@@ -1,7 +1,5 @@
 import 'package:dooid/screens/auth/data.dart';
 import 'package:dooid/screens/auth/login.dart';
-import 'package:dooid/screens/auth/pin.dart';
-import 'package:dooid/screens/profile.dart';
 import 'package:dooid/utils/utils.dart';
 import 'package:dooid/widgets/widget_auth.dart';
 import 'package:dooid/widgets/widgets.dart';
@@ -27,45 +25,6 @@ class _OtpState extends State<Otp> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   bool _isLoading = false;
-
-  Widget _inputPhoneNumber() {
-    return Container(
-      width: 320,
-      child: Column(
-        children: <Widget>[
-          DecoratedBox(
-            decoration: BoxDecoration(
-              color: Color(0xFFEDEDED),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: TextFormField(
-                controller: _otpNumber,
-                decoration: InputDecoration(
-                  hintText: 'Phone Number',
-                  border: InputBorder.none,
-                ),
-                validator: (val) =>
-                    uValidator(value: val!, minLength: 12, isRequired: true),
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.digitsOnly
-                ],
-              ),
-            ),
-          ),
-          SizedBox(
-              height:
-                  8), // Add some space between TextFormField and the hint text
-          Text(
-            'We will send a verification code to your number to confirm it’s you.',
-            style: GoogleFonts.montserrat(color: Colors.black, fontSize: 8),
-          ),
-        ],
-      ),
-    );
-  }
 
   Widget _inputSubmit() {
     return wInputSubmit(
@@ -231,6 +190,6 @@ class _OtpState extends State<Otp> {
     print(otpNumber);
 
     await Future.delayed(Duration(seconds: 2));
-    wPushReplaceTo(context, Pin());
+    wPushReplaceTo(context, Data());
   }
 }

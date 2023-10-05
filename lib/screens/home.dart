@@ -1,103 +1,157 @@
 
 import 'package:flutter/material.dart';
 
-class Home extends StatelessWidget{
+class Home extends StatefulWidget {
   @override
-  Widget build(BuildContext context){
-    return SafeArea (
-    child : Container (
-      width: MediaQuery. of(context). size. width,
-      height: MediaQuery. of(context). size. height,
-      color: Colors.white,
-        child: Stack(
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  int _selectedIndex = 0; // Indeks item yang dipilih
+
+  @override
+  Widget build(BuildContext context) {
+    double fem = 1.0;
+
+    return MaterialApp(
+      home: Scaffold(
+        body: IndexedStack(
+          index: _selectedIndex, // Indeks menentukan tampilan yang ditampilkan
           children: [
-            Center(
-            child: Container(
-                width: 271,
-                height: 271,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(
-                      "assets/logob.png"),
-                          ),
-                        ),
-                      ),
-            ),
-              SizedBox(
-                width: MediaQuery. of(context). size. width,
-                height: MediaQuery. of(context). size. height,
-                child: Stack(
-                  children: [
-                      Opacity(
-                        opacity: 0.3,
-                        child: Container(
-                        width: MediaQuery. of(context). size. width,
-                        height: MediaQuery. of(context). size. height,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage(
-                                    "assets/back3.png"),
-                                  fit: BoxFit.fill,
-                            ),
-                          ),
-                        )
-                        // ),
-                      ),
-                    ],
-                  ),
+            // Laman Home (indeks 0)
+            Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                border: Border.all(color: Color(0xff000000)),
+                color: Color(0xffffffff),
+                gradient: LinearGradient(
+                  begin: Alignment(1, -0.98),
+                  end: Alignment(-1, 1),
+                  colors: <Color>[
+                    Color(0xffc63c8f),
+                    Color(0xff952b2b),
+                    Color(0xff5b1834),
+                  ],
+                  stops: <double>[0, 0.464, 1],
                 ),
-            Stack(
-              children: [
-                Opacity(
-                  opacity: 0.3,
-                  child: SizedBox(
-                    width: MediaQuery. of(context). size. width,
-                    height: MediaQuery. of(context). size. height,
-                    child: Stack(
-                      children: [
-                          Opacity(
-                            opacity: 0.3,
-                              child: Container(
-                                width: MediaQuery. of(context). size. width,
-                                height: MediaQuery. of(context). size. height,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: AssetImage(
-                                    "assets/back3.png"),
-                                    fit: BoxFit.fill,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          // ),
-                        ],
-                      ),    
-                    ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Color(0x3f000000),
+                    offset: Offset(0 * fem, 4 * fem),
+                    blurRadius: 2 * fem,
                   ),
-                ]
+                ],
               ),
-              Positioned(
-                left:120,
-                top :700,
-                child:
-              SizedBox(
-                width: 160,
-                height: 40,
-                  child: Text(
-                  'Dooid',
-                  textAlign: TextAlign.center,
+              child: Center(
+                child: Text(
+                  'Home Page',
                   style: TextStyle(
-                    color: Color(0xFF131313),
+                    color: Colors.white,
                     fontSize: 24,
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.w400,
-                    height: 0,
-                    decoration: TextDecoration.none
                   ),
                 ),
-              )
-            )
-          ]
+              ),
+            ),
+
+            Container(
+              width: double.infinity,
+              decoration: BoxDecoration(border: Border.all(color: Color(0xff000000)),
+                color: Color(0xffffffff),
+                gradient: LinearGradient(
+                  begin: Alignment(1, -0.98),
+                  end: Alignment(-1, 1),
+                  colors: <Color>[
+                    Color(0xffc63c8f),
+                    Color(0xff952b2b),
+                    Color(0xff5b1834),
+                  ],
+                  stops: <double>[0, 0.464, 1],
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Color(0x3f000000),
+                    offset: Offset(0 * fem, 4 * fem),
+                    blurRadius: 2 * fem,
+                  ),
+                ],
+              ),
+              child: Center(
+                child: Text(
+                  'Pay Page',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                  ),
+                ),
+              ),
+            ),
+
+            // Laman Account (indeks 2)
+            Container(
+              width: double.infinity,
+              decoration: BoxDecoration(border: Border.all(color: Color(0xff000000)),
+                color: Color(0xffffffff),
+                gradient: LinearGradient(
+                  begin: Alignment(1, -0.98),
+                  end: Alignment(-1, 1),
+                  colors: <Color>[
+                    Color(0xffc63c8f),
+                    Color(0xff952b2b),
+                    Color(0xff5b1834),
+                  ],
+                  stops: <double>[0, 0.464, 1],
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Color(0x3f000000),
+                    offset: Offset(0 * fem, 4 * fem),
+                    blurRadius: 2 * fem,
+                  ),
+                ],
+              ),
+              child: Center(
+                child: Text(
+                  'Account Page',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          backgroundColor:
+              Colors.white, // Ubah sesuai latar belakang yang Anda inginkan
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_sharp),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.payments_outlined),
+              label: 'Pay',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.account_circle_outlined),
+              label: 'Account',
+            ),
+          ],
+          selectedItemColor: Color(0xffc63c8f), 
+          unselectedItemColor:
+              Colors.grey, 
+          selectedLabelStyle: TextStyle(
+              fontWeight: FontWeight.bold), 
+          unselectedLabelStyle: TextStyle(
+              fontWeight:
+                  FontWeight.normal), 
+          currentIndex: _selectedIndex, 
+          onTap: (int index) {
+            setState(() {
+              _selectedIndex = index; 
+            });
+          },
         ),
       ),
     );

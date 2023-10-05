@@ -22,8 +22,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         keyboardType: TextInputType.emailAddress,
         decoration:
             InputDecoration(hintText: 'Email', helperText: 'Enter your email'),
-        validator: (val) =>
-            uValidator(value: val!, isEmail: true, isRequired: true),
       ),
     );
   }
@@ -34,6 +32,15 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       title: 'Send',
       onPressed: () {
         if (!_formKey.currentState!.validate()) return;
+        String emailValue = _email.text;
+        
+        if(emailValue.contains('@') || emailValue.contains('.')){
+          showSnackbar(
+            context: context,
+            message: 'Please enter a valid email',
+          );
+          return;
+        }
         final auth = Provider.of<AuthProvider>(context, listen: false);
         setState(() => _isLoading = true);
         auth.resetPassword(
