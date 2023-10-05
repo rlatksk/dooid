@@ -43,7 +43,7 @@ dependencies:
   intl: ^0.18.1
   flutter_multi_formatter: ^2.11.11
   carousel_slider: ^4.2.1
-
+  slide_countdown: ^0.6.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
