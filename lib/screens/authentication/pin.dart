@@ -163,7 +163,7 @@ class _AnimationBoxState extends State<AnimationBox>
   void initState() {
     super.initState();
     animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 600));
+        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
   }
 
   @override
@@ -185,7 +185,7 @@ class _AnimationBoxState extends State<AnimationBox>
           children: [
             Container(),
             AnimatedContainer(
-              duration: Duration(milliseconds: 800),
+              duration: Duration(milliseconds: 400),
               width: 25,
               height: 25,
               decoration: BoxDecoration(

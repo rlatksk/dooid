@@ -1,4 +1,5 @@
 import 'package:dooid/data/accounts.dart';
+import 'package:dooid/screens/main/profile.dart';
 import 'package:dooid/screens/onboarding.dart';
 import 'package:dooid/screens/transactions/topup/topUp.dart';
 import 'package:dooid/screens/main/transactionsHistory.dart';
@@ -80,7 +81,7 @@ class HomeTop extends StatelessWidget {
     required this.foundContact,
   });
 
-  Widget _buildProfileWidget(String? profilePicture, String name) {
+  Widget buildSmallProfileWidget(String? profilePicture, String name) {
     if (profilePicture != null && profilePicture.isNotEmpty) {
       return CircleAvatar(
         radius: 30,
@@ -118,7 +119,7 @@ class HomeTop extends StatelessWidget {
         children: [
           Row(
             children: [
-              _buildProfileWidget(profilePicture, name),
+              buildSmallProfileWidget(profilePicture, name),
               SizedBox(width: 10),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -897,7 +898,9 @@ class HomeNavBar extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 if (activeScreen != 'profile') {
-                  // Navigate to the Profile screen
+                  Navigator.of(context).push(BouncyPageRoute(
+                    destinationPage: Profile(foundContact: foundContact),
+                  ));
                 }
               },
               child: Icon(

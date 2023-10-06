@@ -47,11 +47,8 @@ class Onboarding extends StatelessWidget {
           ),
           Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                SizedBox(
-                  height: 630,
-                ),
                 Text(
                   'Ready to Dooid?',
                   style: GoogleFonts.montserrat(

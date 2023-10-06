@@ -86,7 +86,13 @@ class Contact {
   }
 
   String get name {
-    return '$firstName $lastName';
+    String fullName =
+        firstName ?? '';
+    if (lastName != null && lastName!.isNotEmpty) {
+      fullName +=
+          ' $lastName'; 
+    }
+    return fullName;
   }
 
   String get completePhoneNumber {
@@ -233,7 +239,7 @@ List<Contact> contacts = [
       lastName: 'Tobia Chaiyadi',
       profilePicture: 'assets/images/profile_pictures/ruben.png',
       balance: 12345678900.0,
-      countryCode: '123',
+      countryCode: '690',
       phoneNumber: '123123',
       pin: '246810',
       transactions: [
