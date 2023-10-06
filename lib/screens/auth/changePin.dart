@@ -1,5 +1,6 @@
-import 'package:dooid/screens/auth/login.dart';
-import 'package:dooid/screens/auth/otp.dart';
+// import 'package:dooid/screens/auth/data.dart';
+// import 'package:dooid/screens/auth/login.dart';
+// import 'package:dooid/screens/auth/otp.dart';
 import 'package:dooid/screens/auth/pin.dart';
 import 'package:dooid/utils/utils.dart';
 import 'package:dooid/widgets/widget_auth.dart';
@@ -19,13 +20,13 @@ class _ChangePinState extends State<ChangePin> {
   TextEditingController _pin = TextEditingController();
   TextEditingController _confirmPin = TextEditingController();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  DateTime? selectedDate;
+  String? value;
 
   bool _isLoading = false;
 
   Widget _inputPin() {
     return Container(
-      width: 320,
+      width: MediaQuery.of(context).size.width * 0.8,
       child: Column(
         children: <Widget>[
           DecoratedBox(
@@ -43,8 +44,6 @@ class _ChangePinState extends State<ChangePin> {
                   border: InputBorder.none,
                   hintStyle: TextStyle(color: Colors.white),
                 ),
-                validator: (val) => uValidator(
-                    value: val!, isRequired: true, match: _confirmPin.text),
                 keyboardType: TextInputType.number,
                 inputFormatters: <TextInputFormatter>[
                   FilteringTextInputFormatter.digitsOnly
@@ -63,7 +62,7 @@ class _ChangePinState extends State<ChangePin> {
 
   Widget _inputConfirmPin() {
     return Container(
-      width: 320,
+      width: MediaQuery.of(context).size.width * 0.8,
       child: Column(
         children: <Widget>[
           DecoratedBox(
@@ -81,9 +80,10 @@ class _ChangePinState extends State<ChangePin> {
                   border: InputBorder.none,
                   hintStyle: TextStyle(color: Colors.white),
                 ),
-                validator: (val) =>
-                    uValidator(value: val!, isRequired: true, match: _pin.text),
                 keyboardType: TextInputType.number,
+                onChanged: (text) {
+                  value = text;
+                },
                 inputFormatters: <TextInputFormatter>[
                   FilteringTextInputFormatter.digitsOnly
                 ],
@@ -108,6 +108,29 @@ class _ChangePinState extends State<ChangePin> {
       context: context,
       title: 'Continue',
       onPressed: () {
+        if (!_formKey.currentState!.validate()) return;
+
+        String pinValue = _pin.text;
+        String confirmPinValue = _confirmPin.text;
+
+        if (pinValue.isEmpty || pinValue != confirmPinValue) {
+          showSnackbar(
+            context: context,
+            message:
+                pinValue.isEmpty ? 'PIN can\'t be empty' : 'PIN doesn\'t match',
+          );
+          return;
+        }
+
+        if (confirmPinValue.isEmpty || confirmPinValue != pinValue) {
+          showSnackbar(
+            context: context,
+            message: pinValue.isEmpty
+                ? 'Confirm PIN can\'t be empty'
+                : 'Confirm PIN doesn\'t match',
+          );
+          return;
+        }
         setState(() => _isLoading = true);
         changeUp(
           context: context,
@@ -128,7 +151,10 @@ class _ChangePinState extends State<ChangePin> {
               resizeToAvoidBottomInset: false,
               body: SafeArea(
                 child: Stack(
+                  alignment: Alignment.center,
                   children: <Widget>[
+                    // Center(
+                    // child:
                     Container(
                       decoration: BoxDecoration(
                         image: DecorationImage(
@@ -136,7 +162,7 @@ class _ChangePinState extends State<ChangePin> {
                           fit: BoxFit.cover,
                         ),
                       ),
-                      margin: EdgeInsets.symmetric(horizontal: 20),
+                      margin: EdgeInsets.symmetric(horizontal: 40),
                       child: Form(
                         key: _formKey,
                         child: Column(
@@ -145,70 +171,74 @@ class _ChangePinState extends State<ChangePin> {
                               height: 80,
                             ),
                             SizedBox(
-                              height: 85,
+                              height: 90,
                               child: Container(
                                 width: 320,
                                 child: wAuthTitle(
-                                  title: 'Finish Up',
+                                  title: 'Change Your Pin',
                                   subtitle:
-                                      'It’s time to set up your Dooid profile.',
+                                      'It’s time to change your security pin.',
                                   titleFontSize: 32,
                                   subtitleFontSize: 15,
                                 ),
                               ),
                             ),
                             SizedBox(
-                              height: 15,
+                              height: 100,
                             ),
                             _inputPin(),
+                            SizedBox(
+                              height: 15,
+                            ),
                             _inputConfirmPin(),
                             SizedBox(
-                              height: 20,
+                              height: 50,
                             ),
                             _inputSubmit(),
                           ],
                         ),
                       ),
                     ),
-                    Positioned(
-                      top: 20,
-                      left: 0,
-                      right: 0,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Container(
-                            height: 10,
-                            width: 100,
-                            decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                            margin: EdgeInsets.only(right: 10),
-                            padding: EdgeInsets.all(10),
-                          ),
-                          Container(
-                            height: 10,
-                            width: 100,
-                            decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                            margin: EdgeInsets.only(right: 10),
-                            padding: EdgeInsets.all(10),
-                          ),
-                          Container(
-                            height: 10,
-                            width: 100,
-                            decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                            padding: EdgeInsets.all(10),
-                          ),
-                        ],
-                      ),
-                    ),
+                    // ),
+                    // Positioned(
+                    //   top: 20,
+                    //   left: 0,
+                    //   right: 0,
+                    //   child: Row(
+                    //     mainAxisAlignment: MainAxisAlignment.center,
+                    //     children: <Widget>[
+                    //       Container(
+                    //         height: 10,
+                    //         width: 100,
+                    //         decoration: BoxDecoration(
+                    //           color: Colors.black,
+                    //           borderRadius: BorderRadius.circular(100),
+                    //         ),
+                    //         margin: EdgeInsets.only(right: 10),
+                    //         padding: EdgeInsets.all(10),
+                    //       ),
+                    //       Container(
+                    //         height: 10,
+                    //         width: 100,
+                    //         decoration: BoxDecoration(
+                    //           color: Colors.black,
+                    //           borderRadius: BorderRadius.circular(100),
+                    //         ),
+                    //         margin: EdgeInsets.only(right: 10),
+                    //         padding: EdgeInsets.all(10),
+                    //       ),
+                    //       Container(
+                    //         height: 10,
+                    //         width: 100,
+                    //         decoration: BoxDecoration(
+                    //           color: Colors.black,
+                    //           borderRadius: BorderRadius.circular(100),
+                    //         ),
+                    //         padding: EdgeInsets.all(10),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
@@ -226,9 +256,14 @@ class _ChangePinState extends State<ChangePin> {
 
     final userDataProvider =
         Provider.of<UserDataProvider>(context, listen: false);
-    userDataProvider.setUserData("", pin);
+    userDataProvider.setUserPin(pin);
     await Future.delayed(Duration(seconds: 2));
-    wPushReplaceTo(context, Pin());
+    wPushReplaceTo(
+        context,
+        Pin(
+          value: 'pin',
+        ));
+    // Navigator.pop(context,Material())
   }
 
   // Getter for firstname

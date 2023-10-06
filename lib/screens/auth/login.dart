@@ -6,6 +6,8 @@ import 'package:dooid/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:dooid/provider/UserDataProvider.dart';
+import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -110,13 +112,13 @@ class _LoginState extends State<Login> {
         if (!_formKey.currentState!.validate()) return;
         String phoneNumberValue = _phoneNumber.text;
 
-        if(phoneNumberValue.isEmpty || phoneNumberValue.length < 12){
+        if (phoneNumberValue.isEmpty || phoneNumberValue.length < 12) {
           showSnackbar(
             context: context,
             message: phoneNumberValue.isEmpty
-              ? 'Phone number can\'t be empty'
-              : 'Phone number should be 12 digits',
-        );
+                ? 'Phone number can\'t be empty'
+                : 'Phone number should be 12 digits',
+          );
           return;
         }
         setState(() => _isLoading = true);
@@ -200,6 +202,10 @@ class _LoginState extends State<Login> {
     required String phoneNumber,
   }) async {
     print(phoneNumber);
+
+    final userDataProvider =
+        Provider.of<UserDataProvider>(context, listen: false);
+    userDataProvider.setUserPhone(phoneNumber);
 
     await Future.delayed(Duration(seconds: 2));
     wPushReplaceTo(context, OtpLogin());

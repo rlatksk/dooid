@@ -1,4 +1,5 @@
 import 'package:dooid/screens/auth/login.dart';
+import 'package:dooid/screens/auth/otp.dart';
 import 'package:dooid/screens/auth/pin.dart';
 import 'package:dooid/utils/utils.dart';
 import 'package:dooid/widgets/widget_auth.dart';
@@ -6,6 +7,8 @@ import 'package:dooid/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:dooid/provider/UserDataProvider.dart';
+import 'package:provider/provider.dart';
 
 class Data extends StatefulWidget {
   @override
@@ -263,7 +266,7 @@ class _DataState extends State<Data> {
         String confirmPinValue = _confirmPin.text;
         String emailValue = _email.text;
 
-        if(firstNameValue.isEmpty){
+        if (firstNameValue.isEmpty) {
           showSnackbar(
             context: context,
             message: 'Please enter your first name',
@@ -271,7 +274,7 @@ class _DataState extends State<Data> {
           return;
         }
 
-        if(lastNameValue.isEmpty){
+        if (lastNameValue.isEmpty) {
           showSnackbar(
             context: context,
             message: 'Please enter your last name',
@@ -279,7 +282,7 @@ class _DataState extends State<Data> {
           return;
         }
 
-        if(emailValue.contains('@') || emailValue.contains('.')){
+        if (emailValue.contains('@') || emailValue.contains('.')) {
           showSnackbar(
             context: context,
             message: 'Please enter a valid email',
@@ -304,22 +307,21 @@ class _DataState extends State<Data> {
           return;
         }
 
-        if(pinValue.isEmpty || pinValue != confirmPinValue){
+        if (pinValue.isEmpty || pinValue != confirmPinValue) {
           showSnackbar(
             context: context,
-            message: pinValue.isEmpty
-              ? 'PIN can\'t be empty'
-              : 'PIN doesn\'t match',
+            message:
+                pinValue.isEmpty ? 'PIN can\'t be empty' : 'PIN doesn\'t match',
           );
           return;
         }
 
-        if(confirmPinValue.isEmpty || confirmPinValue != pinValue){
+        if (confirmPinValue.isEmpty || confirmPinValue != pinValue) {
           showSnackbar(
             context: context,
             message: pinValue.isEmpty
-              ? 'Confirm PIN can\'t be empty'
-              : 'Confirm PIN doesn\'t match',
+                ? 'Confirm PIN can\'t be empty'
+                : 'Confirm PIN doesn\'t match',
           );
           return;
         }
@@ -478,8 +480,11 @@ class _DataState extends State<Data> {
     print(confirmPin);
     print(selectedDate);
 
+    final userDataProvider =
+        Provider.of<UserDataProvider>(context, listen: false);
+    userDataProvider.setUserName(firstName);
+    userDataProvider.setUserPin(pin);
     await Future.delayed(Duration(seconds: 2));
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => Pin(value: _pin.text)));
+    wPushReplaceTo(context, Pin(value: 'pin'));
   }
 }

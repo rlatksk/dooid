@@ -1,15 +1,17 @@
+import 'package:dooid/provider/UserDataProvider.dart';
 import 'package:dooid/screens/home.dart';
+import 'package:dooid/screens/profile.dart';
 import 'package:dooid/utils/utils.dart';
 import 'package:dooid/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class Pin extends StatefulWidget {
   late String value;
   Pin({required this.value});
-  
+
   @override
   State<Pin> createState() => _PinState(value);
 }
@@ -22,6 +24,7 @@ class _PinState extends State<Pin> {
   _PinState(this.value);
 
   Widget numButton(int number) {
+    final userData = Provider.of<UserDataProvider>(context);
     return Padding(
       padding: const EdgeInsets.only(top: 45),
       child: TextButton(
@@ -31,11 +34,19 @@ class _PinState extends State<Pin> {
               enteredPin += number.toString();
             }
             if (enteredPin.length == 6) {
-              if (enteredPin == value){
-                wPushReplaceTo(context, Home());
-              }else{
-                enteredPin = '';
-                showSnackbar(context: context, message: 'Please Enter Correct Pin');
+              // Navigate to another screen
+              if (enteredPin == userData.pin) {
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => Profile()),
+                  (route) => false,
+                );
+              } else {
+                showSnackbar(
+                  context: context,
+                  message: 'PIN isn\'t correct, Try Again',
+                );
+                enteredPin = "";
+                return;
               }
             }
           });

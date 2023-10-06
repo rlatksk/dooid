@@ -1,5 +1,6 @@
 import 'package:dooid/screens/auth/data.dart';
 import 'package:dooid/screens/auth/login.dart';
+import 'package:dooid/utils/utils.dart';
 import 'package:dooid/widgets/widget_auth.dart';
 import 'package:dooid/widgets/widgets.dart';
 import 'package:flutter/material.dart';

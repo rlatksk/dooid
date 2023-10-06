@@ -27,12 +27,16 @@ class _SplashState extends State<Splash> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: _isLoading ? null : Colors.transparent, // Hapus latar belakang merah saat isLoading false
+      backgroundColor: _isLoading
+          ? null
+          : Colors
+              .transparent, // Hapus latar belakang merah saat isLoading false
       body: _isLoading
           ? Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('lib/screens/img/splash_scr.png'), // Ganti dengan path gambar dari asset Anda
+                  image: AssetImage(
+                      'lib/screens/img/splash_scr.png'), // Ganti dengan path gambar dari asset Anda
                   fit: BoxFit.cover, // Atur sesuai kebutuhan tampilan gambar
                 ),
               ),
