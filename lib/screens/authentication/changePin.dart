@@ -15,8 +15,10 @@ class PinChangeDialog extends StatefulWidget {
 }
 
 class _PinChangeDialogState extends State<PinChangeDialog> {
-  final TextEditingController _pinController = TextEditingController();
+  final TextEditingController _currentPinController = TextEditingController();
+  final TextEditingController _newPinController = TextEditingController();
   String? _errorMessage;
+  bool _isNewPinEnabled = false;
 
   @override
   Widget build(BuildContext context) {
@@ -30,17 +32,43 @@ class _PinChangeDialogState extends State<PinChangeDialog> {
         style: GoogleFonts.montserrat(
           color: AppColors.black,
           fontWeight: FontWeight.bold,
+          fontSize: 18.0,
         ),
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           TextField(
-            controller: _pinController,
-            decoration: InputDecoration(labelText: 'Enter new 6-digit PIN'),
+            controller: _currentPinController,
+            decoration: InputDecoration(
+              labelText: 'Enter current 6-digit PIN',
+              labelStyle: GoogleFonts.montserrat(),
+            ),
             keyboardType: TextInputType.number,
             maxLength: 6,
-            obscureText: true, // Hide the entered PIN
+            obscureText: true,
+            onChanged: (pin) {
+              setState(() {
+                if (pin.length == 6 && pin == widget.foundContact.pin) {
+                  _isNewPinEnabled = true;
+                  _errorMessage = null;
+                } else {
+                  _isNewPinEnabled = false;
+                  _errorMessage = 'Incorrect current PIN';
+                }
+              });
+            },
+          ),
+          TextField(
+            controller: _newPinController,
+            decoration: InputDecoration(
+              labelText: 'Enter new 6-digit PIN',
+              labelStyle: GoogleFonts.montserrat(),
+              enabled: _isNewPinEnabled,
+            ),
+            keyboardType: TextInputType.number,
+            maxLength: 6,
+            obscureText: true,
             onChanged: (pin) {
               setState(() {
                 _errorMessage =
@@ -53,9 +81,10 @@ class _PinChangeDialogState extends State<PinChangeDialog> {
               padding: EdgeInsets.only(top: 8.0),
               child: Text(
                 _errorMessage!,
-                style: TextStyle(
-                    color: Colors.red,
-                    fontSize: 12), // Adjust the fontSize here
+                style: GoogleFonts.montserrat(
+                  color: Colors.red,
+                  fontSize: 12.0,
+                ),
               ),
             ),
         ],
@@ -66,21 +95,23 @@ class _PinChangeDialogState extends State<PinChangeDialog> {
             backgroundColor: AppColors.red,
             padding: EdgeInsets.symmetric(horizontal: 20.0),
           ),
-          onPressed: () {
-            String newPin = _pinController.text;
-            if (newPin.length == 6) {
-              int contactIndex = contacts.indexOf(widget.foundContact);
-              if (contactIndex != -1) {
-                Provider.of<ContactProvider>(context, listen: false)
-                    .changePin(contactIndex, newPin);
-              }
-              Navigator.of(context).pop();
-            } else {
-              setState(() {
-                _errorMessage = 'Please enter a 6-digit PIN.';
-              });
-            }
-          },
+          onPressed: (_isNewPinEnabled)
+              ? () {
+                  String newPin = _newPinController.text;
+                  if (newPin.length == 6) {
+                    int contactIndex = contacts.indexOf(widget.foundContact);
+                    if (contactIndex != -1) {
+                      Provider.of<ContactProvider>(context, listen: false)
+                          .changePin(contactIndex, newPin);
+                    }
+                    Navigator.of(context).pop();
+                  } else {
+                    setState(() {
+                      _errorMessage = 'Please enter a 6-digit PIN.';
+                    });
+                  }
+                }
+              : null,
           child: Text(
             'Change',
             style: GoogleFonts.montserrat(),

@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:dooid/data/accounts.dart';
+import 'package:dooid/data/contactProvider.dart';
 import 'package:dooid/screens/authentication/changePin.dart';
 import 'package:dooid/screens/main/home.dart';
 import 'package:dooid/screens/onboarding.dart';
@@ -9,6 +12,8 @@ import 'package:dooid/widgets/shortcuts/wBackButton.dart';
 import 'package:dooid/widgets/termsAndConditions.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Profile extends StatefulWidget {
@@ -23,31 +28,57 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   String name = '';
   String? profilePicture;
+  late ContactProvider contactProvider;
 
   @override
   void initState() {
     super.initState();
     name = widget.foundContact.name;
     profilePicture = widget.foundContact.profilePicture;
+
+    contactProvider = Provider.of<ContactProvider>(context, listen: false);
+    contactProvider.addListener(_onContactProviderChange);
+  }
+
+  @override
+  void dispose() {
+    contactProvider.removeListener(_onContactProviderChange);
+    super.dispose();
+  }
+
+  void _onContactProviderChange() {
+    final contactIndex = contactProvider.contacts.indexOf(widget.foundContact);
+    if (contactIndex != -1) {
+      setState(() {
+        profilePicture = contactProvider.contacts[contactIndex].profilePicture;
+      });
+    }
   }
 
   Widget buildBigProfileWidget(String? profilePicture, String name) {
     if (profilePicture != null && profilePicture.isNotEmpty) {
-      return CircleAvatar(
-        radius: 100,
-        backgroundImage: AssetImage(profilePicture),
-      );
+      if (profilePicture.startsWith('assets/')) {
+        return CircleAvatar(
+          radius: 100,
+          backgroundImage: AssetImage(profilePicture),
+        );
+      } else {
+        return CircleAvatar(
+          radius: 100,
+          backgroundImage: FileImage(File(profilePicture)),
+        );
+      }
     } else {
       return HomeCircleButtonIconText(
-        width: 100,
-        height: 100,
+        width: 200,
+        height: 200,
         circleColor: AppColors.black,
         strokeColor: AppColors.black,
         strokeSize: 2,
         insideWidget: Text(
           getInitials(name),
           style: GoogleFonts.montserrat(
-            fontSize: 25,
+            fontSize: 100,
             fontWeight: FontWeight.bold,
             color: Colors.white,
           ),
@@ -97,7 +128,7 @@ class _ProfileState extends State<Profile> {
               children: [
                 Center(
                   child: Padding(
-                    padding: EdgeInsets.all(25),
+                    padding: EdgeInsets.fromLTRB(25, 25, 25, 0),
                     child: Container(
                       width: 200,
                       height: 200,
@@ -121,6 +152,11 @@ class _ProfileState extends State<Profile> {
                                   size: 15,
                                 ),
                                 strokeSize: 2,
+                                navigateToGesture: GestureDetector(
+                                  onTap: () {
+                                    _showImageSelectionDialog(context);
+                                  },
+                                ),
                               ),
                             ),
                           ),
@@ -237,6 +273,108 @@ class _ProfileState extends State<Profile> {
         ),
       ),
     );
+  }
+
+  void _showImageSelectionDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Select Profile Picture',
+            style: GoogleFonts.montserrat(
+              fontSize: 20.0,
+              fontWeight: FontWeight.bold,
+              color: AppColors.black,
+            ),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _buildImageOption('None', null, Icons.clear),
+              _buildImageOption('Ivander',
+                  'assets/images/profile_pictures/ivander.png', null),
+              _buildImageOption(
+                  'Jason', 'assets/images/profile_pictures/jason.png', null),
+              _buildImageOption(
+                  'Justin', 'assets/images/profile_pictures/justin.png', null),
+              _buildImageOption('Richard',
+                  'assets/images/profile_pictures/richard.jpeg', null),
+              _buildImageOption(
+                  'Ruben', 'assets/images/profile_pictures/ruben.png', null),
+              _buildImageOption(
+                  'Tigo', 'assets/images/profile_pictures/tigo.jpeg', null),
+              ListTile(
+                leading: CircleAvatar(
+                  radius: 30,
+                  backgroundColor: Colors.white,
+                  child: Icon(
+                    Icons.add,
+                    size: 30,
+                    color: AppColors.red
+                  ),
+                ),
+                title: Text('Upload',
+                    style: GoogleFonts.montserrat(
+                      color: AppColors.black,
+                    )),
+                onTap: () {
+                  _getImageFromGallery(context);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildImageOption(String title, String? imagePath, IconData? icon) {
+    return ListTile(
+      leading: CircleAvatar(
+        radius: 30,
+        backgroundColor: Colors.white,
+        child: (imagePath != null)
+            ? CircleAvatar(
+                radius: 22,
+                backgroundColor: Colors.white,
+                backgroundImage: AssetImage(imagePath),
+              )
+            : Icon(
+                icon,
+                size: 30,
+                color: AppColors.black,
+              ),
+      ),
+      title: Text(
+        title,
+        style: GoogleFonts.montserrat(
+          color: AppColors.black,
+        ),
+      ),
+      onTap: () {
+        _updateProfilePicture(imagePath);
+        Navigator.of(context).pop();
+      },
+    );
+  }
+
+  void _getImageFromGallery(BuildContext context) async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      _updateProfilePicture(pickedFile.path);
+      Navigator.of(context).pop();
+    }
+  }
+
+  void _updateProfilePicture(String? newProfilePicture) {
+    final contactIndex = contacts.indexOf(widget.foundContact);
+    if (contactIndex != -1) {
+      Provider.of<ContactProvider>(context, listen: false)
+          .changeProfilePicture(contactIndex, newProfilePicture);
+    }
   }
 
   _launchURL() async {

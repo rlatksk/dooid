@@ -11,7 +11,7 @@ class ContactProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void changeProfilePicture(int contactIndex, String newProfilePicture) {
+  void changeProfilePicture(int contactIndex, String? newProfilePicture) {
     contacts[contactIndex].changeProfilePicture(newProfilePicture);
     notifyListeners();
   }

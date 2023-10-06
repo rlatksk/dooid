@@ -49,7 +49,7 @@ class Contact {
     updateBalance();
   }
 
-  void changeProfilePicture(String newProfilePicture) {
+  void changeProfilePicture(String? newProfilePicture) {
     profilePicture = newProfilePicture;
   }
 
@@ -86,8 +86,7 @@ class Contact {
   }
 
   String get name {
-    String fullName =
-        firstName ?? '';
+    String fullName = firstName;
     if (lastName != null && lastName!.isNotEmpty) {
       fullName +=
           ' $lastName'; 

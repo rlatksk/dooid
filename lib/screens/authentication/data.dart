@@ -180,28 +180,6 @@ class _ProfileSetupState extends State<ProfileSetup> {
                 ),
                 SizedBox(height: 20),
                 Container(
-                  width: 400,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    color: AppColors.lightGrey,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Profile Picture (not done)',
-                        style: GoogleFonts.montserrat(
-                          fontSize: 17,
-                          color: AppColors.darkGrey,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 20),
-                Container(
                   width: double.infinity,
                   height: 60,
                   decoration: BoxDecoration(

@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:dooid/data/accounts.dart';
+import 'package:dooid/screens/main/offers.dart';
 import 'package:dooid/screens/main/profile.dart';
 import 'package:dooid/screens/onboarding.dart';
 import 'package:dooid/screens/transactions/topup/topUp.dart';
@@ -77,16 +80,23 @@ class HomeTop extends StatelessWidget {
   final Contact foundContact;
 
   const HomeTop({
-    super.key,
+    Key? key,
     required this.foundContact,
-  });
+  }) : super(key: key);
 
   Widget buildSmallProfileWidget(String? profilePicture, String name) {
     if (profilePicture != null && profilePicture.isNotEmpty) {
-      return CircleAvatar(
-        radius: 30,
-        backgroundImage: AssetImage(profilePicture),
-      );
+      if (profilePicture.startsWith('assets/')) {
+        return CircleAvatar(
+          radius: 30,
+          backgroundImage: AssetImage(profilePicture),
+        );
+      } else {
+        return CircleAvatar(
+          radius: 30,
+          backgroundImage: FileImage(File(profilePicture)),
+        );
+      }
     } else {
       return HomeCircleButtonIconText(
         width: 65,
@@ -110,69 +120,76 @@ class HomeTop extends StatelessWidget {
   Widget build(BuildContext context) {
     String firstName = foundContact.firstName;
     String name = foundContact.name;
-    String? profilePicture = foundContact.profilePicture;
 
-    return Padding(
-      padding: EdgeInsets.fromLTRB(25, 25, 25, 0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
+    return Consumer<ContactProvider>(
+      builder: (context, contactProvider, _) {
+        String? profilePicture = contactProvider
+            .contacts[contactProvider.contacts.indexOf(foundContact)]
+            .profilePicture;
+
+        return Padding(
+          padding: EdgeInsets.fromLTRB(25, 25, 25, 0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              buildSmallProfileWidget(profilePicture, name),
-              SizedBox(width: 10),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Row(
                 children: [
-                  Row(
+                  buildSmallProfileWidget(profilePicture, name),
+                  SizedBox(width: 10),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Hello, ',
-                        style: GoogleFonts.montserrat(
-                            fontSize: 20, color: AppColors.black),
+                      Row(
+                        children: [
+                          Text(
+                            'Hello, ',
+                            style: GoogleFonts.montserrat(
+                                fontSize: 20, color: AppColors.black),
+                          ),
+                          Text(
+                            '${firstName}!',
+                            style: GoogleFonts.montserrat(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.black),
+                          ),
+                          SizedBox(width: 4),
+                          Icon(Icons.verified_user,
+                              size: 12, color: AppColors.darkGrey)
+                        ],
                       ),
                       Text(
-                        '${firstName}!',
+                        'Welcome Back!',
                         style: GoogleFonts.montserrat(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.black),
+                          fontSize: 14,
+                          color: AppColors.midGrey,
+                        ),
                       ),
-                      SizedBox(width: 4),
-                      Icon(Icons.verified_user,
-                          size: 12, color: AppColors.darkGrey)
                     ],
-                  ),
-                  Text(
-                    'Welcome Back!',
-                    style: GoogleFonts.montserrat(
-                      fontSize: 14,
-                      color: AppColors.midGrey,
-                    ),
                   ),
                 ],
               ),
+              HomeCircleButtonIconText(
+                width: 35,
+                height: 35,
+                circleColor: Colors.white,
+                strokeColor: AppColors.midGrey,
+                strokeSize: 1,
+                insideWidget: Icon(
+                  Icons.notifications_none_sharp,
+                  size: 20,
+                  color: AppColors.midGrey,
+                ),
+                navigateToGesture: GestureDetector(
+                  onTap: () {
+                    print('Notifications Screen');
+                  },
+                ),
+              ),
             ],
           ),
-          HomeCircleButtonIconText(
-            width: 35,
-            height: 35,
-            circleColor: Colors.white,
-            strokeColor: AppColors.midGrey,
-            strokeSize: 1,
-            insideWidget: Icon(
-              Icons.notifications_none_sharp,
-              size: 20,
-              color: AppColors.midGrey,
-            ),
-            navigateToGesture: GestureDetector(
-              onTap: () {
-                print('Notifications Screen');
-              },
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
@@ -886,7 +903,9 @@ class HomeNavBar extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 if (activeScreen != 'offers') {
-                  // Navigate to the Offers screen
+                  Navigator.of(context).push(BouncyPageRoute(
+                    destinationPage: Offers(),
+                  ));
                 }
               },
               child: Icon(
