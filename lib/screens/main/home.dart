@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dooid/data/accounts.dart';
 import 'package:dooid/screens/main/offers.dart';
 import 'package:dooid/screens/main/profile.dart';
+import 'package:dooid/screens/main/qr/qrScan.dart';
 import 'package:dooid/screens/onboarding.dart';
 import 'package:dooid/screens/transactions/topup/topUp.dart';
 import 'package:dooid/screens/main/transactionsHistory.dart';
@@ -52,7 +53,7 @@ class _HomeState extends State<Home> {
                 ),
               ),
             ),
-            floatingActionButton: HomeQRScanButton(),
+            floatingActionButton: HomeQRScanButton(foundContact: widget.foundContact),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerDocked,
             bottomNavigationBar: HomeNavBar(
@@ -749,7 +750,7 @@ class HomeRecentTransactions extends StatelessWidget {
             ),
             Container(
               height: 35,
-              width: 138,
+              width: 120,
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 reverse: true,
@@ -816,8 +817,10 @@ class HomeRecentTransactions extends StatelessWidget {
 }
 
 class HomeQRScanButton extends StatelessWidget {
+  final Contact foundContact;
+
   const HomeQRScanButton({
-    super.key,
+    super.key, required this.foundContact,
   });
 
   @override
@@ -827,7 +830,8 @@ class HomeQRScanButton extends StatelessWidget {
       height: 75,
       child: FloatingActionButton(
         onPressed: () {
-          print('QR Scan');
+          Navigator.of(context).push(BouncyPageRoute(
+              destinationPage: QrScan(foundContact: foundContact)));
         },
         child: Container(
           decoration: BoxDecoration(

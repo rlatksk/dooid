@@ -113,7 +113,7 @@ class _ProfileState extends State<Profile> {
           ),
         ),
       ),
-      floatingActionButton: HomeQRScanButton(),
+      floatingActionButton: HomeQRScanButton(foundContact: widget.foundContact),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: HomeNavBar(
         foundContact: widget.foundContact,

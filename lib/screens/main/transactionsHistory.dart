@@ -82,7 +82,7 @@ class _TransactionsHistoryState extends State<TransactionsHistory> {
           ),
         ),
       ),
-      floatingActionButton: HomeQRScanButton(),
+      floatingActionButton: HomeQRScanButton(foundContact: widget.foundContact),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: HomeNavBar(
         foundContact: widget.foundContact,
@@ -96,20 +96,23 @@ class _TransactionsHistoryState extends State<TransactionsHistory> {
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               reverse: true,
-              child: Row(
-                children: orderedMonths.reversed
-                    .map(
-                      (month) => MonthButton(
-                        month: month,
-                        onTap: () {
-                          setState(() {
-                            selectedMonth = month;
-                          });
-                        },
-                        isSelected: month == selectedMonth,
-                      ),
-                    )
-                    .toList(),
+              child: Container(
+                height: 40,
+                child: Row(
+                  children: orderedMonths.reversed
+                      .map(
+                        (month) => MonthButton(
+                          month: month,
+                          onTap: () {
+                            setState(() {
+                              selectedMonth = month;
+                            });
+                          },
+                          isSelected: month == selectedMonth,
+                        ),
+                      )
+                      .toList(),
+                ),
               ),
             ),
             SizedBox(height: 20.0),
@@ -207,7 +210,7 @@ class _TransactionsHistoryState extends State<TransactionsHistory> {
             ),
             Container(
               height: 35,
-              width: 138,
+              width: 120,
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 reverse: true,

@@ -47,6 +47,9 @@ dependencies:
   carousel_slider: ^4.2.1
   slide_countdown: ^0.6.0
   image_picker: ^1.0.4
+  qr_flutter: ^4.1.0
+  qr_code_scanner: ^1.0.1
+  mobile_scanner: ^1.0.0 #old version
 
 dev_dependencies:
   flutter_test:

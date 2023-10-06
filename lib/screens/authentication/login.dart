@@ -2,6 +2,7 @@ import 'package:country_picker/country_picker.dart';
 import 'package:dooid/data/accounts.dart';
 import 'package:dooid/screens/authentication/pin.dart';
 import 'package:dooid/widgets/colors.dart';
+import 'package:dooid/widgets/shortcuts/transition.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -177,12 +178,8 @@ class _LoginState extends State<Login> {
                                 countryCode, phoneNumber);
 
                         if (contact.firstName.isNotEmpty) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    Pin(contact: contact)),
-                          );
+                          Navigator.of(context).push(BouncyPageRoute(
+                              destinationPage: Pin(contact: contact)));
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
