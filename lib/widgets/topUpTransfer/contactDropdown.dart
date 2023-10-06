@@ -1,4 +1,4 @@
-import 'package:dooid/data/profile.dart';
+import 'package:dooid/data/accounts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -31,7 +31,6 @@ class _ContactDropdownState extends State<ContactDropdown> {
 
   @override
   Widget build(BuildContext context) {
-    // Filter out the currentContact from the items list
     final filteredContacts = widget.contacts
         .where((contact) => contact != widget.currentContact)
         .toList();
@@ -60,7 +59,7 @@ class _ContactDropdownState extends State<ContactDropdown> {
                   children: [
                     Text(_selectedContact!.name.toUpperCase(),
                         style: GoogleFonts.montserrat(fontSize: 18)),
-                    Text(_selectedContact!.phoneNumber ?? '',
+                    Text(_selectedContact!.completePhoneNumber ?? '',
                         style: GoogleFonts.montserrat()),
                   ],
                 ),
@@ -112,7 +111,7 @@ class _ContactDropdownState extends State<ContactDropdown> {
                           Text(contact.name.toUpperCase(),
                               style: GoogleFonts.montserrat(
                                   fontSize: 15, fontWeight: FontWeight.bold)),
-                          Text(contact.phoneNumber ?? '',
+                          Text(contact.completePhoneNumber ?? '',
                               style: GoogleFonts.montserrat(fontSize: 10)),
                         ],
                       ),

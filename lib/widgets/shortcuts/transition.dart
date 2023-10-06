@@ -8,13 +8,8 @@ class BouncyPageRoute extends PageRouteBuilder {
           pageBuilder: (context, animation, secondaryAnimation) =>
               destinationPage,
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            var begin = Offset(0.0, 1.0);
-            var end = Offset.zero;
-            var curve = Curves.elasticOut;
-            var tween =
-                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-            return SlideTransition(
-              position: animation.drive(tween),
+            return FadeTransition(
+              opacity: animation,
               child: child,
             );
           },

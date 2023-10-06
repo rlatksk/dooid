@@ -1,6 +1,6 @@
-import 'package:dooid/data/profile.dart';
+import 'package:dooid/data/accounts.dart';
 import 'package:dooid/screens/onboarding.dart';
-import 'package:dooid/widgets/contactProvider.dart';
+import 'package:dooid/data/contactProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

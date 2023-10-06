@@ -1,4 +1,4 @@
-import 'package:dooid/data/profile.dart';
+import 'package:dooid/data/accounts.dart';
 import 'package:flutter/material.dart';
 
 class ContactProvider extends ChangeNotifier {

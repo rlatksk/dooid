@@ -1,19 +1,19 @@
 import 'package:country_picker/country_picker.dart';
-import 'package:dooid/data/profile.dart';
-import 'package:dooid/screens/auth/pin.dart';
+import 'package:dooid/screens/authentication/data.dart';
 import 'package:dooid/widgets/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:dooid/data/accounts.dart';
 
-class Login extends StatefulWidget {
-  const Login({Key? key}) : super(key: key);
+class Register extends StatefulWidget {
+  const Register({Key? key}) : super(key: key);
 
   @override
-  State<Login> createState() => _LoginState();
+  State<Register> createState() => _RegisterState();
 }
 
-class _LoginState extends State<Login> {
+class _RegisterState extends State<Register> {
   final TextEditingController phoneController = TextEditingController();
 
   Country selectedCountry = Country(
@@ -44,15 +44,40 @@ class _LoginState extends State<Login> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(height: 260),
+                Padding(
+                  padding: EdgeInsets.only(top: 50),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Container(
+                        width: 30,
+                        height: 7,
+                        decoration: BoxDecoration(
+                          color: AppColors.black,
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Container(
+                        width: 30,
+                        height: 7,
+                        decoration: BoxDecoration(
+                          color: AppColors.midGrey,
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 205),
                 Container(
                   width: double.infinity,
-                  height: 60,
+                  height: 80,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Login',
+                        'Sign Up',
                         style: GoogleFonts.montserrat(
                           fontSize: 32,
                           color: AppColors.black,
@@ -60,7 +85,7 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                       Text(
-                        'Welcome back to Dooid!',
+                        'Create your account and revolutionize your finances.',
                         style: GoogleFonts.montserrat(
                           fontSize: 15,
                           color: AppColors.darkGrey,
@@ -69,7 +94,7 @@ class _LoginState extends State<Login> {
                     ],
                   ),
                 ),
-                SizedBox(height: 40),
+                SizedBox(height: 20),
                 GestureDetector(
                   onTap: () {
                     showCountryPicker(
@@ -172,22 +197,34 @@ class _LoginState extends State<Login> {
                       onPressed: () {
                         String countryCode = selectedCountry.phoneCode;
                         String phoneNumber = phoneController.text;
-                        Contact contact =
-                            findContactByCountryCodeAndPhoneNumber(
-                                countryCode, phoneNumber);
 
-                        if (contact.firstName.isNotEmpty) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    Pin(contact: contact)),
-                          );
+                        if (countryCode.isNotEmpty && phoneNumber.isNotEmpty) {
+                          Contact existingContact =
+                              findContactByCountryCodeAndPhoneNumber(
+                                  countryCode, phoneNumber);
+                          if (existingContact.firstName.isNotEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                    'A user with the same country code and phone number already exists.'),
+                                backgroundColor: AppColors.red,
+                              ),
+                            );
+                          } else {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ProfileSetup(
+                                    countryCode: countryCode,
+                                    phoneNumber: phoneNumber),
+                              ),
+                            );
+                          }
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content:
-                                  Text('Account not found. Please try again.'),
+                              content: Text(
+                                  'Please enter a valid country code and phone number.'),
                               backgroundColor: AppColors.red,
                             ),
                           );

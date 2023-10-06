@@ -1,7 +1,7 @@
-import 'package:dooid/data/profile.dart';
-import 'package:dooid/screens/home.dart';
-import 'package:dooid/widgets/format.dart';
-import 'package:dooid/widgets/transition.dart';
+import 'package:dooid/data/accounts.dart';
+import 'package:dooid/screens/main/home.dart';
+import 'package:dooid/widgets/shortcuts/format.dart';
+import 'package:dooid/widgets/shortcuts/transition.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -64,7 +64,7 @@ class TopUpSuccess extends StatelessWidget {
                   child: Center(
                     child: Column(
                       children: [
-                        Text('Transfer Success',
+                        Text('Top Up Success',
                             style: GoogleFonts.montserrat(
                                 fontSize: 20,
                                 color: Colors.white,

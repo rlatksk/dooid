@@ -1,9 +1,9 @@
-import 'package:dooid/data/profile.dart';
-import 'package:dooid/screens/transfer/transferSuccess.dart';
-import 'package:dooid/widgets/TopUpTransfer/wBackButton.dart';
+import 'package:dooid/data/accounts.dart';
+import 'package:dooid/screens/transactions/transfer/transferSuccess.dart';
+import 'package:dooid/widgets/shortcuts/wBackButton.dart';
 import 'package:dooid/widgets/colors.dart';
-import 'package:dooid/widgets/contactProvider.dart';
-import 'package:dooid/widgets/format.dart';
+import 'package:dooid/data/contactProvider.dart';
+import 'package:dooid/widgets/shortcuts/format.dart';
 import 'package:dooid/widgets/topUpTransfer/contactDropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -217,7 +217,7 @@ class _TransferState extends State<Transfer> {
 
                     if (amount == null || amount! < 100000) {
                       showErrorSnackbar(
-                          'Amount must be more than ${formatBalance(1000000)}');
+                          'Amount must be more than ${formatBalance(100000)}');
                       return;
                     }
 

@@ -1,7 +1,7 @@
-import 'package:dooid/data/profile.dart';
-import 'package:dooid/screens/home.dart';
+import 'package:dooid/data/accounts.dart';
+import 'package:dooid/screens/main/home.dart';
 import 'package:dooid/widgets/colors.dart';
-import 'package:dooid/widgets/transition.dart';
+import 'package:dooid/widgets/shortcuts/transition.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -117,7 +117,7 @@ class _PinState extends State<Pin> {
                             },
                             color: Colors.white,
                             minWidth: 50,
-                            height: 55,
+                            height: 50,
                             child: index == 11
                                 ? Icon(Icons.backspace)
                                 : Text(
@@ -128,7 +128,7 @@ class _PinState extends State<Pin> {
                                     ),
                                   ),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(60.0),
+                              borderRadius: BorderRadius.circular(100),
                             ),
                           ),
                         ),
@@ -200,7 +200,7 @@ class _AnimationBoxState extends State<AnimationBox>
                 opacity: 1 - animationController.value,
                 child: Container(
                   width: 25,
-                  height: 25,
+                  height: 1,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: widget.active ? AppColors.black : AppColors.midGrey,

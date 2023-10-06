@@ -1,6 +1,6 @@
-import 'package:dooid/screens/auth/login.dart';
-import 'package:dooid/screens/auth/register.dart';
-import 'package:dooid/widgets/transition.dart';
+import 'package:dooid/screens/authentication/login.dart';
+import 'package:dooid/screens/authentication/register.dart';
+import 'package:dooid/widgets/shortcuts/transition.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 

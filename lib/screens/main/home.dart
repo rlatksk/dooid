@@ -1,13 +1,14 @@
-import 'package:dooid/data/profile.dart';
+import 'package:dooid/data/accounts.dart';
 import 'package:dooid/screens/onboarding.dart';
-import 'package:dooid/screens/topup/topUp.dart';
-import 'package:dooid/screens/transfer/transfer.dart';
+import 'package:dooid/screens/transactions/topup/topUp.dart';
+import 'package:dooid/screens/main/transactionsHistory.dart';
+import 'package:dooid/screens/transactions/transfer/transfer.dart';
 import 'package:dooid/widgets/colors.dart';
-import 'package:dooid/widgets/contactProvider.dart';
-import 'package:dooid/widgets/format.dart';
-import 'package:dooid/widgets/initials.dart';
+import 'package:dooid/data/contactProvider.dart';
+import 'package:dooid/widgets/shortcuts/format.dart';
+import 'package:dooid/widgets/shortcuts/initials.dart';
 import 'package:dooid/widgets/logOut.dart';
-import 'package:dooid/widgets/transition.dart';
+import 'package:dooid/widgets/shortcuts/transition.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -50,7 +51,8 @@ class _HomeState extends State<Home> {
             floatingActionButton: HomeQRScanButton(),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerDocked,
-            bottomNavigationBar: HomeNavBar()));
+            bottomNavigationBar: HomeNavBar(
+                foundContact: widget.foundContact, activeScreen: 'home')));
   }
 
   Future<bool> showLogoutConfirmationDialog(BuildContext context) async {
@@ -61,7 +63,7 @@ class _HomeState extends State<Home> {
           onLogoutConfirmed: () {
             Navigator.of(context).pushAndRemoveUntil(
               BouncyPageRoute(destinationPage: Onboarding()),
-              (route) => false, 
+              (route) => false,
             );
           },
         );
@@ -832,58 +834,81 @@ class HomeQRScanButton extends StatelessWidget {
 }
 
 class HomeNavBar extends StatelessWidget {
+  final Contact foundContact;
+  final String activeScreen;
+
   const HomeNavBar({
-    super.key,
-  });
+    Key? key,
+    required this.foundContact,
+    required this.activeScreen,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
-        shape: CircularNotchedRectangle(),
-        child: Padding(
-          padding: EdgeInsets.only(top: 20, bottom: 20, left: 40, right: 30),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  print('Home Screen');
-                },
-                child: Icon(
-                  Icons.home_filled,
-                  color: AppColors.red,
-                ),
+      shape: CircularNotchedRectangle(),
+      child: Padding(
+        padding: EdgeInsets.only(top: 20, bottom: 20, left: 40, right: 30),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            GestureDetector(
+              onTap: () {
+                if (activeScreen != 'home') {
+                  Navigator.of(context).push(BouncyPageRoute(
+                    destinationPage: Home(foundContact: foundContact),
+                  ));
+                }
+              },
+              child: Icon(
+                Icons.home_filled,
+                color: activeScreen == 'home' ? AppColors.red : AppColors.black,
               ),
-              GestureDetector(
-                onTap: () {
-                  print('Transactions Screen');
-                },
-                child: Icon(
-                  Icons.swap_vert,
-                  color: AppColors.black,
-                ),
+            ),
+            GestureDetector(
+              onTap: () {
+                if (activeScreen != 'transactions') {
+                  Navigator.of(context).push(BouncyPageRoute(
+                    destinationPage:
+                        TransactionsHistory(foundContact: foundContact),
+                  ));
+                }
+              },
+              child: Icon(
+                Icons.swap_vert,
+                color: activeScreen == 'transactions'
+                    ? AppColors.red
+                    : AppColors.black,
               ),
-              SizedBox(width: 50),
-              GestureDetector(
-                onTap: () {
-                  print('Offer Screen');
-                },
-                child: Icon(
-                  Icons.local_offer,
-                  color: AppColors.black,
-                ),
+            ),
+            SizedBox(width: 50),
+            GestureDetector(
+              onTap: () {
+                if (activeScreen != 'offers') {
+                  // Navigate to the Offers screen
+                }
+              },
+              child: Icon(
+                Icons.local_offer,
+                color:
+                    activeScreen == 'offers' ? AppColors.red : AppColors.black,
               ),
-              GestureDetector(
-                onTap: () {
-                  print('Profile Screen');
-                },
-                child: Icon(
-                  Icons.person,
-                  color: AppColors.black,
-                ),
+            ),
+            GestureDetector(
+              onTap: () {
+                if (activeScreen != 'profile') {
+                  // Navigate to the Profile screen
+                }
+              },
+              child: Icon(
+                Icons.person,
+                color:
+                    activeScreen == 'profile' ? AppColors.red : AppColors.black,
               ),
-            ],
-          ),
-        ));
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
