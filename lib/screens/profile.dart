@@ -1,8 +1,6 @@
 import 'dart:io';
 import 'package:dooid/screens/auth/login.dart';
 import 'package:dooid/screens/auth/changePin.dart';
-import 'package:dooid/screens/home.dart';
-import 'package:dooid/splash.dart';
 import 'package:dooid/utils/utils.dart';
 import 'package:dooid/widgets/widgets.dart';
 import 'package:flutter/services.dart';
@@ -244,7 +242,7 @@ class _ProfileState extends State<Profile> {
               border: Border.all(
                 width: 2.5,
                 style: BorderStyle.solid,
-                color: Colors.black26,
+                color: Colors.black38,
               )),
         ),
       ),
@@ -302,13 +300,13 @@ class _ProfileState extends State<Profile> {
         ),
       ),
       Container(
-          padding: const EdgeInsets.fromLTRB(0, 190, 270, 0),
+          padding: const EdgeInsets.fromLTRB(0, 180, 270, 0),
           child: SizedBox(
             child: CircleAvatar(
-              radius: 35,
+              radius: 40,
               backgroundColor: Colors.grey.shade600,
               child: CircleAvatar(
-                  radius: 32,
+                  radius: 37,
                   backgroundColor: Colors.grey.shade500,
                   backgroundImage: photo == "" ? null : FileImage(File(photo)),
                   child: photo == ""
