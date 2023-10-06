@@ -5,10 +5,10 @@ import 'package:slide_countdown/slide_countdown.dart';
 
 class TheCarouselSlider extends StatelessWidget {
   final List<String> carouselImages = [
-    'assets/promoImage/umm.jpg',
-    'assets/promoImage/whatif.jpg'
+    'assets/promoImage/discount1.jpg',
+    'assets/promoImage/sale1.jpg',
   ];
-  final List<DateTime> targetDates = [DateTime(2024), DateTime(2023)];
+  final List<DateTime> targetDates = [DateTime(2023), DateTime(2024)];
   //The DateTime format, DateTime(2023, 12, 31, 23, 59, 59)
   @override
   Widget build(BuildContext context) {
@@ -19,6 +19,7 @@ class TheCarouselSlider extends StatelessWidget {
         enableInfiniteScroll: true,
         enlargeCenterPage: true,
         autoPlay: true,
+        viewportFraction: 0.8,
       ),
       itemBuilder: (BuildContext context, int index, int realIndex) {
         return _buildCarouselItem(context, index, realIndex);
@@ -30,12 +31,11 @@ class TheCarouselSlider extends StatelessWidget {
     String carouselImage = carouselImages[index];
     DateTime targetDate = targetDates[index];
     return Container(
-        margin: EdgeInsets.symmetric(horizontal: 8.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12.0),
           image: DecorationImage(
             image: AssetImage(carouselImage),
-            fit: BoxFit.cover,
+            fit: BoxFit.fill,
           ),
         ),
         child: Align(
@@ -76,7 +76,7 @@ class OfferCard extends StatelessWidget {
               child: Image(
                 image: AssetImage(cardImages),
                 fit: BoxFit.cover,
-                height: 150,
+                height: 160,
                 width: double.infinity,
               ),
             ),
@@ -88,7 +88,7 @@ class OfferCard extends StatelessWidget {
                   Text(
                     title,
                     style: GoogleFonts.montserrat(
-                      fontSize: 18,
+                      fontSize: 17,
                       fontWeight: FontWeight.bold,
                       color: Color(0xFF333333),
                     ),
@@ -96,7 +96,7 @@ class OfferCard extends StatelessWidget {
                   Text(
                     description,
                     style: GoogleFonts.montserrat(
-                      fontSize: 13,
+                      fontSize: 12,
                       color: Color(0xFF333333),
                     ),
                   ),
@@ -147,19 +147,20 @@ class CardSroll extends StatelessWidget {
         child: Column(
           children: [
             OfferCard(
-                title: '420% Discount',
-                description: 'NO NEED TO FKIN PAY',
-                cardImages: 'assets/promoImage/whatif.jpg'),
-            OfferCard(
-                title: '69% Discount',
+                title: '🌞 Sizzling Summer Savings Await You! 🌞',
                 description:
-                    'Pay with Dooid on this restaurant to get your 69% Off',
-                cardImages: 'assets/promoImage/umm.jpg'),
+                    'Transform your wardrobe into a summer sensation with our exclusive 50% Discount Coupon on the hottest summer outfits.',
+                cardImages: 'assets/promoImage/coupon1.png'),
             OfferCard(
-                title: '69% Discount',
+                title: '🎉 Big Savings Alert! Up to 40% OFF! 🌟',
                 description:
-                    'Pay with Dooid on this restaurant to get your 69% Off',
-                cardImages: 'assets/promoImage/umm.jpg'),
+                    'EleElevate your style, home, and tech with massive discounts. Limited time only! Don\'t miss out on big savings! 🛍️✨',
+                cardImages: 'assets/promoImage/sale1.jpg'),
+            OfferCard(
+                title: '🌟 Half-Price Frenzy! 🎉 Up to 50% OFF!',
+                description:
+                    'Revolutionize your style, home, and tech with jaw-dropping 50% discounts. Act fast—limited time only! Seize the savings! 🛍️✨',
+                cardImages: 'assets/promoImage/sale2.jpg'),
           ],
         ),
       ),
@@ -212,10 +213,8 @@ class _TimerCountdownState extends State<TimerCountdown> {
               padding: const EdgeInsets.all(8),
               child: Text(
                 "Expired",
-                style:
-                    GoogleFonts.montserrat(
-                      color: Color(0xFFBABABA), 
-                      fontSize: 13),
+                style: GoogleFonts.montserrat(
+                    color: Color(0xFFBABABA), fontSize: 13),
               ),
             ))
         : SlideCountdown(
