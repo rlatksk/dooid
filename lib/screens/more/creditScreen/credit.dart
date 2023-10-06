@@ -7,8 +7,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:slide_to_act_reborn/slide_to_act_reborn.dart';
 
-void main() => runApp(Credit());
-
 class Credit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
