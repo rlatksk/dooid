@@ -42,7 +42,7 @@ class _ProfileSetupState extends State<ProfileSetup> {
               fit: BoxFit.cover),
           SafeArea(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 40, vertical: 40),
+              padding: EdgeInsets.symmetric(horizontal: 40,),
               child: GlowingOverscrollIndicator(
                 axisDirection: AxisDirection.down,
                 color: Colors.transparent,
