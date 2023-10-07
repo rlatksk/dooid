@@ -31,7 +31,7 @@ class _PinState extends State<Pin> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.fromLTRB(30, 150, 30, 100),
+            padding: EdgeInsets.fromLTRB(15, 150, 15, 100),
             child: Container(
               height: 100,
               child: Column(
