@@ -38,7 +38,7 @@ class _QrCodeState extends State<QrCode> {
       backgroundColor: AppColors.black,
       body: Center(
         child: Padding(
-          padding: EdgeInsets.fromLTRB(25, 50, 25, 200),
+          padding: EdgeInsets.fromLTRB(25, 50, 25, 100),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
