@@ -1,3 +1,11 @@
+Anggota Kelompok :
+- Justin Salim (535220017)
+- Ivander (535220020)
+- Richard Souwiko (535220042)
+- Jason Chainara Putra (535220045)
+- Ruben Tobia Chaiyadi (535220051)
+- Tigo Ilhami Fasyah (535220235)
+
 # Duid - Your Ultimate E-Wallet Solution
 # Your Gateway to Seamless Financial Management in Indonesia
 
