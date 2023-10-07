@@ -227,65 +227,70 @@ class _HomeCardState extends State<HomeCard> {
 
   @override
   Widget build(BuildContext context) {
-    double balance = widget.foundContact.balance ?? 0.0;
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        Positioned(
-          child: Transform.rotate(
-            angle: 3 * 3.14 / 180,
+    return Consumer<ContactProvider>(builder: (context, contactProvider, _) {
+      double contactBalance = contactProvider
+          .contacts[contactProvider.contacts.indexOf(widget.foundContact)]
+          .balance;
+
+      return Stack(
+        alignment: Alignment.center,
+        children: [
+          Positioned(
+            child: Transform.rotate(
+              angle: 3 * 3.14 / 180,
+              child: Container(
+                width: 350,
+                height: 190,
+                decoration: BoxDecoration(
+                  color: AppColors.red,
+                  borderRadius: BorderRadius.circular(40),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
             child: Container(
               width: 350,
               height: 190,
               decoration: BoxDecoration(
-                color: AppColors.red,
+                color: AppColors.black,
+                image: DecorationImage(
+                  image: AssetImage('assets/images/home/card.png'),
+                  fit: BoxFit.fill,
+                ),
                 borderRadius: BorderRadius.circular(40),
               ),
             ),
           ),
-        ),
-        Positioned(
-          child: Container(
-            width: 350,
-            height: 190,
-            decoration: BoxDecoration(
-              color: AppColors.black,
-              image: DecorationImage(
-                image: AssetImage('assets/images/home/card.png'),
-                fit: BoxFit.fill,
-              ),
-              borderRadius: BorderRadius.circular(40),
+          Positioned(
+            top: 35,
+            left: 30,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                buildToggleText(
+                  'your balance',
+                  showBalance ? contactBalance : 0.0,
+                  showBalance,
+                  toggleBalanceVisibility,
+                  AppColors.red,
+                ),
+                SizedBox(height: 21),
+                buildToggleText(
+                  'spent today',
+                  showSpentToday
+                      ? widget.foundContact.calculateTotalAmountForToday()
+                      : 0.0,
+                  showSpentToday,
+                  toggleSpentTodayVisibility,
+                  Colors.white,
+                ),
+              ],
             ),
           ),
-        ),
-        Positioned(
-          top: 35,
-          left: 30,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              buildToggleText(
-                'your balance',
-                showBalance ? balance : 0.0,
-                showBalance,
-                toggleBalanceVisibility,
-                AppColors.red,
-              ),
-              SizedBox(height: 21),
-              buildToggleText(
-                'spent today',
-                showSpentToday
-                    ? widget.foundContact.calculateTotalAmountForToday()
-                    : 0.0,
-                showSpentToday,
-                toggleSpentTodayVisibility,
-                Colors.white,
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
+        ],
+      );
+    });
   }
 
   Widget buildToggleText(String label, double? value, bool show,
