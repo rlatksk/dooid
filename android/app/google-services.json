@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "990994227500",
-    "project_id": "dooid-24e03",
-    "storage_bucket": "dooid-24e03.appspot.com"
+    "project_number": "1083528422067",
+    "project_id": "dooid-fe1c8",
+    "storage_bucket": "dooid-fe1c8.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:990994227500:android:b27edcae1941262307cc89",
+        "mobilesdk_app_id": "1:1083528422067:android:c365b123a7bf7939ec46c6",
         "android_client_info": {
           "package_name": "com.example.dooid"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDueBZMXisnXjV3Bs85pJ53k5nLP0y2jnw"
+          "current_key": "AIzaSyAPumFA7A-FIbhoRlxmT6dUOEtGHGomarE"
         }
       ],
       "services": {
