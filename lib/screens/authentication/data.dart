@@ -261,7 +261,7 @@ class _ProfileSetupState extends State<ProfileSetup> {
                                 return;
                               }
                           
-                              if (pinController.text.isEmpty) {
+                              if (pinController.text.isEmpty || pinController.text.length < 6) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text('Please enter a 6-digit PIN.'),
