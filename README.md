@@ -29,3 +29,5 @@ Link Your Payment Methods: Connect your preferred payment methods to easily load
 Join us in shaping the future of finance with Dooid. Take control of your money like never before!
 
 🌟 Get Dooid Now 🌟
+
+For a complete guide can be seen in the following manual book : https://drive.google.com/file/d/1k-D0EQBKFCTTnQxzcKo0Ncw3-Eki5mSj/view
