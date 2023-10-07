@@ -74,6 +74,7 @@ flutter:
     - assets/icons/
     - assets/BackgroundD.png
     - assets/Background.png
+    - lib/screens/img/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
