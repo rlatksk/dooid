@@ -176,7 +176,6 @@ class _LoginState extends State<Login> {
                         Contact contact =
                             findContactByCountryCodeAndPhoneNumber(
                                 countryCode, phoneNumber);
-
                         if (contact.firstName.isNotEmpty) {
                           Navigator.of(context).push(BouncyPageRoute(
                               destinationPage: Pin(contact: contact)));
@@ -188,6 +187,7 @@ class _LoginState extends State<Login> {
                               backgroundColor: AppColors.red,
                             ),
                           );
+                          FocusScope.of(context).requestFocus(FocusNode());
                         }
                       },
                       style: ButtonStyle(

@@ -1,5 +1,6 @@
 import 'package:dooid/data/accounts.dart';
 import 'package:dooid/screens/transactions/topup/topUpSuccess.dart';
+import 'package:dooid/widgets/colors.dart';
 import 'package:dooid/widgets/shortcuts/wBackButton.dart';
 import 'package:dooid/data/contactProvider.dart';
 import 'package:dooid/widgets/shortcuts/format.dart';
@@ -25,6 +26,7 @@ class TopUpState extends State<TopUp> {
   bool isBalanceVisible = true;
   late double amount = 0;
   final TextEditingController _controller = TextEditingController();
+  final GlobalKey<SlideActionState> slideActionKey = GlobalKey<SlideActionState>();
 
   @override
   void initState() {
@@ -208,10 +210,11 @@ class TopUpState extends State<TopUp> {
             Align(
                 alignment: Alignment.bottomCenter,
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                  padding: const EdgeInsets.fromLTRB(15, 0, 15, 15),
                   child: Visibility(
                     visible: amount != 0,
                     child: SlideAction(
+                      key: slideActionKey,
                       height: 73,
                       borderRadius: 50,
                       innerColor: Color(0xFFFF5151),
@@ -226,31 +229,43 @@ class TopUpState extends State<TopUp> {
                         color: Color(0xFFBABABA),
                       ),
                       onSubmit: () {
-                        final contactProvider = Provider.of<ContactProvider>(
-                            context,
-                            listen: false);
-                        contactProvider.addTransactionToContact(
-                          contacts.indexOf(widget.foundContact),
-                          Transaction(
+                        if (amount >= 1000000) {
+                          final contactProvider = Provider.of<ContactProvider>(
+                              context,
+                              listen: false);
+                          contactProvider.addTransactionToContact(
+                            contacts.indexOf(widget.foundContact),
+                            Transaction(
                               name: "Top Up",
                               amount: amount,
                               date: DateTime.now(),
                               message: 'Added ${formatBalance(amount)}',
-                              type: 'topup'),
-                        );
-                        setState(() {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => TopUpSuccess(
-                                foundContact: widget.foundContact,
-                                name: userName,
-                                newBalance: balance! + amount,
-                                addedAmount: amount,
-                              ),
+                              type: 'topup',
                             ),
                           );
-                        });
+                          setState(() {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => TopUpSuccess(
+                                  foundContact: widget.foundContact,
+                                  name: userName,
+                                  newBalance: balance! + amount,
+                                  addedAmount: amount,
+                                ),
+                              ),
+                            );
+                          });
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                  'Top-up amount must be at least Rp${formatBalance(1000000)}'),
+                              backgroundColor: AppColors.red,
+                            ),
+                          );
+                          slideActionKey.currentState?.reset();
+                        }
                       },
                     ),
                   ),

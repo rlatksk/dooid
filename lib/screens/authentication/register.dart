@@ -1,6 +1,7 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:dooid/screens/authentication/data.dart';
 import 'package:dooid/widgets/colors.dart';
+import 'package:dooid/widgets/shortcuts/transition.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -199,26 +200,34 @@ class _RegisterState extends State<Register> {
                         String phoneNumber = phoneController.text;
 
                         if (countryCode.isNotEmpty && phoneNumber.isNotEmpty) {
-                          Contact existingContact =
-                              findContactByCountryCodeAndPhoneNumber(
-                                  countryCode, phoneNumber);
-                          if (existingContact.firstName.isNotEmpty) {
+                          if (phoneNumber.length >= 7) {
+                            Contact existingContact =
+                                findContactByCountryCodeAndPhoneNumber(
+                                    countryCode, phoneNumber);
+                            if (existingContact.firstName.isNotEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                      'A user with the same country code and phone number already exists.'),
+                                  backgroundColor: AppColors.red,
+                                ),
+                              );
+                              FocusScope.of(context).requestFocus(FocusNode());
+                            } else {
+                              Navigator.of(context).push(BouncyPageRoute(
+                                  destinationPage: ProfileSetup(
+                                      countryCode: countryCode,
+                                      phoneNumber: phoneNumber)));
+                            }
+                          } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(
-                                    'A user with the same country code and phone number already exists.'),
+                                    'Phone number must be at least 7 characters.'),
                                 backgroundColor: AppColors.red,
                               ),
                             );
-                          } else {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ProfileSetup(
-                                    countryCode: countryCode,
-                                    phoneNumber: phoneNumber),
-                              ),
-                            );
+                            FocusScope.of(context).requestFocus(FocusNode());
                           }
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
@@ -228,6 +237,7 @@ class _RegisterState extends State<Register> {
                               backgroundColor: AppColors.red,
                             ),
                           );
+                          FocusScope.of(context).requestFocus(FocusNode());
                         }
                       },
                       style: ButtonStyle(

@@ -177,13 +177,13 @@ class HomeTop extends StatelessWidget {
                 strokeColor: AppColors.midGrey,
                 strokeSize: 1,
                 insideWidget: Icon(
-                  Icons.notifications_none_sharp,
-                  size: 20,
-                  color: AppColors.midGrey,
+                  Icons.circle,
+                  size: 10,
+                  color: AppColors.red,
                 ),
                 navigateToGesture: GestureDetector(
                   onTap: () {
-                    print('Notifications Screen');
+                    print('Just shows youre on the home screen');
                   },
                 ),
               ),
