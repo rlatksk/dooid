@@ -270,6 +270,7 @@ class _ProfileSetupState extends State<ProfileSetup> {
                           pin: pinController.text,
                           countryCode: widget.countryCode,
                           phoneNumber: widget.phoneNumber,
+                          balance: 0,
                         );
 
                         ContactProvider contactProvider =
