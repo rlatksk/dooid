@@ -16,7 +16,7 @@ class TopUpSuccess extends StatelessWidget {
     super.key,
     required this.name,
     required this.newBalance,
-    required this.addedAmount, 
+    required this.addedAmount,
     required this.foundContact,
   });
 
@@ -133,13 +133,11 @@ class TopUpSuccess extends StatelessWidget {
                 )
               ],
             ),
-            SizedBox(
-              height: 30,
-            ),
+            Spacer(),
             ElevatedButton(
               onPressed: () {
-                Navigator.of(context)
-                    .push(BouncyPageRoute(destinationPage: Home(foundContact: foundContact)));
+                Navigator.of(context).push(BouncyPageRoute(
+                    destinationPage: Home(foundContact: foundContact)));
               },
               style: ButtonStyle(
                 padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
@@ -155,9 +153,8 @@ class TopUpSuccess extends StatelessWidget {
                   borderRadius: BorderRadius.all(Radius.circular(60.0)),
                 ),
                 child: Container(
-                  constraints: const BoxConstraints(
-                      minWidth: 88.0,
-                      minHeight: 36.0),
+                  constraints:
+                      const BoxConstraints(minWidth: 88.0, minHeight: 36.0),
                   alignment: Alignment.center,
                   child: const Text(
                     'Back to Home',

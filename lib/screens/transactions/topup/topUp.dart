@@ -297,7 +297,7 @@ class AddAmountBtn extends StatelessWidget {
                 color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold))
       ])),
       style: TextButton.styleFrom(
-          fixedSize: Size(90, 30),
+          fixedSize: Size(80, 30),
           padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
           backgroundColor: Color(0xFF131313),
           foregroundColor: Color(0xFFEDEDED),

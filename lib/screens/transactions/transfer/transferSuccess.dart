@@ -119,9 +119,7 @@ class TfSuccess extends StatelessWidget {
                 )
               ],
             ),
-            SizedBox(
-              height: 30,
-            ),
+            Spacer(),
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context)
