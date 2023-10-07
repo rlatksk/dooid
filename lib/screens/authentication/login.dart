@@ -1,7 +1,7 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:dooid/data/accounts.dart';
 import 'package:dooid/screens/authentication/pin.dart';
-import 'package:dooid/widgets/colors.dart';
+import 'package:dooid/widgets/shortcuts/colors.dart';
 import 'package:dooid/widgets/shortcuts/transition.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

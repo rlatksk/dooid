@@ -2,11 +2,11 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:dooid/data/accounts.dart';
-import 'package:dooid/screens/main/qr/qrCode.dart';
+import 'package:dooid/screens/primary/qr/qrCode.dart';
 import 'package:dooid/screens/transactions/transfer/transfer.dart';
-import 'package:dooid/widgets/colors.dart';
+import 'package:dooid/widgets/shortcuts/colors.dart';
 import 'package:dooid/widgets/shortcuts/transition.dart';
-import 'package:dooid/widgets/shortcuts/wBackButtonBlack.dart';
+import 'package:dooid/widgets/etc/topUpTransfer/wBackButtonBlack.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';

@@ -1,6 +1,6 @@
 import 'package:dooid/data/accounts.dart';
-import 'package:dooid/screens/main/home.dart';
-import 'package:dooid/widgets/colors.dart';
+import 'package:dooid/screens/primary/home.dart';
+import 'package:dooid/widgets/shortcuts/colors.dart';
 import 'package:dooid/widgets/shortcuts/format.dart';
 import 'package:dooid/widgets/shortcuts/transition.dart';
 import 'package:flutter/material.dart';

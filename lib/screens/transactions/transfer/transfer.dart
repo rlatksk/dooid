@@ -1,10 +1,10 @@
 import 'package:dooid/data/accounts.dart';
 import 'package:dooid/screens/transactions/transfer/transferSuccess.dart';
-import 'package:dooid/widgets/shortcuts/wBackButton.dart';
-import 'package:dooid/widgets/colors.dart';
+import 'package:dooid/widgets/etc/topUpTransfer/wBackButton.dart';
+import 'package:dooid/widgets/shortcuts/colors.dart';
 import 'package:dooid/data/contactProvider.dart';
 import 'package:dooid/widgets/shortcuts/format.dart';
-import 'package:dooid/widgets/topUpTransfer/contactDropdown.dart';
+import 'package:dooid/widgets/etc/topUpTransfer/contactDropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';

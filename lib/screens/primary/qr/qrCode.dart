@@ -1,6 +1,6 @@
 import 'package:dooid/data/accounts.dart';
-import 'package:dooid/widgets/colors.dart';
-import 'package:dooid/widgets/shortcuts/wBackButtonBlack.dart';
+import 'package:dooid/widgets/shortcuts/colors.dart';
+import 'package:dooid/widgets/etc/topUpTransfer/wBackButtonBlack.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:qr_flutter/qr_flutter.dart';

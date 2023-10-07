@@ -1,6 +1,6 @@
 import 'package:dooid/data/accounts.dart';
-import 'package:dooid/screens/main/home.dart';
-import 'package:dooid/widgets/colors.dart';
+import 'package:dooid/screens/primary/home.dart';
+import 'package:dooid/widgets/shortcuts/colors.dart';
 import 'package:dooid/data/contactProvider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

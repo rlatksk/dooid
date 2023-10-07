@@ -1,6 +1,6 @@
 import 'package:dooid/data/accounts.dart';
 import 'package:dooid/data/contactProvider.dart';
-import 'package:dooid/widgets/colors.dart';
+import 'package:dooid/widgets/shortcuts/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';

@@ -1,18 +1,19 @@
 import 'dart:io';
 
 import 'package:dooid/data/accounts.dart';
-import 'package:dooid/screens/main/offers.dart';
-import 'package:dooid/screens/main/profile.dart';
-import 'package:dooid/screens/main/qr/qrScan.dart';
+import 'package:dooid/screens/primary/offers.dart';
+import 'package:dooid/screens/primary/profile.dart';
+import 'package:dooid/screens/primary/qr/qrScan.dart';
 import 'package:dooid/screens/onboarding.dart';
+import 'package:dooid/screens/transactions/credit/credit.dart';
 import 'package:dooid/screens/transactions/topup/topUp.dart';
-import 'package:dooid/screens/main/transactionsHistory.dart';
+import 'package:dooid/screens/primary/transactionsHistory.dart';
 import 'package:dooid/screens/transactions/transfer/transfer.dart';
-import 'package:dooid/widgets/colors.dart';
+import 'package:dooid/widgets/shortcuts/colors.dart';
 import 'package:dooid/data/contactProvider.dart';
 import 'package:dooid/widgets/shortcuts/format.dart';
 import 'package:dooid/widgets/shortcuts/initials.dart';
-import 'package:dooid/widgets/logOut.dart';
+import 'package:dooid/widgets/etc/logOut.dart';
 import 'package:dooid/widgets/shortcuts/transition.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -53,7 +54,8 @@ class _HomeState extends State<Home> {
                 ),
               ),
             ),
-            floatingActionButton: HomeQRScanButton(foundContact: widget.foundContact),
+            floatingActionButton:
+                HomeQRScanButton(foundContact: widget.foundContact),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerDocked,
             bottomNavigationBar: HomeNavBar(
@@ -429,7 +431,7 @@ class HomeMainButtons extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 30),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           HomeCircleButtonIconText(
             width: 85,
@@ -478,30 +480,6 @@ class HomeMainButtons extends StatelessWidget {
               onTap: () {
                 Navigator.of(context).push(BouncyPageRoute(
                     destinationPage: TopUp(foundContact: foundContact)));
-              },
-            ),
-          ),
-          HomeCircleButtonIconText(
-            width: 85,
-            height: 85,
-            circleColor: AppColors.lightGrey,
-            strokeColor: Colors.white,
-            strokeSize: 1,
-            insideWidget: Image.asset(
-              'assets/images/home/more.png',
-              width: 40,
-              height: 40,
-            ),
-            buttonTextWidget: Text('More',
-                style: GoogleFonts.montserrat(
-                  fontSize: 12,
-                  color: AppColors.black,
-                  fontWeight: FontWeight.normal,
-                )),
-            textCircleSpacing: 5,
-            navigateToGesture: GestureDetector(
-              onTap: () {
-                print('More Screen');
               },
             ),
           ),
@@ -579,7 +557,7 @@ class HomeQuickTransfer extends StatelessWidget {
                 ),
                 SizedBox(height: 10),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: recentTransferTransactions.map((transaction) {
                     return buildTransferWidget(transaction, parentContext);
                   }).toList(),
@@ -820,7 +798,8 @@ class HomeQRScanButton extends StatelessWidget {
   final Contact foundContact;
 
   const HomeQRScanButton({
-    super.key, required this.foundContact,
+    super.key,
+    required this.foundContact,
   });
 
   @override

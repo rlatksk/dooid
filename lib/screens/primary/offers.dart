@@ -1,5 +1,5 @@
-import 'package:dooid/widgets/offerWidget.dart';
-import 'package:dooid/widgets/shortcuts/wBackButton.dart';
+import 'package:dooid/widgets/etc/offerWidget.dart';
+import 'package:dooid/widgets/etc/topUpTransfer/wBackButton.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 

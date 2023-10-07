@@ -1,7 +1,7 @@
 import 'package:dooid/data/accounts.dart';
 import 'package:dooid/screens/transactions/topup/topUpSuccess.dart';
-import 'package:dooid/widgets/colors.dart';
-import 'package:dooid/widgets/shortcuts/wBackButton.dart';
+import 'package:dooid/widgets/shortcuts/colors.dart';
+import 'package:dooid/widgets/etc/topUpTransfer/wBackButton.dart';
 import 'package:dooid/data/contactProvider.dart';
 import 'package:dooid/widgets/shortcuts/format.dart';
 import 'package:flutter/material.dart';
