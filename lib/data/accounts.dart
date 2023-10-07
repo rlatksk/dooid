@@ -20,7 +20,7 @@ class Contact {
   String firstName;
   String? lastName;
   String? profilePicture;
-  double? balance;
+  double balance;
   String countryCode;
   String phoneNumber;
   String pin;
@@ -31,7 +31,7 @@ class Contact {
     required this.firstName,
     this.lastName,
     this.profilePicture,
-    this.balance,
+    required this.balance,
     required this.countryCode,
     required this.phoneNumber,
     required this.pin,
@@ -268,6 +268,7 @@ Contact findContactByCountryCodeAndPhoneNumber(
       countryCode: '',
       phoneNumber: '',
       pin: '',
+      balance: 0,
     ),
   );
   return foundContact;
@@ -287,6 +288,7 @@ Contact findContactByFullName(String fullName) {
       countryCode: '',
       phoneNumber: '',
       pin: '',
+      balance: 0,
     ),
   );
   return foundContact;
