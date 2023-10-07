@@ -308,11 +308,7 @@ class _ProfileState extends State<Profile> {
                 leading: CircleAvatar(
                   radius: 30,
                   backgroundColor: Colors.white,
-                  child: Icon(
-                    Icons.add,
-                    size: 30,
-                    color: AppColors.red
-                  ),
+                  child: Icon(Icons.add, size: 30, color: AppColors.red),
                 ),
                 title: Text('Upload',
                     style: GoogleFonts.montserrat(
@@ -378,7 +374,8 @@ class _ProfileState extends State<Profile> {
   }
 
   _launchURL() async {
-    final Uri url = Uri.parse('https://github.com/rlatksk/dooid');
+    final Uri url = Uri.parse(
+        'https://docs.google.com/document/d/16IwOuT-1gfet9Nag75bn-yDL3f4MCUogNSIacRJzidU/');
     if (!await launchUrl(url)) {
       throw Exception('Could not launch $url');
     }
