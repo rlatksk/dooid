@@ -161,6 +161,7 @@ class CardSroll extends StatelessWidget {
                 description:
                     'Revolutionize your style, home, and tech with jaw-dropping 50% discounts. Act fast—limited time only! Seize the savings! 🛍️✨',
                 cardImages: 'assets/images/promoImage/sale2.jpg'),
+            SizedBox(height: 150),
           ],
         ),
       ),
@@ -189,7 +190,7 @@ class _TimerCountdownState extends State<TimerCountdown> {
 
   @override
   void dispose() {
-    _disposed = true; 
+    _disposed = true;
     super.dispose();
   }
 
@@ -227,7 +228,7 @@ class _TimerCountdownState extends State<TimerCountdown> {
               child: Text(
                 "Expired",
                 style: GoogleFonts.montserrat(
-                    color: Color(0xFFBABABA), fontSize: 13),
+                    color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold),
               ),
             ))
         : SlideCountdown(
@@ -238,7 +239,7 @@ class _TimerCountdownState extends State<TimerCountdown> {
                 color: Color(0xFFFF5151),
                 borderRadius: BorderRadius.circular(30)),
             textStyle:
-                GoogleFonts.montserrat(color: Color(0xFFBABABA), fontSize: 13),
+                GoogleFonts.montserrat(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold),
             separatorStyle: GoogleFonts.montserrat(
               color: Colors.black,
               fontSize: 13,
