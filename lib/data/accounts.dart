@@ -211,7 +211,7 @@ List<Contact> contacts = [
             message: 'Added Rp${formatBalance(500000)}',
             type: 'topup'),
         Transaction(
-            name: 'Tigo Ilhami Faisyah',
+            name: 'Tigo Ilhami Fasyah',
             amount: -350700,
             date: DateTime(2023, 9, 3, 10, 15),
             message: 'test ahhhhhhhhhh',
