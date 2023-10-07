@@ -375,7 +375,7 @@ class _ProfileState extends State<Profile> {
 
   _launchURL() async {
     final Uri url = Uri.parse(
-        'https://docs.google.com/document/d/16IwOuT-1gfet9Nag75bn-yDL3f4MCUogNSIacRJzidU/edit');
+        'https://docs.google.com/document/d/16IwOuT-1gfet9Nag75bn-yDL3f4MCUogNSIacRJzidU/');
     if (!await launchUrl(url)) {
       throw Exception('Could not launch $url');
     }
