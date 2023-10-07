@@ -887,7 +887,7 @@ class HomeNavBar extends StatelessWidget {
               onTap: () {
                 if (activeScreen != 'offers') {
                   Navigator.of(context).push(BouncyPageRoute(
-                    destinationPage: Offers(),
+                    destinationPage: Offers(foundContact: foundContact),
                   ));
                 }
               },

@@ -1,10 +1,14 @@
+import 'package:dooid/data/accounts.dart';
+import 'package:dooid/screens/primary/home.dart';
 import 'package:dooid/widgets/etc/offerWidget.dart';
 import 'package:dooid/widgets/etc/topUpTransfer/wBackButton.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Offers extends StatelessWidget {
-  const Offers({super.key});
+  final Contact foundContact;
+
+  const Offers({super.key, required this.foundContact});
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +32,12 @@ class Offers extends StatelessWidget {
               bottomLeft: Radius.circular(25),
               bottomRight: Radius.circular(25)),
         ),
+      ),
+      floatingActionButton: HomeQRScanButton(foundContact: foundContact),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: HomeNavBar(
+        foundContact: foundContact,
+        activeScreen: 'offers',
       ),
       body: Container(
         margin: const EdgeInsets.fromLTRB(20, 20, 20, 40),
