@@ -375,7 +375,7 @@ class _ProfileState extends State<Profile> {
 
   _launchURL() async {
     final Uri url = Uri.parse(
-        'https://drive.google.com/file/d/1k-D0EQBKFCTTnQxzcKo0Ncw3-Eki5mSj/view');
+        'https://drive.google.com/file/d/17mZzV11YAnHlpD2tFWZ6K85ltRqCMbOO/view?usp=sharing');
     if (!await launchUrl(url)) {
       throw Exception('Could not launch $url');
     }
