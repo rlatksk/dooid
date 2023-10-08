@@ -1,4 +1,4 @@
-# Anggota Kelompok :
+# Anggota Kelompok 10 :
 - Justin Salim (535220017)
 - Ivander (535220020)
 - Richard Souwiko (535220042)
@@ -6,28 +6,22 @@
 - Ruben Tobia Chaiyadi (535220051)
 - Tigo Ilhami Fasyah (535220235)
 
-# Duid - Your Ultimate E-Wallet Solution
-# Your Gateway to Seamless Financial Management in Indonesia
+# Dooid
+#### Dive into the Cashless Revolution
+Dooid is an E-Money simulation app (Android) specifically made for our midterms.
+Dooid requires a minSdkVersion of 21 for the mobile_scanner package. It currently uses in-memory storage (RAM) to refer to data, saved on lists, and updated via Providers or abusing the fact that Flutter widgets rebuilds whenever there's an update.
 
-Duid is a revolutionary E-Wallet app designed to empower users with a comprehensive financial management experience, specifically tailored for handling Indonesian Rupiah (IDR). In a country known for its rich cultural diversity and thriving economy, Duid aims to simplify, secure, and enhance the way individuals, businesses, and organizations manage their finances.
+# Pre-made Accounts
+- Jason Chainara Putra = +62 (Indonesia) 8555123456 123456
+- Ivander = +81 (Japan) 9876543210 654321
+- Justin Salim = +1 (United States) 234567890 987654
+- Richard Souwiko = +227 (Niger) 000000 (it's less than 7 digits but it works anyways lol) 112233
+- Tigo Ilhami Fasyah = +200 (Egypt) 420420 (less than 7 digits as well) 133737
+- Ruben Tobia Chaiyadi = +690 (Tokelau) 123123 (less than 7 digits as well) 246810
 
-Key Features:
-🌐 Seamless Transactions: Enjoy swift and hassle-free money transfers, whether it's splitting bills with friends or sending money to family across the globe.
+# Read our Manual Book
+https://drive.google.com/file/d/17mZzV11YAnHlpD2tFWZ6K85ltRqCMbOO/view?usp=drive_link
+This will tell you all you need to know on how to use the app. For more in-depth explanation, check out our YouTube video below.
 
-💸 Mobile Payments Made Easy: Make quick and secure payments at your favorite stores, both online and offline, with just a few taps on your mobile device.
-
-📥 Effortless Money Receipts: Receive funds from friends, clients, or anyone else with the simplicity and security that Dooid provides.
-
-🔒 Robust Security: Rest easy knowing your financial information is protected with state-of-the-art encryption and security measures.
-
-📊 Transaction History: Keep track of your financial activities with a comprehensive transaction history, allowing you to stay on top of your spending and earnings.
-
-Getting Started:
-Download Dooid: Get started by downloading the app from the App Store or Google Play Store.
-Create Your Account: Sign up for a Dooid account and personalize your profile.
-Link Your Payment Methods: Connect your preferred payment methods to easily load funds into your wallet.
-Join us in shaping the future of finance with Dooid. Take control of your money like never before!
-
-🌟 Get Dooid Now 🌟
-
-For a complete guide can be seen in the following manual book : https://drive.google.com/file/d/1k-D0EQBKFCTTnQxzcKo0Ncw3-Eki5mSj/view
+# Watch our YouTube video
+https://youtu.be/9tftbBlXyik?si=0aeFV5ssym1tMBtR
