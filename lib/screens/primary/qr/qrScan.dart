@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:dooid/data/accounts.dart';
 import 'package:dooid/screens/primary/qr/qrCode.dart';
@@ -106,6 +105,14 @@ class _QrScanState extends State<QrScan> {
     );
   }
 
+  void _startCamera() {
+    cameraController.start();
+  }
+
+  void _stopCamera() {
+    cameraController.stop();
+  }
+
   void _foundBarcode(Barcode barcode, MobileScannerArguments? args) {
     if (!canScan) {
       return;
@@ -121,22 +128,30 @@ class _QrScanState extends State<QrScan> {
     if (contactIndex != null &&
         contactIndex >= 0 &&
         contactIndex < contacts.length) {
-      if (contactIndex == contacts.indexOf(widget.foundContact)) {
-        // Show a snackbar indicating that it's the same contact
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('You scanned your own QR code.'),
-            backgroundColor: AppColors.red,
-          ),
-        );
-      } else {
-        Contact transferContact = contacts[contactIndex];
-        Navigator.of(context).push(BouncyPageRoute(
-          destinationPage: Transfer(
-            foundContact: widget.foundContact,
-            transferContact: transferContact,
-          ),
-        ));
+      if (contactIndex != null &&
+          contactIndex >= 0 &&
+          contactIndex < contacts.length) {
+        if (contactIndex == contacts.indexOf(widget.foundContact)) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('You scanned your own QR code.'),
+              backgroundColor: AppColors.red,
+            ),
+          );
+        } else {
+          _stopCamera();
+          Contact transferContact = contacts[contactIndex];
+          Navigator.of(context)
+              .push(BouncyPageRoute(
+            destinationPage: Transfer(
+              foundContact: widget.foundContact,
+              transferContact: transferContact,
+            ),
+          ))
+              .then((_) {
+            _startCamera();
+          });
+        }
       }
     }
 

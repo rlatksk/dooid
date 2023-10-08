@@ -5,7 +5,6 @@ import 'package:dooid/screens/primary/offers.dart';
 import 'package:dooid/screens/primary/profile.dart';
 import 'package:dooid/screens/primary/qr/qrScan.dart';
 import 'package:dooid/screens/onboarding.dart';
-import 'package:dooid/screens/transactions/credit/credit.dart';
 import 'package:dooid/screens/transactions/topup/topUp.dart';
 import 'package:dooid/screens/primary/transactionsHistory.dart';
 import 'package:dooid/screens/transactions/transfer/transfer.dart';
